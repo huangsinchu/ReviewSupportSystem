@@ -740,6 +740,11 @@ pre code {
   border: 0;
 }
 
+.row-bottom{
+  margin-bottom: 20px;
+  margin-top:20px;
+}
+
 .pre-scrollable {
   max-height: 340px;
   overflow-y: scroll;
