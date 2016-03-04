@@ -3,14 +3,12 @@
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
 
-
-
 	<!-- rest resource container -->
 	<bean id="restResourceContainer"
 		class="review.system.container.ResourceContainer">
 		<property name="restResources">
 			<list>
-			    <ref bean="helloWorldResource" />
+			    <ref bean="HelloWorldService" />
 			</list>
 		</property>
 	</bean>

@@ -1,6 +1,6 @@
-package doubler.impl;
+package review.system.resources.impl;
 
-import doubler.HelloWorldService;
+import review.system.api.resources.HelloWorldService;
 
 public class HelloWorldServiceImpl implements HelloWorldService {
 
