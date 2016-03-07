@@ -6,4 +6,5 @@ import review.system.entity.User;
 
 public interface UserRepository  extends PagingAndSortingRepository<User, Integer> {
 
+	public User findById(Long id);
 }

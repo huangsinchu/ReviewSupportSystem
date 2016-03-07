@@ -17,7 +17,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 import com.jolbox.bonecp.BoneCPDataSource;
 
-import review.system.api.util.ConfigHelper;
+import review.system.api.utils.ConfigHelper;
 
 @Configuration
 @EnableTransactionManagement
@@ -28,7 +28,7 @@ public class DBConfig {
 		BoneCPDataSource dataSource = new BoneCPDataSource();
 		dataSource.setDriverClass(ConfigHelper.getProperty("db.driverClass"));
 		dataSource.setJdbcUrl(ConfigHelper.getProperty("db.jdbcUrl"));
-		dataSource.setUsername(ConfigHelper.getProperty("db.username"));
+		dataSource.setUser(ConfigHelper.getProperty("db.username"));
 		dataSource.setPassword(ConfigHelper.getProperty("db.password"));
 		dataSource.setPartitionCount(ConfigHelper
 				.getPropertyAsInt("db.partitionCount"));
@@ -61,7 +61,6 @@ public class DBConfig {
 
 	@Bean
 	public PlatformTransactionManager transactionManager() {
-
 		JpaTransactionManager txManager = new JpaTransactionManager();
 		txManager.setEntityManagerFactory(entityManagerFactory());
 		return txManager;

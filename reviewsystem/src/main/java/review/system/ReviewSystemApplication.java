@@ -5,7 +5,7 @@ import java.util.List;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.support.ClassPathXmlApplicationContext;
 
-import review.system.api.util.ConfigHelper;
+import review.system.api.utils.ConfigHelper;
 import review.system.container.ResourceContainer;
 import io.dropwizard.Application;
 import io.dropwizard.configuration.EnvironmentVariableSubstitutor;

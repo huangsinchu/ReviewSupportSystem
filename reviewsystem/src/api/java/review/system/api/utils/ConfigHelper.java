@@ -1,4 +1,4 @@
-package review.system.api.util;
+package review.system.api.utils;
 
 import java.io.IOException;
 import java.io.InputStream;
