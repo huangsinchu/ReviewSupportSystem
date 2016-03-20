@@ -6,7 +6,13 @@ var Navbar = React.createClass({
           profile:{
             "name":"屋顶上的羊驼",
             "hasMessage":"true"
-          }  
+          },
+          messageList:[
+            {"url":"http://www.google.com",
+            "content":"荣老师邀请你评审陆云昊的文章"},
+            {"url":"http://www.google.com",
+            "content":"荣老师邀请你评审陆云昊的文章"}
+          ]
       };
   },
   readMessage:function(e){
@@ -16,6 +22,19 @@ var Navbar = React.createClass({
   },
   render: function() {
     var unread = this.state.profile.hasMessage=="true"?<span className="navbar-unread">1</span>:null;
+
+    var messages;
+    if(this.state.messageList.length > 0){
+        messages = this.state.messageList.map(function(message){
+          return (
+              <li><a href={message.url}>{message.content}</a></li>
+              
+          );
+        });
+    } else {
+        messages = <li><a>暂无消息</a></li>
+    }
+
     return (
       <div>
       <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
@@ -32,7 +51,11 @@ var Navbar = React.createClass({
         <ul className="nav navbar-nav">
           <li><a href="#">评审</a></li>
           <li><a href="#">任务</a></li>
-          <li><a href="#" onClick={this.readMessage}>通知{unread}</a></li>
+          <li><a href="#" onClick={this.readMessage} className="dropdown-toggle" data-toggle="dropdown">通知{unread}</a>
+              <ul className="dropdown-menu">
+                {messages}
+              </ul>
+          </li>
           <li className="dropdown">
             <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                {this.state.profile.name}<b className="caret"></b>
@@ -56,7 +79,9 @@ var Navbar = React.createClass({
  var ReviewPlan = React.createClass({
   render: function(){
   	var id = "#"+this.props.reviewPlan.id;
-    var state = this.props.reviewPlan.type+"----"+this.props.reviewPlan.target+"----"+this.props.reviewPlan.state;
+    var state = this.props.reviewPlan.type+"----"+this.props.reviewPlan.target+"----"+(this.props.reviewPlan.state?"评审中":"评审结束");
+    var colorHead = this.props.reviewPlan.state?"palette palette-peter-river":"palette palette-concrete";
+    var colorTail = this.props.reviewPlan.state?"palette palette-belize-hole":"palette palette-silver";
     var text = this.props.reviewPlan.content;
     if (text.length>13){
       var shortText = text.substr(0,13)+"...";  
@@ -68,15 +93,15 @@ var Navbar = React.createClass({
     
     return(
         <div className="col-lg-3 col-md-6 col-sm-12 row-bottom">
-            <dl className="palette palette-peter-river">
+            <dl className={colorHead}>
                 <dt>{this.props.reviewPlan.title}</dt>
                 <dd><a className="text-success" href={this.props.reviewPlan.url}>下载地址</a></dd>
               </dl>
-              <dl className="palette palette-belize-hole">
+              <dl className={colorTail}>
                 <dt className="text-primary">{state}</dt>
                 <dd data-toggle="tooltip" data-placement="bottom" title={text}>{shortText}</dd>
               </dl>
-              <dl className="palette palette-belize-hole">
+              <dl className={colorTail}>
                 <dd>
                 <div className="btn-group" role="group">
                   <button className="btn btn-primary" type="button" data-toggle="modal" data-target={id}>编辑</button>
@@ -106,7 +131,7 @@ var ReviewPlanForm = React.createClass({
       if(!title||!url||!content){
         return;
       }
-      var newplan = {id:"119",title:title,type:type,url:url,content:content,target:target,state:"评审中"};
+      var newplan = {id:"119",title:title,type:type,url:url,content:content,target:target,state:true};
       this.props.freshReviewPlan(newplan);
       this.refs.title.value = "";
       this.refs.type.value= "文档评审";
@@ -114,6 +139,10 @@ var ReviewPlanForm = React.createClass({
       this.refs.content.value= "";
       this.refs.target.value= "所有联系人";
       return;
+    },
+    componentDidMount: function() {
+       $('[data-toggle="select"]').select2();
+       $('[data-toggle="switch"]').bootstrapSwitch();
     },
 
     render:function(){
@@ -124,7 +153,7 @@ var ReviewPlanForm = React.createClass({
               <input type="text" className="form-control" placeholder="项目名称" ref="title"/>
             </div>
             <div className="form-group">
-              <select className="form-control" data-toggle="select" ref="type">
+              <select className="form-control select select-primary" data-toggle="select" ref="type">
                 <option value="文档评审" selected>文档评审</option>
                 <option value="代码评审">代码评审</option>
               </select>
@@ -136,7 +165,7 @@ var ReviewPlanForm = React.createClass({
               <textarea className="form-control" rows="3" placeholder="内容描述" ref="content"></textarea>
             </div>  
             <div className="form-group">
-              <select className="form-control" data-toggle="select" ref="target">
+              <select className="form-control select select-primary" data-toggle="select" ref="target">
                 <option value="所有联系人" selected>所有联系人</option>
                 <option value="代码评审组">代码评审组</option>
                 <option value="文档评审组">文档评审组</option>
@@ -154,7 +183,23 @@ var ReviewPlanForm = React.createClass({
 
 /*编辑模态框*/
 var EditModal = React.createClass({
+  handleEdit: function(e){
+    e.preventDefault();
+    var id = this.props.reviewPlan.id;
+    var title = this.refs.title.value.trim();
+    var type = this.refs.type.value;
+    var url = this.refs.url.value.trim();
+    var content = this.refs.content.value.trim();
+    var target = this.refs.target.value;
+    var state = this.refs.state.value=="true"?true:false;
+    var newplan = {id:id,title:title,type:type,url:url,content:content,target:target,state:state};
+    
+    this.props.freshReviewPlan(newplan);
+    return;
+  },
+
 	render: function(){
+    var checkBox = this.props.reviewPlan.state?<input type="checkbox" data-toggle="switch" id="state-choose" value="true" checked/>:<input type="checkbox" value="true" data-toggle="switch" id="state-choose"/>;
 		return(
       	<div className="modal fade" id={this.props.reviewPlan.id} tabindex="-1" role="dialog">
   			<div className="modal-dialog modal-lg">
@@ -164,7 +209,7 @@ var EditModal = React.createClass({
         				<h4 className="modal-title" id="gridSystemModalLabel">评审计划</h4>
       				</div>
       				<div className="modal-body">
-	      				<form className="form-horizontal">
+	      				<form className="form-horizontal" onSubmit={this.handleEdit}>
 	      					<div className="form-group">
 	      						<label for="title-input" className="col-sm-2 control-label">标题</label>
 	      						<div className="col-sm-10">
@@ -175,7 +220,7 @@ var EditModal = React.createClass({
 	      					<div className="form-group">
 	      						<label for="type-choose" className="col-sm-2 control-label">类型</label>
 	      						<div className="col-sm-10">
-	      							<select id="type-choose" className="form-control" data-toggle="select" value={this.props.reviewPlan.type} ref="target">
+	      							<select id="type-choose" className="form-control  select select-primary" data-toggle="select" value={this.props.reviewPlan.type} ref="target">
                 						<option value="文档评审">文档评审</option>
                 						<option value="代码评审">代码评审</option>
               						</select>
@@ -201,7 +246,7 @@ var EditModal = React.createClass({
 	      					<div className="form-group">
 	      						<label for="target-choose" className="col-sm-2 control-label">目标</label>
 	      						<div className="col-sm-10">
-	      							<select className="form-control" id="target-choose" value={this.props.reviewPlan.target} data-toggle="select" ref="target">
+	      							<select className="form-control select select-primary" id="target-choose" value={this.props.reviewPlan.target} data-toggle="select" ref="target">
 	                					<option value="所有联系人">所有联系人</option>
 	                					<option value="代码评审组">代码评审组</option>
 	                					<option value="文档评审组">文档评审组</option>
@@ -209,6 +254,19 @@ var EditModal = React.createClass({
               						</select>
 	      						</div>
 	      					</div>
+
+                  <div className="form-group">
+                    <label for="state-choose" className="col-sm-2 control-label">状态</label>
+                    <div className="col-sm-4">
+                      {checkBox}
+                    </div>
+                  </div>
+
+                  <div className="form-group">
+                      <div className="col-sm-offset-2 col-sm-8">
+                        <button type="submit" className="btn btn-primary" data-dismiss="modal" aria-label="Close" aria-hidden="true">确认修改</button>
+                      </div>
+                  </div>
 
 	      				</form>
       				</div>
@@ -229,7 +287,7 @@ var ReviewList = React.createClass({
            "title":"陆云昊的毕业论文",
            "url":"https://www.github.com",
            "type":"文档评审",
-           "state":"评审中",
+           "state":true,
            "target":"文档评审组",
            "content":"论文内容"
           },
@@ -237,7 +295,7 @@ var ReviewList = React.createClass({
           	"title":"陆云昊的毕业论文",
            "url":"https://www.github.com",
            "type":"文档评审",
-           "state":"评审中",
+           "state":false,
            "target":"文档评审组",
            "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
           },
@@ -245,7 +303,7 @@ var ReviewList = React.createClass({
           	"title":"陆云昊的毕业论文",
            "url":"https://www.github.com",
            "type":"文档评审",
-           "state":"评审中",
+           "state":true,
            "target":"文档评审组",
            "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
           },
@@ -253,7 +311,7 @@ var ReviewList = React.createClass({
           	"title":"陆云昊的毕业论文",
            "url":"https://www.github.com",
            "type":"文档评审",
-           "state":"评审中",
+           "state":false,
            "target":"文档评审组",
            "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
           },
@@ -261,7 +319,7 @@ var ReviewList = React.createClass({
           	"title":"陆云昊的毕业论文",
            "url":"https://www.github.com",
            "type":"文档评审",
-           "state":"评审中",
+           "state":true,
            "target":"文档评审组",
            "content":"论文内容包含对中国dota的局势分析，请仔细评审。论文内容包含对中国dota的局势分析，请仔细评审。论文内容包含对中国dota的局势分析，请仔细评审。"
           },
@@ -269,7 +327,7 @@ var ReviewList = React.createClass({
           	"title":"陆云昊的毕业论文",
            "url":"https://www.github.com",
            "type":"文档评审",
-           "state":"评审中",
+           "state":false,
            "target":"文档评审组",
            "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
           },
@@ -277,37 +335,50 @@ var ReviewList = React.createClass({
           	"title":"陆云昊的毕业论文",
            "url":"https://www.github.com",
            "type":"文档评审",
-           "state":"评审中",
+           "state":true,
            "target":"文档评审组",
            "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
           }
           ]
       };
   },
-  updateReviewPlan:function(newplan){
+  addReviewPlan:function(newplan){
     var reviewPlans = this.state.reviewPlanList;
     var newReviewPlanList = [newplan].concat(reviewPlans);
     this.setState({reviewPlanList:newReviewPlanList});
     //TODO:commit to server
   },
+
+  updateReviewPlan:function(newplan){
+    var reviewPlans = this.state.reviewPlanList;
+    //TODO:commit to server
+    for(var i in reviewPlans){
+      if (reviewPlans[i].id == newplan.id) {
+          reviewPlans[i] = newplan;
+      }
+    }
+
+    this.setState({reviewPlanList:reviewPlans});
+  },
   
   render:function(){
       var ReviewPlans = this.state.reviewPlanList.map(function(plan){
           return(
-            <ReviewPlan reviewPlan={plan} />
+            <ReviewPlan reviewPlan={plan}/>
           );
       });
+
 
       var EditModals = this.state.reviewPlanList.map(function(plan){
           return(
-
-          	<EditModal reviewPlan={plan} />
+          	<EditModal reviewPlan={plan}/>
           );
       });
+
       return(
         <div className="container">
           <div className="row">
-            <ReviewPlanForm freshReviewPlan={this.updateReviewPlan} />
+            <ReviewPlanForm freshReviewPlan={this.addReviewPlan} />
             {ReviewPlans}          
           </div>
           {EditModals}
@@ -325,7 +396,7 @@ var App = React.createClass({
     
 		return(
       <div>
-		<Navbar />
+		    <Navbar />
       <br/>
       <br/>
       	<ReviewList />
@@ -335,3 +406,7 @@ var App = React.createClass({
 });
 
 ReactDOM.render(<App/>, document.getElementById("app"));
+
+
+
+
