@@ -3,25 +3,19 @@
 var Navbar = React.createClass({
   getInitialState: function() {
       return {
-          profile:{
-            "name":"屋顶上的羊驼",
-            "hasMessage":"true"
-          },
           messageList:[
             {"url":"http://www.google.com",
             "content":"荣老师邀请你评审陆云昊的文章"},
             {"url":"http://www.google.com",
-            "content":"荣老师邀请你评审陆云昊的文章"}
+            "content":"荣老师邀请你评审陆云昊大爷的文章"}
           ]
       };
   },
-  readMessage:function(e){
-  	var newProfile = this.state.profile;
-  	newProfile.hasMessage = false;
-  	this.setState({profile:newProfile});
+  read:function(e){
+    this.props.readMessage();
   },
   render: function() {
-    var unread = this.state.profile.hasMessage=="true"?<span className="navbar-unread">1</span>:null;
+    var unread = this.props.profile.hasMessage=="true"?<span className="navbar-unread">1</span>:null;
 
     var messages;
     if(this.state.messageList.length > 0){
@@ -49,20 +43,20 @@ var Navbar = React.createClass({
       </div>
       <div className="collapse navbar-collapse" id="example-navbar-collapse">
         <ul className="nav navbar-nav">
-          <li><a href="#">评审</a></li>
-          <li><a href="#">任务</a></li>
-          <li><a href="#" onClick={this.readMessage} className="dropdown-toggle" data-toggle="dropdown">通知{unread}</a>
+          <li><a href="index.html">评审</a></li>
+          <li><a href="task.html">任务</a></li>
+          <li><a onClick={this.read} className="dropdown-toggle" data-toggle="dropdown">通知{unread}</a>
               <ul className="dropdown-menu">
                 {messages}
               </ul>
           </li>
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
-               {this.state.profile.name}<b className="caret"></b>
+            <a className="dropdown-toggle" data-toggle="dropdown">
+               {this.props.profile.name}<b className="caret"></b>
             </a>
             <ul className="dropdown-menu">
-               <li><a href="#">联系人</a></li>
-               <li><a href="#">账号信息</a></li>
+               <li><a href="contact.html">联系人</a></li>
+               <li><a href="info.html">账号信息</a></li>
             </ul>
          </li>
       </ul>
@@ -73,7 +67,6 @@ var Navbar = React.createClass({
   }
 });
 
-
 /*用于展示评审计划的展示框组件*/
 
  var ReviewPlan = React.createClass({
@@ -83,9 +76,9 @@ var Navbar = React.createClass({
     var colorHead = this.props.reviewPlan.state?"palette palette-peter-river":"palette palette-concrete";
     var colorTail = this.props.reviewPlan.state?"palette palette-belize-hole":"palette palette-silver";
     var text = this.props.reviewPlan.content;
-    if (text.length>13){
-      var shortText = text.substr(0,13)+"...";  
-    } else if(text.length<15) {
+    if (text.length>17){
+      var shortText = text.substr(0,17)+"...";  
+    } else if(text.length<17) {
       var shortText = text;
     } else {
       var shortText = text; 
@@ -110,9 +103,7 @@ var Navbar = React.createClass({
                 </div>
                 </dd>
               </dl>
-         </div>
-
-        
+         </div>        
     );
   }
  });
@@ -143,6 +134,7 @@ var ReviewPlanForm = React.createClass({
     componentDidMount: function() {
        $('[data-toggle="select"]').select2();
        $('[data-toggle="switch"]').bootstrapSwitch();
+       $('[data-toggle="tooltip"]').tooltip();
     },
 
     render:function(){
@@ -159,7 +151,7 @@ var ReviewPlanForm = React.createClass({
               </select>
             </div> 
             <div className="form-group">
-              <input type="text" className="form-control" placeholder="下载地址" ref="url"/>
+              <input type="url" className="form-control" placeholder="下载地址" ref="url"/>
             </div>
             <div className="form-group">
               <textarea className="form-control" rows="3" placeholder="内容描述" ref="content"></textarea>
@@ -230,7 +222,7 @@ var EditModal = React.createClass({
 	      					<div className="form-group">
 	      						<label for="url-input" className="col-sm-2 control-label">地址</label>
 	      						<div className="col-sm-10">
-	      							<input type="text" className="form-control" id="url-input" value={this.props.reviewPlan.url} />
+	      							<input type="url" className="form-control" id="url-input" value={this.props.reviewPlan.url} />
 	      						</div>
 	      					</div>
 
@@ -392,11 +384,27 @@ var ReviewList = React.createClass({
 /*组装所有的组件的app*/
 
 var App = React.createClass({
+  readMessage:function(){
+    var newProfile = this.state.profile;
+    newProfile.hasMessage = false;
+    this.setState({profile:newProfile});
+  },
+
+  getInitialState:function() {
+      return {
+           profile:{
+            "name":"屋顶上的羊驼",
+            "mail":"maomao75979@gmail.com",
+            "hasMessage":"true"
+          } 
+      };
+  },
+
 	render: function(){
     
 		return(
       <div>
-		    <Navbar />
+		    <Navbar profile={this.state.profile} readMessage={this.readMessage}/>
       <br/>
       <br/>
       	<ReviewList />
