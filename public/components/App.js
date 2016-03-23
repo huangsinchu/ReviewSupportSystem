@@ -11,6 +11,19 @@ var Navbar = React.createClass({
           ]
       };
   },
+  componentDidMount: function() {
+    $.ajax({
+      url: "",//TODO:complete with the url api
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({messageList: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());
+      }.bind(this)
+    });
+  },
   read:function(e){
     this.props.readMessage();
   },
@@ -73,8 +86,8 @@ var Navbar = React.createClass({
   render: function(){
   	var id = "#"+this.props.reviewPlan.id;
     var state = this.props.reviewPlan.type+"----"+this.props.reviewPlan.target+"----"+(this.props.reviewPlan.state?"评审中":"评审结束");
-    var colorHead = this.props.reviewPlan.state?"palette palette-peter-river":"palette palette-concrete";
-    var colorTail = this.props.reviewPlan.state?"palette palette-belize-hole":"palette palette-silver";
+    var colorHead = this.props.reviewPlan.state?"palette palette-peter-river shadow":"palette palette-concrete shadow";
+    var colorTail = this.props.reviewPlan.state?"palette palette-belize-hole shadow":"palette palette-silver shadow";
     var text = this.props.reviewPlan.content;
     if (text.length>17){
       var shortText = text.substr(0,17)+"...";  
@@ -83,12 +96,13 @@ var Navbar = React.createClass({
     } else {
       var shortText = text; 
     }
+    var disabled = this.props.reviewPlan.state?"disabled":null;
     
     return(
         <div className="col-lg-3 col-md-6 col-sm-12 row-bottom">
             <dl className={colorHead}>
                 <dt>{this.props.reviewPlan.title}</dt>
-                <dd><a className="text-success" href={this.props.reviewPlan.url}>下载地址</a></dd>
+                <dd><a className="text-success" href={this.props.reviewPlan.url}>内容地址</a></dd>
               </dl>
               <dl className={colorTail}>
                 <dt className="text-primary">{state}</dt>
@@ -98,7 +112,7 @@ var Navbar = React.createClass({
                 <dd>
                 <div className="btn-group" role="group">
                   <button className="btn btn-primary" type="button" data-toggle="modal" data-target={id}>编辑</button>
-                  <button className="btn btn-info" type="button" onClick="{local.href=''}">合并</button>
+                  <button className="btn btn-info" type="button" disabled={disabled} onClick="{local.href=''}">合并</button>
                   <button className="btn btn-primary" type="button" onClick="{local.href=''}">报表</button>
                 </div>
                 </dd>
@@ -139,7 +153,7 @@ var ReviewPlanForm = React.createClass({
 
     render:function(){
       return(
-        <div className="tile col-lg-6 col-md-12 col-sm-12 row-bottom">
+        <div className="tile col-lg-6 col-md-6 col-sm-12 col-xs-12 row-bottom">
           <form onSubmit={this.handleSubmit}>
             <div className="form-group">
               <input type="text" className="form-control" placeholder="项目名称" ref="title"/>
@@ -183,7 +197,7 @@ var EditModal = React.createClass({
     var url = this.refs.url.value.trim();
     var content = this.refs.content.value.trim();
     var target = this.refs.target.value;
-    var state = this.refs.state.value=="true"?true:false;
+    var state = $("#state-choose").is(":checked");;
     var newplan = {id:id,title:title,type:type,url:url,content:content,target:target,state:state};
     
     this.props.freshReviewPlan(newplan);
@@ -191,7 +205,7 @@ var EditModal = React.createClass({
   },
 
 	render: function(){
-    var checkBox = this.props.reviewPlan.state?<input type="checkbox" data-toggle="switch" id="state-choose" value="true" checked/>:<input type="checkbox" value="true" data-toggle="switch" id="state-choose"/>;
+    var checkBox = this.props.reviewPlan.state?<input type="checkbox" data-toggle="switch" id="state-choose" checked/>:<input type="checkbox" data-toggle="switch" id="state-choose"/>;
 		return(
       	<div className="modal fade" id={this.props.reviewPlan.id} tabindex="-1" role="dialog">
   			<div className="modal-dialog modal-lg">
@@ -334,6 +348,19 @@ var ReviewList = React.createClass({
           ]
       };
   },
+  componentDidMount: function() {
+    $.ajax({
+      url: "",//TODO:reviewPlan url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({reviewPlanList: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+      }.bind(this)
+    });
+  },
   addReviewPlan:function(newplan){
     var reviewPlans = this.state.reviewPlanList;
     var newReviewPlanList = [newplan].concat(reviewPlans);
@@ -369,8 +396,8 @@ var ReviewList = React.createClass({
 
       return(
         <div className="container">
+          <ReviewPlanForm freshReviewPlan={this.addReviewPlan} />
           <div className="row">
-            <ReviewPlanForm freshReviewPlan={this.addReviewPlan} />
             {ReviewPlans}          
           </div>
           {EditModals}
@@ -398,6 +425,20 @@ var App = React.createClass({
             "hasMessage":"true"
           } 
       };
+  },
+
+  componentDidMount: function() {
+    $.ajax({
+      url: "",//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({profile: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+      }.bind(this)
+    });
   },
 
 	render: function(){

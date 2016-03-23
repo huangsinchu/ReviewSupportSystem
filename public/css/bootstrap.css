@@ -741,8 +741,27 @@ pre code {
 }
 
 .row-bottom{
-  margin-bottom: 15px;
-  margin-top:15px;
+  margin-bottom: 13px;
+  margin-top:13px;
+}
+
+.divline{
+  overflow: hidden;
+}
+
+.shadow{
+  box-shadow: 2px 2px 2px #888888;
+}
+.divhead{
+  background: #00AA90;
+  margin-bottom:-10000px;
+  padding-bottom:10000px;
+}
+
+.divbody{
+  background: #BDC0BA;
+  margin-bottom:-10000px; 
+  padding-bottom:10000px;
 }
 
 .pre-scrollable {

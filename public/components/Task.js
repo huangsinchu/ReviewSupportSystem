@@ -73,11 +73,22 @@ var Task = React.createClass({
     $('[data-toggle="tooltip"]').tooltip();
 
   },
+  review:function(e){
+      e.preventDefault();
+      localStorage["rs_id"] = this.props.task.id.toString();
+      localStorage["rs_title"] = this.props.task.title.toString();
+      localStorage["rs_url"] = this.props.task.url.toString();
+      localStorage["rs_type"] = this.props.task.type.toString();
+      localStorage["rs_state"] = this.props.task.state.toString();
+      localStorage["rs_content"] = this.props.task.content.toString();
+      location.href="review.html";
+  },
+
   render:function(){
     var state = this.props.task.type+"----"+(this.props.task.state?"评审中":"评审结束");
-    var colorHead = this.props.task.state?"palette palette-peter-river":"palette palette-concrete";
-    var colorTail = this.props.task.state?"palette palette-belize-hole":"palette palette-silver";
-    var button = this.props.task.state?<button onClick="" className="btn btn-primary">进入评审</button>:<button onClick="" className="btn btn-primary">查看纪录</button>;
+    var colorHead = this.props.task.state?"palette palette-peter-river shadow":"palette palette-concrete shadow";
+    var colorTail = this.props.task.state?"palette palette-belize-hole shadow":"palette palette-silver shadow";
+    var button = this.props.task.state?<button onClick={this.review} className="btn btn-primary">进入评审</button>:<button onClick={this.review} className="btn btn-primary">查看纪录</button>;
     var text = this.props.task.content;
     if (text.length>17){
       var shortText = text.substr(0,17)+"...";  
@@ -143,7 +154,7 @@ var TaskList = React.createClass({
           {"id":"115",
             "title":"陆云昊的毕业论文",
            "url":"https://www.github.com",
-           "type":"文档评审",
+           "type":"代码评审",
            "state":true,
            "content":"论文内容包含对中国dota的局势分析，请仔细评审。论文内容包含对中国dota的局势分析，请仔细评审。论文内容包含对中国dota的局势分析，请仔细评审。"
           },
@@ -251,7 +262,7 @@ var TaskList = React.createClass({
       <div className="container">
         <div className="row">
           <div className="col-offset-1">
-            <label className="checkbox" for="filter">
+            <label className="checkbox text-primary" for="filter">
               <input type="checkbox" value="doing" id="filter" ref="filter" onClick={this.filter} data-toggle="checkbox"/>
               只显示正在进行的评审
             </label>
