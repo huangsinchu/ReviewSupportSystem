@@ -8,7 +8,7 @@ public class Review {
 
 	@Id
 	private Long id;
-	private Long userid;
+	private Long userId;
 	private String title;
 	private String description;
 	private int status;
@@ -22,12 +22,12 @@ public class Review {
 		this.id = id;
 	}
 
-	public Long getUserid() {
-		return userid;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUserid(Long userid) {
-		this.userid = userid;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getTitle() {

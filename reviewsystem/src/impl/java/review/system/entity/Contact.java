@@ -7,32 +7,32 @@ import javax.persistence.Id;
 public class Contact {
 
 	@Id
-	private Long cid;
-	private Long userid;
-	private Long contactid;
+	private Long id;
+	private Long userId;
+	private Long contactId;
 
-	public Long getCid() {
-		return cid;
+	public Long getId() {
+		return id;
 	}
 
-	public void setCid(Long cid) {
-		this.cid = cid;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Long getUserid() {
-		return userid;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUserid(Long userid) {
-		this.userid = userid;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
-	public Long getContactid() {
-		return contactid;
+	public Long getContactId() {
+		return contactId;
 	}
 
-	public void setContactid(Long contactid) {
-		this.contactid = contactid;
+	public void setContactId(Long contactId) {
+		this.contactId = contactId;
 	}
 
 }

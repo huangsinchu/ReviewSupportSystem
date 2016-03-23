@@ -7,24 +7,24 @@ import javax.persistence.Id;
 public class Group {
 
 	@Id
-	private Long gid;
-	private Long userid;
+	private Long id;
+	private Long userId;
 	private String groupName;
 
-	public Long getGid() {
-		return gid;
+	public Long getId() {
+		return id;
 	}
 
-	public void setGid(Long gid) {
-		this.gid = gid;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Long getUserid() {
-		return userid;
+	public Long getUserId() {
+		return userId;
 	}
 
-	public void setUserid(Long userid) {
-		this.userid = userid;
+	public void setUserId(Long userId) {
+		this.userId = userId;
 	}
 
 	public String getGroupName() {
