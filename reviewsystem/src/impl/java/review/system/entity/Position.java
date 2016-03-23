@@ -7,22 +7,22 @@ import javax.persistence.MappedSuperclass;
 public class Position {
 
 	@Id
-	private Long pid;
-	private Long line;
+	private Long id;
+	private int line;
 
-	public Long getPid() {
-		return pid;
+	public Long getId() {
+		return id;
 	}
 
-	public void setPid(Long pid) {
-		this.pid = pid;
+	public void setId(Long id) {
+		this.id = id;
 	}
 
-	public Long getLine() {
+	public int getLine() {
 		return line;
 	}
 
-	public void setLine(Long line) {
+	public void setLine(int line) {
 		this.line = line;
 	}
 
