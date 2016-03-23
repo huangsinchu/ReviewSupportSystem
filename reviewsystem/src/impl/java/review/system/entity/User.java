@@ -5,11 +5,11 @@ import javax.persistence.Id;
 
 @Entity
 public class User {
+	
 	@Id
 	private Long id;
-
+	private String emailAddress;
 	private String name;
-
 	private String password;
 
 	public Long getId() {
@@ -18,6 +18,14 @@ public class User {
 
 	public void setId(Long id) {
 		this.id = id;
+	}
+
+	public String getEmailAddress() {
+		return emailAddress;
+	}
+
+	public void setEmailAddress(String emailAddress) {
+		this.emailAddress = emailAddress;
 	}
 
 	public String getName() {
