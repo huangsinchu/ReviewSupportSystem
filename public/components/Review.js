@@ -4,24 +4,66 @@ var Navbar = React.createClass({
   getInitialState: function() {
       return {
           messageList:[
-            {"url":"http://www.google.com",
-            "content":"荣老师邀请你评审陆云昊的文章"},
-            {"url":"http://www.google.com",
-            "content":"荣老师邀请你评审陆云昊大爷的文章"}
-          ]
+            {"id":"111",
+            "title":"陆云昊的毕业论文",
+            "url":"https://www.github.com",
+            "type":"文档评审",
+            "state":true,
+            "content":"论文内容",
+            "hint":"荣老师邀请你评审陆云昊的文章"},
+            {"id":"111",
+            "title":"陆云昊的毕业论文",
+            "url":"https://www.github.com",
+            "type":"文档评审",
+            "state":true,
+            "content":"论文内容",
+            "hint":"荣老师邀请你评审陆云昊大爷的文章"}
+          ],
+          hasMessage:false
+
       };
   },
   read:function(e){
-    this.props.readMessage();
+    this.setState({hasMessage:false});
+  },
+
+  loadMessageFromServer:function(){
+    $.ajax({
+    url: "",//TODO:complete with the url api
+    dataType: 'json',
+    cache: false,
+    success: function(data) {
+      this.setState({messageList: data});
+    }.bind(this),
+    error: function(xhr, status, err) {
+      console.error("", status, err.toString());
+    }.bind(this)
+    });
+    this.setState({hasMessage:this.state.messageList.length!=0});
+  },
+  componentDidMount:function() {
+    this.loadMessageFromServer();
+    setInterval(this.loadCommentsFromServer,3000);
   },
   render: function() {
-    var unread = this.props.profile.hasMessage=="true"?<span className="navbar-unread">1</span>:null;
+    var unread = this.state.hasMessage?<span className="navbar-unread">1</span>:null;
 
     var messages;
     if(this.state.messageList.length > 0){
         messages = this.state.messageList.map(function(message){
+          var goReview = function(e){
+          e.preventDefault();
+          localStorage["rs_id"] = message.id.toString();
+          localStorage["rs_title"] = message.title.toString();
+          localStorage["rs_url"] = message.url.toString();
+          localStorage["rs_type"] = message.type.toString();
+          localStorage["rs_state"] = message.state.toString();
+          localStorage["rs_content"] = message.content.toString();
+          location.href="review.html";
+
+        };
           return (
-              <li><a href={message.url}>{message.content}</a></li>
+              <li><a onClick={goReview}> {message.hint}</a></li>
               
           );
         });
@@ -161,7 +203,7 @@ var ReviewWriter = React.createClass({
         }
       } else {
         var errorPage = "input-group row-bottom has-error";
-        var errorHolder = "文档页书格式错误！";
+        var errorHolder = "文档页数格式错误！";
         this.refs.page.value = "";
         this.setState({pageClass:errorPage,pageHolder:errorHolder});
       }
@@ -253,6 +295,19 @@ var ReviewPanel = React.createClass({
         ]
       };
   },
+  componentDidMount: function() {
+    $.ajax({
+      url: "",//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({reviewList: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+      }.bind(this)
+    });
+  },
   render:function(){
     if(this.props.type=="文档评审"){       
       var reviews = this.state.reviewList.map(function(review){
@@ -280,12 +335,6 @@ var ReviewPanel = React.createClass({
 
 /*组装所有的组件的reviewpage*/
 var ReviewPage = React.createClass({
-  readMessage:function(){
-    var newProfile = this.state.profile;
-    newProfile.hasMessage = false;
-    this.setState({profile:newProfile});
-  },
-
   getInitialState:function() {
       return {
            profile:{
@@ -296,6 +345,20 @@ var ReviewPage = React.createClass({
           } 
       };
   },
+  componentDidMount: function() {
+    $.ajax({
+      url: "",//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({profile: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+      }.bind(this)
+    });
+  },
+
 
   render: function(){
     var id = localStorage["rs_id"];
@@ -313,7 +376,7 @@ var ReviewPage = React.createClass({
     // localStorage.removeItem("rs_content");
     return(
       <div>
-        <Navbar profile={this.state.profile} readMessage={this.readMessage}/>
+        <Navbar profile={this.state.profile}/>
         <br/>
         <br/>
         <div className="container">
