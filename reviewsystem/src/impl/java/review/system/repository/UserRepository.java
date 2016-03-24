@@ -4,7 +4,7 @@ import org.springframework.data.repository.PagingAndSortingRepository;
 
 import review.system.entity.User;
 
-public interface UserRepository  extends PagingAndSortingRepository<User, Integer> {
+public interface UserRepository  extends PagingAndSortingRepository<User, Long> {
 
 	public User findById(Long id);
 }

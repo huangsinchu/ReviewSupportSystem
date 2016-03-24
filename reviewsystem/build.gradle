@@ -34,7 +34,7 @@ dependencies {
             'org.springframework:spring-context:4.2.2.RELEASE',
             'org.hibernate:hibernate-core:5.1.0.Final',
             'org.hibernate:hibernate-entitymanager:5.1.0.Final',
-            'org.hibernate.javax.persistence:hibernate-jpa-2.0-api:1.0.1.Final',
+            'org.hibernate.javax.persistence:hibernate-jpa-2.1-api:1.0.0.Final',
             'org.springframework.data:spring-data-jpa:1.9.4.RELEASE',
             'commons-lang:commons-lang:2.6',
             'commons-codec:commons-codec:1.10',

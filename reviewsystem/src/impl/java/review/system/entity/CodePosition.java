@@ -1,8 +1,10 @@
 package review.system.entity;
 
 import javax.persistence.Entity;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "code_position")
 public class CodePosition extends Position {
 
 	private String fileName;
