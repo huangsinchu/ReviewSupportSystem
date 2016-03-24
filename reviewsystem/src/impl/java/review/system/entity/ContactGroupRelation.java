@@ -2,8 +2,10 @@ package review.system.entity;
 
 import javax.persistence.Entity;
 import javax.persistence.Id;
+import javax.persistence.Table;
 
 @Entity
+@Table(name = "contact_group_relation")
 public class ContactGroupRelation {
 
 	@Id
