@@ -238,9 +238,11 @@ var InfoPage = React.createClass({
   getInitialState:function() {
       return {
            profile:{
+            "id":"11111",
             "name":"屋顶上的羊驼",
             "mail":"maomao75979@gmail.com",
-            "password":"1234567890"
+            "passworld":"123456",
+            "group":["所有联系人","代码评审组","文档评审组","公司"]
           } 
       };
   },

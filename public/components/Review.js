@@ -226,7 +226,7 @@ var ReviewWriter = React.createClass({
 
   },
   render:function(){
-    var page = this.props.type=="文档评审"?<div className={this.state.pageClass}><div className="input-group-addon">第</div><input type="text" ref="page" className="form-control" placeholder={this.state.pageHolder} /><div className="input-group-addon">页</div></div>:<div className="input-group row-bottom"><div className="input-group-addon">文件</div><input type="text" ref="page" className="form-control" /></div>;
+    var page = this.props.type=="文档评审"?<div className={this.state.pageClass}><div className="input-group-addon">第</div><input type="text" ref="page" className="form-control" placeholder={this.state.pageHolder} /><div className="input-group-addon">页</div></div>:<div className="input-group row-bottom"><div className="input-group-addon">文件名</div><input type="text" ref="page" className="form-control" /></div>;
     return(
       <div className="tile col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
         <form onSubmit={this.submitReview}>
@@ -338,10 +338,11 @@ var ReviewPage = React.createClass({
   getInitialState:function() {
       return {
            profile:{
-            "id":"1111",
+            "id":"11111",
             "name":"屋顶上的羊驼",
             "mail":"maomao75979@gmail.com",
-            "hasMessage":"true"
+            "passworld":"123456",
+            "group":["所有联系人","代码评审组","文档评审组","公司"]
           } 
       };
   },

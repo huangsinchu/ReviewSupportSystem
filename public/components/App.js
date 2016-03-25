@@ -112,12 +112,8 @@ var Navbar = React.createClass({
 /*用于展示评审计划的展示框组件*/
 
  var ReviewPlan = React.createClass({
-  componentDidMount: function() {
-    $('[data-toggle="tooltip"]').tooltip();
-  },
   edit:function(){
     var id = "#"+this.props.reviewPlan.id;
-    console.log(id);
     $(id).modal("toggle");
   },
   render: function(){
@@ -134,7 +130,7 @@ var Navbar = React.createClass({
       var shortText = text; 
     }
     var disabled = this.props.reviewPlan.state?"disabled":null;
-    
+    console.log(text);
     return(
         <div className="col-lg-3 col-md-6 col-sm-12 row-bottom">
             <dl className={colorHead}>
@@ -143,7 +139,7 @@ var Navbar = React.createClass({
               </dl>
               <dl className={colorTail}>
                 <dt className="text-primary">{state}</dt>
-                <dd data-toggle="tooltip" data-placement="bottom" title={text}>{shortText}</dd>
+                <dd id="tooltip">{shortText}</dd>
               </dl>
               <dl className={colorTail}>
                 <dd>
@@ -187,6 +183,11 @@ var ReviewPlanForm = React.createClass({
     },
 
     render:function(){
+      var options = [];
+      for(var i =0;i < this.props.group.length;i++){
+        var temp = <option value={this.props.group[i]}>{this.props.group[i]}</option>;
+        options.push(temp);
+      }
       return(
         <div className="tile col-lg-6 col-md-6 col-sm-12 col-xs-12 row-bottom">
           <form onSubmit={this.handleSubmit}>
@@ -207,10 +208,7 @@ var ReviewPlanForm = React.createClass({
             </div>  
             <div className="form-group">
               <select className="form-control select select-primary" data-toggle="select" defaultValue="所有联系人" ref="target">
-                <option value="所有联系人">所有联系人</option>
-                <option value="代码评审组">代码评审组</option>
-                <option value="文档评审组">文档评审组</option>
-                <option value="公司">公司</option>
+                {options}
               </select>
             </div>
             <div className="form-group">
@@ -227,43 +225,38 @@ var EditModal = React.createClass({
   handleEdit: function(e){
     e.preventDefault();
     var id = this.props.reviewPlan.id;
-    var titleKey = "title" + id;
-    var typeKey = "type"+id;
-    var urlKey = "url"+id;
-    var contentKey = "content"+id;
-    var targetKey = "target"+id;
 
-    var title = this.refs.titleKey.value.trim();
-    var type = this.refs.typeKey.value;
-    var url = this.refs.urlKey.value.trim();
-    var content = this.refs.contentKey.value.trim();
-    var target = this.refs.targetKey.value;
+    var title = this.refs.title.value.trim();
+    var type = this.refs.type.value;
+    var url = this.refs.url.value.trim();
+    var content = this.refs.content.value.trim();
+    var target = this.refs.target.value;
     var state = $("#state-choose"+id).is(":checked");
-    if(!title||!url||!content){
+    if(!title||!content){
         return;
     }
-    var newplan = {id:id,title:title,type:type,url:url,content:content,target:target,state:state};
+    
+    var newplan = {"id":id,"title":title,"type":type,"url":url,"content":content,"target":target,"state":state};
     
     this.props.updateReviewPlan(newplan);
+    $("#"+id).modal("toggle");
   },
   componentDidMount: function() {
-    console.log(this.props.reviewPlan.id);
     $('[data-toggle="select"]').select2();
     $('[data-toggle="switch"]').bootstrapSwitch();
-    $('[data-toggle="tooltip"]').tooltip();
   },
 
 	render: function(){
     var id = this.props.reviewPlan.id;
-    var titleKey = "title" + id;
-    var typeKey = "type"+id;
-    var urlKey = "url"+id;
-    var contentKey = "content"+id;
-    var targetKey = "target"+id;
     var stateKey = "state-choose"+id;
     var checkBox = this.props.reviewPlan.state?<input type="checkbox" data-toggle="switch" id={stateKey} checked/>:<input type="checkbox" data-toggle="switch" id={stateKey}/>;
-		return(
-      	<div className="modal fade" id={this.props.reviewPlan.id} tabindex="-1" role="dialog">
+		var options = [];
+    for(var i =0;i < this.props.group.length;i++){
+      var temp = <option value={this.props.group[i]}>{this.props.group[i]}</option>;
+      options.push(temp);
+    }
+    return(
+      	<div className="modal fade" id={this.props.reviewPlan.id} tabIndex="-1" role="dialog">
   			<div className="modal-dialog modal-lg">
    				<div className="modal-content">
               <div className="modal-header">
@@ -275,31 +268,31 @@ var EditModal = React.createClass({
 	      					<div className="form-group">
 	      						<label for="title-input" className="col-sm-2 control-label">标题</label>
 	      						<div className="col-sm-10">
-	      							<input type="text" className="form-control" id="title-input" ref={titleKey} defaultValue={this.props.reviewPlan.title} />
+	      							<input type="text" className="form-control" id="title-input" ref="title" defaultValue={this.props.reviewPlan.title} />
 	      						</div>
 	      					</div>
 
 	      					<div className="form-group">
 	      						<label for="type-choose" className="col-sm-2 control-label">类型</label>
 	      						<div className="col-sm-10">
-	      							<select id="type-choose" className="form-control  select select-primary" data-toggle="select" ref={typeKey} defaultValue={this.props.reviewPlan.type} ref="target">
+	      							<select id="type-choose" className="form-control  select select-primary" data-toggle="select" defaultValue={this.props.reviewPlan.type} ref="type">
                 						<option value="文档评审">文档评审</option>
                 						<option value="代码评审">代码评审</option>
-              						</select>
+              				</select>
 	      						</div>
 	      					</div>
 
 	      					<div className="form-group">
 	      						<label for="url-input" className="col-sm-2 control-label">地址</label>
 	      						<div className="col-sm-10">
-	      							<input type="url" className="form-control" id="url-input" ref={urlKey} defaultValue={this.props.reviewPlan.url} />
+	      							<input type="url" className="form-control" id="url-input" ref="url" defaultValue={this.props.reviewPlan.url} />
 	      						</div>
 	      					</div>
 
 	      					<div className="form-group">
 	      						<label for="content-input" className="col-sm-2 control-label">描述</label>
 	      						<div className="col-sm-10">
-	      							<textarea type="text" className="form-control" id="content-input" ref={contentKey} defaultValue={this.props.reviewPlan.content}>
+	      							<textarea type="text" className="form-control" id="content-input" ref="content" defaultValue={this.props.reviewPlan.content}>
 	      							</textarea>
 	      						</div>
 	      					</div>
@@ -308,12 +301,9 @@ var EditModal = React.createClass({
 	      					<div className="form-group">
 	      						<label for="target-choose" className="col-sm-2 control-label">目标</label>
 	      						<div className="col-sm-10">
-	      							<select className="form-control select select-primary" id="target-choose" ref="targetKey" defaultValue={this.props.reviewPlan.target} data-toggle="select" ref="target">
-	                					<option value="所有联系人">所有联系人</option>
-	                					<option value="代码评审组">代码评审组</option>
-	                					<option value="文档评审组">文档评审组</option>
-	                					<option value="公司">公司</option>
-              						</select>
+	      							<select className="form-control select select-primary" id="target-choose" ref="target" defaultValue={this.props.reviewPlan.target} data-toggle="select" ref="target">
+	                		 {options}			
+              				</select>
 	      						</div>
 	      					</div>
 
@@ -396,15 +386,10 @@ var ReviewList = React.createClass({
     this.setState({reviewPlanList:newList});
     //TODO:commit to server
   },
-  render:function(){
-      var ReviewPlans = this.state.reviewPlanList.map(function(plan){
-          return(
-            <ReviewPlan reviewPlan={plan}/>
-          );
-      });
 
-      var updateReviewPlan = function(newplan){
-        var reviewPlans = this.state.reviewPlanList;
+  updateReviewPlan:function(newplan){
+        var oldList = this.state.reviewPlanList;
+        var reviewPlans = [].concat(oldList);
         for(var i=0;i < reviewPlans.length;i++){
           if (reviewPlans[i].id == newplan.id) {
               reviewPlans[i] = newplan;
@@ -412,17 +397,25 @@ var ReviewList = React.createClass({
         }
         this.setState({reviewPlanList:reviewPlans});
         //TODO:commit to server
-      };
+  },
 
-      var EditModals = this.state.reviewPlanList.map(function(plan){
+  
+  render:function(){
+      var ReviewPlans = this.state.reviewPlanList.map(function(plan){
           return(
-          	<EditModal reviewPlan={plan} updateReviewPlan={updateReviewPlan}/>
+            <ReviewPlan reviewPlan={plan}/>
           );
       });
 
+      var EditModals = [];
+      for(var i =0;i < this.state.reviewPlanList.length;i++){
+        var temp = <EditModal reviewPlan={this.state.reviewPlanList[i]} updateReviewPlan={this.updateReviewPlan} group={this.props.profile.group}/>;
+        EditModals.push(temp);
+      }
+
       return(
         <div className="container">
-          <ReviewPlanForm addReviewPlan={this.addReviewPlan} />
+          <ReviewPlanForm addReviewPlan={this.addReviewPlan} group={this.props.profile.group} />
           <div className="row">
             {ReviewPlans}          
           </div>
@@ -441,8 +434,11 @@ var App = React.createClass({
   getInitialState:function() {
       return {
            profile:{
+            "id":"11111",
             "name":"屋顶上的羊驼",
-            "mail":"maomao75979@gmail.com"
+            "mail":"maomao75979@gmail.com",
+            "passworld":"123456",
+            "group":["所有联系人","代码评审组","文档评审组","公司"]
           } 
       };
   },
@@ -468,7 +464,7 @@ var App = React.createClass({
 		    <Navbar profile={this.state.profile} />
       <br/>
       <br/>
-      	<ReviewList />
+      	<ReviewList profile={this.state.profile} />
       </div>
 		);
 	}
