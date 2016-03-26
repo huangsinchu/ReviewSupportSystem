@@ -116,6 +116,14 @@ var Navbar = React.createClass({
     var id = "#"+this.props.reviewPlan.id;
     $(id).modal("toggle");
   },
+  merge:function(e){
+    e.preventDefault();
+    location.href="merge.html";
+  },
+  report:function(e){
+    e.preventDefault();
+    location.href="report.html";
+  },
   render: function(){
   	var id = "#"+this.props.reviewPlan.id;
     var state = this.props.reviewPlan.type+"----"+this.props.reviewPlan.target+"----"+(this.props.reviewPlan.state?"评审中":"评审结束");
@@ -145,8 +153,8 @@ var Navbar = React.createClass({
                 <dd>
                 <div className="btn-group" role="group">
                   <button className="btn btn-primary" type="button" onClick={this.edit}>编辑</button>
-                  <button className="btn btn-info" type="button" disabled={disabled} onClick="">合并</button>
-                  <button className="btn btn-primary" type="button" onClick="">报表</button>
+                  <button className="btn btn-info" type="button" disabled={disabled} onClick={this.merge}>合并</button>
+                  <button className="btn btn-primary" type="button" onClick={this.report}>报表</button>
                 </div>
                 </dd>
               </dl>

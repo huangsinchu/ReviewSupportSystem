@@ -147,12 +147,55 @@ var TreeLine = React.createClass({
 
 /*联系人编辑面板*/
 var ContactPanel = React.createClass({
+  getInitialState:function() {
+      return {
+        searchState:"input-group",
+        searchHolder:"请输入联系人的邮箱",
+        searchMail:""
+      };
+  },
+  componentWillUpdate:function() {
+    $('[data-toggle="checkbox"]').radiocheck();
+  },
+  check:function(mail){
+    var id = this.props.profile.id;
+    //TODO:检查服务器，没有该账户返回0，已经添加返回1，尚未添加返回2
+    return 2;
+  },
   search:function(e){
     e.preventDefault();
+    var mail = this.refs.mail.value.trim();
+    if(!mail){
+      return;
+    }
+    var state = this.check(mail);
+    if(state==0){
+      this.refs.mail.value = "";
+      this.setState({searchState:"input-group has-error",searchHolder:"你所查询联系人不存在！"});
+    } else if(state==1) {
+      this.refs.mail.value = "";
+      this.setState({searchState:"input-group has-error",searchHolder:"你已经添加过该联系人！"});
+    } else {
+      this.refs.mail.value = "";
+      this.setState({searchState:"input-group",searchHolder:"请输入联系人的邮箱"});
+      this.setState({searchMail:mail})
+      $("#makeGroups").modal("toggle");
+    }
+
 
   },
   deleteContact:function(mail){
     this.props.deleteContact(mail);
+  },
+  makeGroups:function(){
+    var chosenGroups = [];
+    for(var i in this.props.profile.group){
+      if($("#"+this.props.profile.group[i]).is(":checked")){
+        chosenGroups.push(this.props.profile.group[i]);
+      }
+    }
+    this.props.makeGroups(chosenGroups,this.state.searchMail);
+    $("#makeGroups").modal("toggle");
   },
   render:function(){
     var list = [];
@@ -160,11 +203,21 @@ var ContactPanel = React.createClass({
       var temp = <TreeLine line={key} content={this.props.contactors[key]} deleteContact={this.deleteContact}/>
       list.push(temp);
     }
+    var options = [];
+    for(var i in this.props.profile.group){
+      if(this.props.profile.group[i]!="所有联系人"){
+        var temp = <label className="checkbox text-primary">
+                    <input id={this.props.profile.group[i]} type="checkbox" data-toggle="checkbox" />
+                      {this.props.profile.group[i]}
+                   </label>;
+        options.push(temp);
+      }
+    }
     return(
     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
       <form className="form" onSubmit={this.search}>
-        <div className="input-group">
-          <input type="mail" className="form-control" placeholder="请输入联系人的邮箱" ref="mail" /> 
+        <div className={this.state.searchState}>
+          <input type="mail" className="form-control" placeholder={this.state.searchHolder} ref="mail" /> 
           <span className="input-group-btn">
             <button type="submit" className="btn btn-default">搜索</button>
           </span>
@@ -177,6 +230,24 @@ var ContactPanel = React.createClass({
         </ul>
       </div>
 
+      <div className="modal fade" id="makeGroups" tabIndex="-1" role="dialog">
+        <div className="modal-dialog modal-lg">
+          <div className="modal-content">
+            <div className="modal-header">
+              <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+              <h5 className="modal-title" id="gridSystemModalLabel">添加分组</h5>
+            </div>
+            <div className="modal-body">
+              <label className="checkbox text-primary">
+                <input type="checkbox" id="所有联系人" checked="checked" disabled="disabled" data-toggle="checkbox" />
+                  所有联系人
+              </label>
+              {options}
+              <button type="button" className="btn btn-primary" onClick={this.makeGroups}>确认分组</button>
+            </div>
+          </div>
+        </div>
+      </div>
     </div>
     );
   }
@@ -320,6 +391,14 @@ var ContactPage = React.createClass({
     this.setState({contactors:deleted});
     //TODO:服务器删除联系人，将某个用户所有组中的这个联系人删除
   },
+  makeGroups:function(groups,mail){
+    var updated = JSON.parse(JSON.stringify(this.state.contactors));
+    for(var i in groups){
+      updated[groups[i]].push(mail);
+    }
+    this.setState({contactors:updated});
+    //TODO:将添加过后的联系人更新到服务器,其中groups是选中的组名，mail是被添加联系人的邮件
+  },
 
   render: function(){
     
@@ -329,11 +408,10 @@ var ContactPage = React.createClass({
         <br/>
         <br/>
         <div className="container">
-          <ContactPanel deleteContact={this.deleteContact} contactors={this.state.contactors} />
+          <ContactPanel profile={this.state.profile} deleteContact={this.deleteContact} makeGroups={this.makeGroups} contactors={this.state.contactors} />
         </div>
         <hr/>
-        <GroupPanel group={this.state.profile.group} updateGroupInServer={this.updateGroupInServer}/>
-       
+        <GroupPanel group={this.state.profile.group} updateGroupInServer={this.updateGroupInServer}/>       
       </div>
     );
   }
