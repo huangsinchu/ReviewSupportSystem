@@ -170,7 +170,8 @@ var EditPanel = React.createClass({
 
   render:function(){
     return(
-      <div>
+      <div className="container">
+      <div className="jumbotron">
       <form className="form-horizontal" onSubmit={this.updateInfo}>
 
         <div className="form-group">
@@ -213,6 +214,7 @@ var EditPanel = React.createClass({
         </div>
 
       </form>
+      </div>
       </div>
     );
   }

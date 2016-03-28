@@ -262,7 +262,12 @@ var GroupPanel = React.createClass({
   updateGroup:function(e){
     e.preventDefault();
     var groups = this.refs.groups.value.trim();
-    this.props.updateGroupInServer("所有联系人,"+groups);
+    if(groups==""){
+      this.props.updateGroupInServer("所有联系人");
+    } else {
+      this.props.updateGroupInServer("所有联系人,"+groups);
+    }
+    
 
   },
 
