@@ -55,14 +55,6 @@ CREATE TABLE if not exists `code_position` (
   UNIQUE KEY `id_UNIQUE` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE if not exists `contact` (
-  `Id` bigint  NOT NULL auto_increment,
-  `UserId` bigint NOT NULL,
-  `ContactId` bigint NOT NULL,
-  PRIMARY KEY (`Id`),
-  UNIQUE KEY `id_UNIQUE` (`Id`)
-) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
-
 CREATE TABLE if not exists `contact_group_relation` (
   `Id` bigint  NOT NULL auto_increment,
   `GroupId` bigint NOT NULL,
@@ -81,3 +73,12 @@ CREATE TABLE if not exists `deficiency` (
   PRIMARY KEY (`Id`),
   UNIQUE KEY `id_UNIQUE` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE if not exists `deficiency_combination_record` (
+  `Id` bigint  NOT NULL auto_increment,
+  `DeficiencyId` bigint NOT NULL,
+  `CombinedId` bigint NOT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `id_UNIQUE` (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
