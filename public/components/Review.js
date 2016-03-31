@@ -114,7 +114,7 @@ var TaskDescription = React.createClass({
     render:function(){
       var state = this.props.state=="true"?"评审中":"评审结束";
       return(
-        <div className="tile col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 shadow">
+        <div className="tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1 shadow">
           <div className="row">
             <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">名称:</label>
             <label className="col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left">{this.props.title}</label>
@@ -151,7 +151,7 @@ var Review = React.createClass({
     var code = <div><span>{this.props.review.page}</span><br/><span>第{this.props.review.row}行</span></div>;
     var location = this.props.type=="文档评审"?doc:code;
     return(
-        <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1 col-sm-offset-1 row-bottom">
+        <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1 row-bottom">
           <div className="row divline shadow">
             <div className="divhead col-lg-2 col-md-2 col-sm-2 col-xs-12" >
               {location}

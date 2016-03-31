@@ -111,7 +111,7 @@ var Navbar = React.createClass({
 /*单个任务组件*/
 var Task = React.createClass({
   componentDidMount:function() {
-    $('[data-toggle="tooltip"]').tooltip();
+    $(this.refs.tooltip).tooltip();
 
   },
   review:function(e){
@@ -147,7 +147,7 @@ var Task = React.createClass({
         </dl>
         <dl className={colorTail}>
           <dt className="text-primary">{state}</dt>
-          <dd data-toggle="tooltip" data-placement="bottom" title={text}>{shortText}</dd>
+          <dd data-toggle="tooltip" ref="tooltip" data-placement="bottom" title={text}>{shortText}</dd>
         </dl>
         <dl className={colorTail}>
           <dd>{button}</dd>
@@ -279,12 +279,12 @@ var TaskList = React.createClass({
         console.error("", status, err.toString());//TODO:as same as above
       }.bind(this)
     });
-    $('[data-toggle="checkbox"]').radiocheck();
+    $(this.refs.filter).radiocheck();
   },
 
   filter:function(e){
 
-    var ifFilter = $("#filter").is(":checked");
+    var ifFilter = this.refs.filter.checked;
 
     if (ifFilter) {
       var tasks = this.state.showList;
@@ -314,7 +314,7 @@ var TaskList = React.createClass({
         <div className="row">
           <div className=" col-lg-3 col-md-6 col-sm-10 col-xs-10">
           <label className="checkbox text-primary" for="filter">
-            <input type="checkbox" value="doing" id="filter" ref="filter" onClick={this.filter} data-toggle="checkbox"/>
+            <input type="checkbox" ref="filter" onChange={this.filter} data-toggle="checkbox"/>
             只显示正在进行的评审
           </label>
           </div>

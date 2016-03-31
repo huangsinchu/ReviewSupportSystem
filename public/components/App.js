@@ -118,6 +118,12 @@ var Navbar = React.createClass({
   },
   merge:function(e){
     e.preventDefault();
+    localStorage["rs_id"] = this.props.reviewPlan.id.toString();
+    localStorage["rs_title"] = this.props.reviewPlan.title.toString();
+    localStorage["rs_url"] = this.props.reviewPlan.url.toString();
+    localStorage["rs_type"] = this.props.reviewPlan.type.toString();
+    localStorage["rs_state"] = this.props.reviewPlan.state.toString();
+    localStorage["rs_content"] = this.props.reviewPlan.content.toString();
     location.href="merge.html";
   },
   report:function(e){

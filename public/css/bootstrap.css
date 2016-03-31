@@ -740,6 +740,24 @@ pre code {
   border: 0;
 }
 
+@media (min-width: 768px) {
+  .fixed-bottom{
+    position: fixed;
+    z-index: 90;
+    bottom: 100px;
+    right: 140px;
+  }
+}
+
+@media (max-width: 768px) {
+  .fixed-bottom{
+    position: fixed;
+    z-index: 90;
+    bottom: 100px;
+    right: 10px;
+  }
+}
+
 .tree {
   min-height:20px;
   padding:19px;
@@ -815,9 +833,39 @@ pre code {
   box-shadow: 2px 2px 2px #888888;
 }
 .divhead{
-  background: #00AA90;
+  background: #38a1db;
   margin-bottom:-10000px;
   padding-bottom:10000px;
+}
+.divchoose{
+  background: #00AA90;
+  margin-bottom:-10000px;
+  padding-bottom:10000px; 
+}
+.divmerge{
+  background: #bed3ca;
+  margin-bottom:-10000px;
+  padding-bottom:10000px; 
+}
+.divuser{
+  background: #2a83a2;
+  margin-bottom:-10000px;
+  padding-bottom:10000px; 
+}
+.divact{
+  background: #59b9c6;
+  margin-bottom:-10000px;
+  padding-bottom:10000px; 
+}
+.divsource{
+  background: #92b5a9;
+  margin-bottom:-10000px;
+  padding-bottom:10000px; 
+}
+.divdenied{
+  background: #e95464;
+  margin-bottom:-10000px;
+  padding-bottom:10000px; 
 }
 
 .divbody{
