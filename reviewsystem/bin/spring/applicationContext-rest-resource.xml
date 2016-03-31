@@ -2,7 +2,10 @@
 	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
 	xsi:schemaLocation="http://www.springframework.org/schema/beans
         http://www.springframework.org/schema/beans/spring-beans.xsd">
-	<bean id="HelloWorldService"
-		class="review.system.resources.impl.HelloWorldServiceImpl">
+	<bean id="HelloWorldService" class="review.system.resources.impl.HelloWorldServiceImpl">
+	</bean>
+	<bean id="UserService" class="review.system.resources.impl.UserServiceImpl">
+	</bean>
+	<bean id="ReviewService" class="review.system.resources.impl.ReviewServiceImpl">
 	</bean>
 </beans>
