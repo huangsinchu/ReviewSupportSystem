@@ -1,5 +1,7 @@
 package review.system.api.resources;
 
+import java.util.ArrayList;
+
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -10,23 +12,23 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import review.system.entity.User;
+import review.system.entity.Review;
 
-@Path("/user")
+@Path("/review")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface UserService {
+public interface ReviewService {
 
 	@GET
 	@Path("/{id}")
-	User getUser(@PathParam("id") Long id);
+	Review getReview(@PathParam("id") Long id);
 
 	@GET
 	@Path("/")
-	User getUserByName(@QueryParam("name") String name);
+	ArrayList<Review> getReviewByUid(@QueryParam("uid") Long uid);
 
 	@POST
 	@Path("/")
-	void createUser(@Valid User user);
+	void createReview(@Valid Review review);
 
 }
