@@ -170,7 +170,7 @@ var MerReview = React.createClass({
       <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1 row-bottom">
         <div className="row divline shadow">
           <div className="divchoose col-lg-1 log-md-1 col-sm-1 col-xs-12">
-            <input type="checkbox" ref="choose" onChange={this.choose} data-toggle="checkbox"/>
+            <input type="checkbox" ref="choose" onClick={this.choose} data-toggle="checkbox"/>
           </div>
 
           <div className="divuser col-lg-1 col-md-1 col-sm-1 col-xs-12" >
@@ -208,7 +208,7 @@ var Merged = React.createClass({
       <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1 row-bottom">
         <div className="row divline shadow">
           <div className="divchoose col-lg-1 log-md-1 col-sm-1 col-xs-12">
-            <input ref="choose" type="checkbox" ref="choose" onChange={this.choose} data-toggle="checkbox"/>
+            <input ref="choose" type="checkbox" ref="choose" onClick={this.choose} data-toggle="checkbox"/>
           </div>
 
           <div className="divuser col-lg-1 col-md-1 col-sm-1 col-xs-12" >
@@ -612,6 +612,7 @@ var Merge = React.createClass({
     updated.splice(index,0,merged);
     this.setState({reviewList:updated});
     
+    $("[type='checkbox']").attr("checked",false);
   },
   compare:function(review1,review2){//比较两个评审的位置前后
     var type = localStorage["rs_type"];
