@@ -824,9 +824,16 @@ pre code {
   margin-bottom: 13px;
   margin-top:13px;
 }
-
+.login-body{
+  background: #7DB9DE;
+}
 .divline{
   overflow: hidden;
+}
+.centerblock{
+  width: 120px;
+  margin-left: auto;
+  margin-right: auto;
 }
 
 .shadow{
