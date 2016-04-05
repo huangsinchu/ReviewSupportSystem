@@ -771,6 +771,19 @@ pre code {
   -moz-box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05);
   box-shadow:inset 0 1px 1px rgba(0, 0, 0, 0.05)
 }
+.round-button {
+  width: 60px;
+  height: 60px;
+  background-color:#00AA90;
+  -moz-border-radius:42px;
+  -webkit-border-radius:42px;
+  border-radius:42px;
+  border: 0px;
+  color: #FFFFFF;  
+  font-size: 26px;
+  outline: none;
+}
+
 .tree li {
   list-style-type:none;
   margin:0;
