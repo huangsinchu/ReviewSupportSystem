@@ -61,7 +61,7 @@ var Navbar = React.createClass({
           localStorage["rs_content"] = message.content.toString();
           location.href="review.html";
 
-        };
+          };
           return (
               <li><a onClick={goReview}> {message.hint}</a></li>
               
@@ -109,6 +109,325 @@ var Navbar = React.createClass({
   }
 });
 
+/*任务描述信息*/
+var TaskDescription = React.createClass({
+    render:function(){
+      var state = this.props.state=="true"?"评审中":"评审结束";
+      return(
+        <div className="tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1 shadow">
+          <div className="row">
+            <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">名称:</label>
+            <label className="col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left">{this.props.title}</label>
+          </div>
+
+          <div className="row">
+            <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">地址:</label>
+            <a className="col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left" href={this.props.url} target="_blank">{this.props.url}</a>
+          </div>
+
+          <div className="row">
+            <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">类型:</label>
+            <label className="col-lg-10 col-md-10 col-xs-9 col-sm-9 text-primary text-left">{this.props.type}</label>
+          </div>
+
+          <div className="row">
+            <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">状态:</label>
+            <label className="col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left">{state}</label>
+          </div>
+
+          <div className="row">
+            <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">描述:</label>
+            <p className="col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left">{this.props.content}</p>
+          </div>
+
+        </div>
+      );
+    }
+});
+
+/*展示分析信息的图表*/
+var AnalysisChart = React.createClass({
+  setTheme:function(){
+    Highcharts.createElement('link', {
+  href: 'http://fonts.googleapis.com/css?family=Unica+One',
+  rel: 'stylesheet',
+  type: 'text/css'
+}, null, document.getElementsByTagName('head')[0]);
+
+Highcharts.theme = {
+  colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
+    "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+  chart: {
+    backgroundColor: {
+      linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+      stops: [
+        [0, '#2a2a2b'],
+        [1, '#3e3e40']
+      ]
+    },
+    style: {
+      fontFamily: "'Unica One', sans-serif"
+    },
+    plotBorderColor: '#606063'
+  },
+  title: {
+    style: {
+      color: '#E0E0E3',
+      textTransform: 'uppercase',
+      fontSize: '20px'
+    }
+  },
+  subtitle: {
+    style: {
+      color: '#E0E0E3',
+      textTransform: 'uppercase'
+    }
+  },
+  xAxis: {
+    gridLineColor: '#707073',
+    labels: {
+      style: {
+        color: '#E0E0E3'
+      }
+    },
+    lineColor: '#707073',
+    minorGridLineColor: '#505053',
+    tickColor: '#707073',
+    title: {
+      style: {
+        color: '#A0A0A3'
+
+      }
+    }
+  },
+  yAxis: {
+    gridLineColor: '#707073',
+    labels: {
+      style: {
+        color: '#E0E0E3'
+      }
+    },
+    lineColor: '#707073',
+    minorGridLineColor: '#505053',
+    tickColor: '#707073',
+    tickWidth: 1,
+    title: {
+      style: {
+        color: '#A0A0A3'
+      }
+    }
+  },
+  tooltip: {
+    backgroundColor: 'rgba(0, 0, 0, 0.85)',
+    style: {
+      color: '#F0F0F0'
+    }
+  },
+  plotOptions: {
+    series: {
+      dataLabels: {
+        color: '#B0B0B3'
+      },
+      marker: {
+        lineColor: '#333'
+      }
+    },
+    boxplot: {
+      fillColor: '#505053'
+    },
+    candlestick: {
+      lineColor: 'white'
+    },
+    errorbar: {
+      color: 'white'
+    }
+  },
+  legend: {
+    itemStyle: {
+      color: '#E0E0E3'
+    },
+    itemHoverStyle: {
+      color: '#FFF'
+    },
+    itemHiddenStyle: {
+      color: '#606063'
+    }
+  },
+  credits: {
+    style: {
+      color: '#666'
+    }
+  },
+  labels: {
+    style: {
+      color: '#707073'
+    }
+  },
+
+  drilldown: {
+    activeAxisLabelStyle: {
+      color: '#F0F0F3'
+    },
+    activeDataLabelStyle: {
+      color: '#F0F0F3'
+    }
+  },
+
+  navigation: {
+    buttonOptions: {
+      symbolStroke: '#DDDDDD',
+      theme: {
+        fill: '#505053'
+      }
+    }
+  },
+
+  // scroll charts
+  rangeSelector: {
+    buttonTheme: {
+      fill: '#505053',
+      stroke: '#000000',
+      style: {
+        color: '#CCC'
+      },
+      states: {
+        hover: {
+          fill: '#707073',
+          stroke: '#000000',
+          style: {
+            color: 'white'
+          }
+        },
+        select: {
+          fill: '#000003',
+          stroke: '#000000',
+          style: {
+            color: 'white'
+          }
+        }
+      }
+    },
+    inputBoxBorderColor: '#505053',
+    inputStyle: {
+      backgroundColor: '#333',
+      color: 'silver'
+    },
+    labelStyle: {
+      color: 'silver'
+    }
+  },
+
+  navigator: {
+    handles: {
+      backgroundColor: '#666',
+      borderColor: '#AAA'
+    },
+    outlineColor: '#CCC',
+    maskFill: 'rgba(255,255,255,0.1)',
+    series: {
+      color: '#7798BF',
+      lineColor: '#A6C7ED'
+    },
+    xAxis: {
+      gridLineColor: '#505053'
+    }
+  },
+
+  scrollbar: {
+    barBackgroundColor: '#808083',
+    barBorderColor: '#808083',
+    buttonArrowColor: '#CCC',
+    buttonBackgroundColor: '#606063',
+    buttonBorderColor: '#606063',
+    rifleColor: '#FFF',
+    trackBackgroundColor: '#404043',
+    trackBorderColor: '#404043'
+  },
+
+  // special colors for some of the
+  legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+  background2: '#505053',
+  dataLabelsColor: '#B0B0B3',
+  textColor: '#C0C0C0',
+  contrastTextColor: '#F0F0F3',
+  maskColor: 'rgba(255,255,255,0.3)'
+};
+
+// Apply the theme
+Highcharts.setOptions(Highcharts.theme);
+  },
+  componentDidMount:function() {
+    var people =  parseInt(this.props.analysis.people, 10);
+    var reviews = parseInt(this.props.analysis.reviews, 10);
+    var merged = parseInt(this.props.analysis.merged, 10);
+    var guess = parseInt(this.props.analysis.guess, 10); 
+    this.setTheme();                                                           
+    $(this.refs.chart).highcharts({                                           
+        chart: {                                                           
+            type: 'bar'                                                    
+        },                                                                 
+        title: {                                                           
+            text: '评审分析表'                    
+        },                                                                 
+        subtitle: {                                                        
+            text: '基于CRC算法'                                  
+        },                                                                 
+        xAxis: {                                                           
+            categories: ['评审人数', '评审数', '合并后评审数', '预计剩余缺陷'],
+            title: {                                                       
+                text: null                                                 
+            }                                                              
+        },                                                                 
+        yAxis: {                                                           
+            min: 0,                                                        
+            title: {                                                       
+                text: '个数 (个)',                             
+                align: 'high'                                              
+            },                                                             
+            labels: {                                                      
+                overflow: 'justify'                                        
+            }                                                              
+        },                                                                 
+        tooltip: {                                                         
+            valueSuffix: '个'                                       
+        },                                                                 
+        plotOptions: {                                                     
+            bar: {                                                         
+                dataLabels: {                                              
+                    enabled: true                                          
+                }                                                          
+            }                                                              
+        },                                                                 
+        legend: {                                                          
+            layout: 'vertical',                                            
+            align: 'right',                                                
+            verticalAlign: 'top',                                          
+            x: -40,                                                        
+            y: 100,                                                        
+            floating: true,                                                
+            borderWidth: 1,                                                
+            backgroundColor: '#708FA3',                                    
+            shadow: true                                                   
+        },                                                                 
+        credits: {                                                         
+            enabled: false                                                 
+        },                                                                 
+        series: [{                                                         
+            name: '数量',                                             
+            data: [people,reviews,merged,guess]                                   
+        }]                                                                 
+    });                                                                                                                                                                                                               
+  },
+  render:function(){
+    return(
+      <div className="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+        <div ref="chart"></div>
+      </div>
+
+    );
+  }
+});
+
 /*组装所有的组件的app*/
 
 var Report = React.createClass({
@@ -121,7 +440,21 @@ var Report = React.createClass({
             "mail":"maomao75979@gmail.com",
             "passworld":"123456",
             "group":["所有联系人","代码评审组","文档评审组","公司"]
-          } 
+          },
+          review:{"id":"113",
+            "title":"陆云昊的毕业论文",
+           "url":"https://www.github.com",
+           "type":"文档评审",
+           "state":true,
+           "target":"文档评审组",
+           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
+          },
+          analysis:{
+            "people":"7",
+            "reviews":"67",
+            "merged":"57",
+            "guess":"10"
+          }
       };
   },
 
@@ -137,6 +470,10 @@ var Report = React.createClass({
         console.error("", status, err.toString());//TODO:as same as above
       }.bind(this)
     });
+
+    var reviewId = localStorage["rs_id"];
+    //TODO:根据id查询服务器,返回评审信息和CRC分析信息
+
   },
 
   render: function(){
@@ -146,6 +483,15 @@ var Report = React.createClass({
         <Navbar profile={this.state.profile} />
       <br/>
       <br/>
+        <div className="container">
+        <TaskDescription  title={this.state.review.title} url={this.state.review.url}
+         type={this.state.review.type} state={this.state.review.state} content={this.state.review.content}/>
+        </div>
+
+        
+          <AnalysisChart analysis={this.state.analysis} />
+        
+
       </div>
     );
   }

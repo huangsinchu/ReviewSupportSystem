@@ -127,6 +127,7 @@ var Navbar = React.createClass({
   },
   report:function(e){
     e.preventDefault();
+    localStorage["rs_id"] = this.props.reviewPlan.id.toString();
     location.href="report.html";
   },
   render: function(){
