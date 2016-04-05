@@ -16,6 +16,16 @@ var LoginForm = React.createClass({
 		}
 		var status = 2;
 		//TODO:提交到服务器，返回状态码，没有用户返回1，密码错误返回2，成功返回3
+		$.ajax({  
+        	type : "post",  
+        	url : "./php/login.php",  
+        	data : {mail:mail,password:password},  
+          	async : false,  
+          	success : function(data){
+				status = data;
+			}
+		}); 
+		
 		if(status==1){
 			this.refs.mail.value="";
 			this.setState({mailState:"form-group has-error",
