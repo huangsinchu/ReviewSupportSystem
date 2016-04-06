@@ -1,67 +1,79 @@
 package review.system.api.utils;
 
+import java.io.UnsupportedEncodingException;
 import java.security.InvalidKeyException;
 import java.security.NoSuchAlgorithmException;
 import java.security.Security;
+import java.security.spec.InvalidKeySpecException;
+import java.security.spec.KeySpec;
 
 import javax.crypto.BadPaddingException;
 import javax.crypto.Cipher;
 import javax.crypto.IllegalBlockSizeException;
-import javax.crypto.KeyGenerator;
 import javax.crypto.NoSuchPaddingException;
 import javax.crypto.SecretKey;
+import javax.crypto.SecretKeyFactory;
+import javax.crypto.spec.DESedeKeySpec;
 
-import sun.misc.BASE64Encoder;
+import org.apache.log4j.Logger;
 
 public class EncrypDES3 {
 
-	private KeyGenerator keygen;
+	private static Logger logger = Logger.getLogger(EncrypDES3.class);
+	// private KeyGenerator keygen;
 	private SecretKey deskey;
 	private Cipher c;
 	private byte[] cipherByte;
 
-	/**
-	 * @throws NoSuchAlgorithmException
-	 * @throws NoSuchPaddingException
-	 */
-	public EncrypDES3() throws NoSuchAlgorithmException, NoSuchPaddingException {
+	public EncrypDES3() {
 		Security.addProvider(new com.sun.crypto.provider.SunJCE());
-		keygen = KeyGenerator.getInstance("DESede");
-		deskey = keygen.generateKey();
-		c = Cipher.getInstance("DESede");
+		try {
+			// keygen = KeyGenerator.getInstance("DESede");
+			// deskey = keygen.generateKey();
+			// BASE64Encoder base64E = new BASE64Encoder();
+			// String skey = base64E.encode(deskey.getEncoded());
+			KeySpec keyspec = new DESedeKeySpec(
+					"HIkvFZtPSjtbmEXE6kr38hzlaP00tUq5".getBytes());
+			SecretKeyFactory factory = SecretKeyFactory.getInstance("DESede");
+			deskey = factory.generateSecret(keyspec);
+			c = Cipher.getInstance("DESede");
+		} catch (NoSuchAlgorithmException | NoSuchPaddingException
+				| InvalidKeyException | InvalidKeySpecException e) {
+			logger.error("EncrypDES3 Init Error: " + e);
+		}
 
-		BASE64Encoder base64E = new BASE64Encoder();
-		@SuppressWarnings("unused")
-		String skey = base64E.encode(deskey.getEncoded());
 	}
 
-	/**
-	 * @param str
-	 * @return
-	 * @throws InvalidKeyException
-	 * @throws IllegalBlockSizeException
-	 * @throws BadPaddingException
-	 */
-	public byte[] Encrytor(String str) throws InvalidKeyException,
-			IllegalBlockSizeException, BadPaddingException {
-		c.init(Cipher.ENCRYPT_MODE, deskey);
-		byte[] src = str.getBytes();
-		cipherByte = c.doFinal(src);
+	public byte[] Encrytor(String str) {
+		try {
+			c.init(Cipher.ENCRYPT_MODE, deskey);
+			byte[] src = str.getBytes();
+			cipherByte = c.doFinal(src);
+		} catch (InvalidKeyException | IllegalBlockSizeException
+				| BadPaddingException e) {
+			logger.error("EncrypDES3 Encrytor Error: " + e);
+		}
 		return cipherByte;
 	}
 
-	/**
-	 * @param buff
-	 * @return
-	 * @throws InvalidKeyException
-	 * @throws IllegalBlockSizeException
-	 * @throws BadPaddingException
-	 */
-	public byte[] Decryptor(byte[] buff) throws InvalidKeyException,
-			IllegalBlockSizeException, BadPaddingException {
-		c.init(Cipher.DECRYPT_MODE, deskey);
-		cipherByte = c.doFinal(buff);
+	public byte[] Decryptor(byte[] buff) {
+		try {
+			c.init(Cipher.DECRYPT_MODE, deskey);
+			cipherByte = c.doFinal(buff);
+		} catch (InvalidKeyException | IllegalBlockSizeException
+				| BadPaddingException e) {
+			logger.error("EncrypDES3 Decryptor Error: " + e);
+		}
 		return cipherByte;
 	}
 
+	public static void main(String[] args) {
+		try {
+			byte[] r = new EncrypDES3().Encrytor("Sakura");
+			String string = new String(new EncrypDES3().Decryptor(r), "GB2312");
+			System.out.println(string);
+		} catch (UnsupportedEncodingException e) {
+			e.printStackTrace();
+		}
+	}
 }
