@@ -23,10 +23,9 @@ public interface UserService {
 
 	@GET
 	@Path("/")
-	User getUserByName(@QueryParam("name") String name);
+	User getUserByEmail(@QueryParam("email") String email);
 
 	@POST
 	@Path("/")
 	void createUser(@Valid User user);
-
 }

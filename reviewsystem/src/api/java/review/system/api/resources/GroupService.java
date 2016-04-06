@@ -12,23 +12,21 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import review.system.entity.Review;
+import review.system.entity.Group;
 
-@Path("/review")
+@Path("/group")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface ReviewService {
-
+public interface GroupService {
 	@GET
 	@Path("/{id}")
-	Review getReview(@PathParam("id") Long id);
+	Group getGroup(@PathParam("id") Long id);
 
 	@GET
 	@Path("/")
-	ArrayList<Review> getReviewByUser(@QueryParam("uid") Long uid);
+	ArrayList<Group> getGroupByUser(@QueryParam("uid") Long uid);
 
 	@POST
 	@Path("/")
-	void createReview(@Valid Review review);
-
+	void createGroup(@Valid Group group);
 }
