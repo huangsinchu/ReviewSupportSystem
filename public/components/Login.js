@@ -94,6 +94,16 @@ var SignupForm = React.createClass({
 		}
 		var status = 1;
 		//TODO:将信息发送到服务器，如果成功返回1，如果邮箱已经被注册，返回2
+		$.ajax({  
+        	type : "post",  
+        	url : "./php/register.php",  
+        	data : {mail:mail,name:name,password:password},  
+          	async : false,  
+          	success : function(data){
+				status = data;
+			}
+		}); 
+		
 		if(status == 1){
 			this.props.hint();
 		} else if (status == 2){
