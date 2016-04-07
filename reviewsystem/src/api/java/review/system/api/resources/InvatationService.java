@@ -12,23 +12,22 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import review.system.entity.Review;
+import review.system.entity.Invatation;
 
-@Path("/review")
+@Path("/invatation")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface ReviewService {
+public interface InvatationService {
 
 	@GET
 	@Path("/{id}")
-	Review getReview(@PathParam("id") Long id);
+	Invatation getInvatation(@PathParam("id") Long id);
 
 	@GET
 	@Path("/")
-	ArrayList<Review> getReviewByUser(@QueryParam("uid") Long uid);
+	ArrayList<Invatation> getInvatationByUser(@QueryParam("uid") Long uid);
 
 	@POST
 	@Path("/")
-	void createReview(@Valid Review review);
-
+	void createInvatation(@Valid Invatation invatation);
 }
