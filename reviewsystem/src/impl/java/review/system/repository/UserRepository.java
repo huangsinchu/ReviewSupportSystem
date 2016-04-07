@@ -6,6 +6,6 @@ import review.system.entity.User;
 
 public interface UserRepository extends PagingAndSortingRepository<User, Long> {
 
-	public User findByName(String name);
+	public User findByEmailAddress(String email);
 
 }

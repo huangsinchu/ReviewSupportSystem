@@ -19,7 +19,7 @@ public class ReviewServiceImpl implements ReviewService {
 	}
 
 	@Override
-	public ArrayList<Review> getReviewByUid(Long uid) {
+	public ArrayList<Review> getReviewByUser(Long uid) {
 		return reviewRepository.findByUserId(uid);
 	}
 
