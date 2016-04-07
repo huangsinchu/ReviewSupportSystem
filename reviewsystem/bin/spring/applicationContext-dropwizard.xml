@@ -10,6 +10,11 @@
 				<ref bean="HelloWorldService" />
 				<ref bean="UserService" />
 				<ref bean="ReviewService" />
+				<ref bean="ContactService" />
+				<ref bean="DeficiencyService" />
+				<ref bean="GroupService" />
+				<ref bean="PositionService" />
+				<ref bean="InvatationService" />
 			</list>
 		</property>
 	</bean>

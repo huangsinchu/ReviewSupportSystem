@@ -741,7 +741,7 @@ var Merge = React.createClass({
       </div>
 
       <div className="fixed-bottom">
-        <button type="button" onClick={this.merge} className="btn btn-info">合并</button>
+        <button type="button" onClick={this.merge} className="round-button shadow">合</button>
       </div>
       {this.state.showModal?<MergeModal type={type} handleHideModal={this.handleHideModal} confirmMerge={this.confirmMerge} pos={this.state.pos} contents={this.state.contents} />:null}
       </div>
