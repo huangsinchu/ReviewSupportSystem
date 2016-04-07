@@ -157,6 +157,22 @@ var ContactPanel = React.createClass({
   componentWillUpdate:function() {
     $('[data-toggle="checkbox"]').radiocheck();
   },
+  componentDidMount:function() {
+     $(function () {
+  $('.tree li:has(ul)').addClass('parent_li').find(' > span').attr('title', 'Collapse this branch');
+  $('.tree li.parent_li > span').on('click', function (e) {
+    var children = $(this).parent('li.parent_li').find(' > ul > li');
+    if (children.is(":visible")) {
+      children.hide('fast');
+      $(this).attr('title', 'Expand this branch').find(' > i').addClass('icon-plus-sign').removeClass('icon-minus-sign');
+    } else {
+      children.show('fast');
+      $(this).attr('title', 'Collapse this branch').find(' > i').addClass('icon-minus-sign').removeClass('icon-plus-sign');
+    }
+    e.stopPropagation();
+  });
+});   
+  },
   check:function(mail){
     var id = this.props.profile.id;
     //TODO:检查服务器，没有该账户返回0，已经添加返回1，尚未添加返回2
@@ -215,7 +231,7 @@ var ContactPanel = React.createClass({
     }
     return(
     <div className="col-lg-12 col-md-12 col-sm-12 col-xs-12 ">
-      <form className="form" onSubmit={this.search}>
+      <form className="form-horizontal" onSubmit={this.search}>
         <div className={this.state.searchState}>
           <input type="mail" className="form-control" placeholder={this.state.searchHolder} ref="mail" /> 
           <span className="input-group-btn">

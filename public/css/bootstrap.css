@@ -788,7 +788,8 @@ pre code {
   list-style-type:none;
   margin:0;
   padding:10px 5px 0 5px;
-  position:relative
+  position:relative;
+  color:#FFFFFF;
 }
 .tree li::before, .tree li::after {
   content:'';
@@ -797,14 +798,14 @@ pre code {
   right:auto
 }
 .tree li::before {
-  border-left:1px solid #999;
+  border-left:4px solid #999;
   bottom:50px;
   height:100%;
   top:0;
   width:1px
 }
 .tree li::after {
-  border-top:1px solid #999;
+  border-top:4px solid #999;
   height:20px;
   top:25px;
   width:25px
@@ -812,8 +813,8 @@ pre code {
 .tree li span {
   -moz-border-radius:5px;
   -webkit-border-radius:5px;
-  border:1px solid #999;
   border-radius:5px;
+  background-color:#00AA90;
   display:inline-block;
   padding:3px 8px;
   text-decoration:none
@@ -828,9 +829,8 @@ pre code {
   height:30px
 }
 .tree li.parent_li>span:hover, .tree li.parent_li>span:hover+ul li span {
-  background:#eee;
-  border:1px solid #94a0b4;
-  color:#000
+  color:#FFFFFF;
+  background-color:#00AA90;
 }
 
 .row-bottom{
@@ -876,6 +876,7 @@ pre code {
   background: #59b9c6;
   margin-bottom:-10000px;
   padding-bottom:10000px; 
+  color:#FFFFFF;
 }
 .divsource{
   background: #92b5a9;
