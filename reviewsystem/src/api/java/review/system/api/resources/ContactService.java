@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -29,4 +30,9 @@ public interface ContactService {
 	@POST
 	@Path("/")
 	void createContact(@Valid Contact contact);
+
+	@DELETE
+	@Path("/")
+	void deleteContact(@QueryParam("contactId") Long contactId,
+			@QueryParam("groupId") Long groupId);
 }

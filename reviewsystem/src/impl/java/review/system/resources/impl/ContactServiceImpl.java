@@ -27,4 +27,10 @@ public class ContactServiceImpl implements ContactService {
 	public void createContact(Contact contact) {
 		contactRepository.save(contact);
 	}
+
+	@Override
+	public void deleteContact(Long contactId, Long groupId) {
+		contactRepository.delete(contactRepository.findByContactIdAndGroupId(
+				contactId, groupId));
+	}
 }

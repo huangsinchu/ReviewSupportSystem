@@ -4,6 +4,7 @@ import java.util.ArrayList;
 
 import javax.validation.Valid;
 import javax.ws.rs.Consumes;
+import javax.ws.rs.DELETE;
 import javax.ws.rs.GET;
 import javax.ws.rs.POST;
 import javax.ws.rs.Path;
@@ -12,7 +13,7 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import review.system.entity.Group;
+import review.system.entity.ContactGroup;
 
 @Path("/group")
 @Consumes(MediaType.APPLICATION_JSON)
@@ -20,13 +21,17 @@ import review.system.entity.Group;
 public interface GroupService {
 	@GET
 	@Path("/{id}")
-	Group getGroup(@PathParam("id") Long id);
+	ContactGroup getGroup(@PathParam("id") Long id);
 
 	@GET
 	@Path("/")
-	ArrayList<Group> getGroupByUser(@QueryParam("uid") Long uid);
+	ArrayList<ContactGroup> getGroupByUser(@QueryParam("uid") Long uid);
 
 	@POST
 	@Path("/")
-	void createGroup(@Valid Group group);
+	void createGroup(@Valid ContactGroup group);
+
+	@DELETE
+	@Path("/{id}")
+	void deleteGroup(@PathParam("id") Long id);
 }

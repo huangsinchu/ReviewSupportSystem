@@ -13,4 +13,6 @@ public interface DeficiencyRepository extends
 
 	public ArrayList<Deficiency> findByUserId(Long uid);
 
+	public ArrayList<Deficiency> findByUserIdAndReviewId(Long uid, Long rid);
+
 }

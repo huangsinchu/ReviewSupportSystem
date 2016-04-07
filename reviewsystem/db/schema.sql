@@ -31,7 +31,7 @@ CREATE TABLE if not exists `invatation` (
   UNIQUE KEY `id_UNIQUE` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
 
-CREATE TABLE if not exists `group` (
+CREATE TABLE if not exists `contact_group` (
   `Id` bigint  NOT NULL auto_increment,
   `UserId` bigint NOT NULL,
   `GroupName` varchar(50) NOT NULL,

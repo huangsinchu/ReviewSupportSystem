@@ -11,4 +11,7 @@ public interface ContactRepository extends
 
 	public ArrayList<Contact> findByGroupId(Long groupId);
 
+	public ArrayList<Contact> findByContactIdAndGroupId(Long contactId,
+			Long groupId);
+
 }

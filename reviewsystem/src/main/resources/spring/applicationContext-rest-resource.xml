@@ -8,4 +8,14 @@
 	</bean>
 	<bean id="ReviewService" class="review.system.resources.impl.ReviewServiceImpl">
 	</bean>
+	<bean id="ContactService" class="review.system.resources.impl.ContactServiceImpl">
+	</bean>
+	<bean id="DeficiencyService" class="review.system.resources.impl.DeficiencyServiceImpl">
+	</bean>
+	<bean id="GroupService" class="review.system.resources.impl.GroupServiceImpl">
+	</bean>
+	<bean id="PositionService" class="review.system.resources.impl.PositionServiceImpl">
+	</bean>
+	<bean id="InvatationService" class="review.system.resources.impl.InvatationServiceImpl">
+	</bean>
 </beans>

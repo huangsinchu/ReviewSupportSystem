@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 
 import review.system.api.resources.DeficiencyService;
 import review.system.entity.Deficiency;
+import review.system.entity.DeficiencyCombinationRecord;
 import review.system.repository.DeficiencyCombinationRepository;
 import review.system.repository.DeficiencyRepository;
 
@@ -23,23 +24,39 @@ public class DeficiencyServiceImpl implements DeficiencyService {
 	}
 
 	@Override
-	public ArrayList<Deficiency> getDeficiencyByUser(Long uid) {
-		return deficiencyRepository.findByUserId(uid);
-	}
-
-	@Override
-	public ArrayList<Deficiency> getDeficiencyByReview(Long reviewId) {
-		return deficiencyRepository.findByReviewId(reviewId);
-	}
-
-	@Override
 	public void createDeficiency(Deficiency deficiency) {
 		deficiencyRepository.save(deficiency);
 	}
 
 	@Override
-	public ArrayList<Deficiency> getCombinedDeficiency(Long combinedId) {
+	public ArrayList<DeficiencyCombinationRecord> getCombinedDeficiency(
+			Long combinedId) {
 		return deficiencyCombinationRepository.findByDeficiencyId(combinedId);
+	}
+
+	@Override
+	public void createCombinedDeficiency(
+			DeficiencyCombinationRecord deficiencyCombinationRecord) {
+		deficiencyCombinationRepository.save(deficiencyCombinationRecord);
+	}
+
+	@Override
+	public void deleteCombinedDeficiency(Long combinedId) {
+		deficiencyCombinationRepository
+				.delete(getCombinedDeficiency(combinedId));
+	}
+
+	@Override
+	public ArrayList<Deficiency> getDeficiencyByUidOrRid(Long uid, Long rid) {
+		if (uid != null) {
+			if (rid != null) {
+				return deficiencyRepository.findByUserIdAndReviewId(uid, rid);
+			} else {
+				return deficiencyRepository.findByUserId(uid);
+			}
+		} else {
+			return deficiencyRepository.findByReviewId(rid);
+		}
 	}
 
 }
