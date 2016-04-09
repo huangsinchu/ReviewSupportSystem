@@ -145,6 +145,27 @@ var TaskDescription = React.createClass({
     }
 });
 
+/*图例组件，给出不同颜色评审的状态*/
+var Explain = React.createClass({
+  render:function(){
+    return(
+      <div className="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+        <div className="row">
+          <div className="col-lg-3 col-lg-offset-1 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-4">
+            <span className="normal-span">&#12288;</span><label className="text-primary">一般评审</label>
+          </div>
+          <div className="col-lg-3 col-lg-offset-1 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-4">
+            <span className="merge-span">&#12288;</span><label className="text-primary">合并评审</label>
+          </div>
+          <div className="col-lg-3 col-lg-offset-1 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-4">
+            <span className="denied-span">&#12288;</span><label className="text-primary">否决评审</label>
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
 /*位置信息组件*/
 var Position = React.createClass({
   render:function(){
@@ -196,6 +217,12 @@ var MerReview = React.createClass({
 
 /*合并展示组件*/
 var Merged = React.createClass({
+  componentDidMount:function() {
+    $(this.refs.tooltip).tooltip();
+  },
+  componentDidUpdate:function(prevProps, prevState) {
+    $(this.refs.tooltip).tooltip();
+  },
   split:function(){
     this.props.split(this.props.review.id);
   },
@@ -204,11 +231,12 @@ var Merged = React.createClass({
     this.props.updateChoose(this.props.review.id,ifChoose);
   },
   render:function(){
+    var children = this.props.source.join("<hr>");
     return(
       <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1 row-bottom">
         <div className="row divline shadow">
           <div className="divchoose col-lg-1 log-md-1 col-sm-1 col-xs-12">
-            <input ref="choose" type="checkbox" ref="choose" onClick={this.choose} data-toggle="checkbox"/>
+            <input ref="choose" type="checkbox" className="choose" onClick={this.choose} data-toggle="checkbox"/>
           </div>
 
           <div className="divuser col-lg-1 col-md-1 col-sm-1 col-xs-12" >
@@ -219,7 +247,8 @@ var Merged = React.createClass({
             <Position type={this.props.type} page={this.props.review.page} row={this.props.review.row} />
           </div>
 
-          <div className="divmerge col-lg-7 col-md-7 col-sm-7 col-xs-12">
+          <div ref="tooltip" data-placement="top" data-toggle="tooltip" data-html="true" data-original-title={children}
+             className="divmerge col-lg-7 col-md-7 col-sm-7 col-xs-12 dropup">
             <p>{this.props.review.content}</p>
           </div>
 
@@ -290,7 +319,14 @@ var MergeList = React.createClass({
         result = <Denied review={temp} type={this.props.type} undo={this.undo} />
         list.push(result);
       } else if(temp.state=="合并"){
-        result = <Merged review={temp} type={this.props.type} updateChoose={this.updateChoose} split={this.split} />
+        var source = [];
+        for(var j = 0;j < this.props.reviewList.length;j++){
+          if(temp.children.indexOf(this.props.reviewList[j].id) >= 0){
+            var info = this.props.reviewList[j].reviewer + "：" + this.props.reviewList[j].content;
+            source.push(info);
+          }
+        }
+        result = <Merged review={temp} source={source} type={this.props.type} updateChoose={this.updateChoose} split={this.split} />
         list.push(result);
       }
     }
@@ -549,7 +585,7 @@ var Merge = React.createClass({
             } else {
               outOfDate.push(i);
               outOfDateServer.push(this.state.reviewList[i].id);
-              children.concat(this.state.reviewList[i].children);
+              children = children.concat(this.state.reviewList[i].children);
             }
           }
         }
@@ -731,7 +767,9 @@ var Merge = React.createClass({
       <div className="container">
         <TaskDescription title={title} url={url} type={type} state={state} content={content} />
       </div>
-      
+      <div className="container">
+        <Explain />
+      </div>
       <MergeList updateChoose={this.updateChoose} undo={this.undo} split={this.split} deny={this.deny} reviewList={this.state.reviewList} type={type} />
 
       <div className="container">
