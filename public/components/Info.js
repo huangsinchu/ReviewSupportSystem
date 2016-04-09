@@ -93,7 +93,7 @@ var Navbar = React.createClass({
               </ul>
           </li>
           <li className="dropdown">
-            <a className="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                {this.props.profile.name}<b className="caret"></b>
             </a>
             <ul className="dropdown-menu">
