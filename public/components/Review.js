@@ -93,7 +93,7 @@ var Navbar = React.createClass({
               </ul>
           </li>
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+            <a className="dropdown-toggle" data-toggle="dropdown">
                {this.props.profile.name}<b className="caret"></b>
             </a>
             <ul className="dropdown-menu">
@@ -146,6 +146,9 @@ var TaskDescription = React.createClass({
 
 /*评审展示模块*/
 var Review = React.createClass({
+  editReview:function(){
+    this.props.editReview(this.props.review.id);
+  },
   render:function(){
     var doc = <div><span>第{this.props.review.page}页</span><br/><span>第{this.props.review.row}行</span></div>;
     var code = <div><span>{this.props.review.page}</span><br/><span>第{this.props.review.row}行</span></div>;
@@ -157,14 +160,61 @@ var Review = React.createClass({
               {location}
             </div>
 
-            <div className="divbody col-lg-10 col-md-10 col-sm-10 col-xs-12">
+            <div className="divbody col-lg-9 col-md-9 col-sm-9 col-xs-12">
               <p>{this.props.review.content}</p>
             </div>
+
+            <div className="divact col-lg-1 col-md-1 col-sm-1 col-xs-12 text-center" onClick={this.editReview}>
+              编辑
+            </div>
+
           </div>
         </div>
     );
   }
 });
+
+/*评审编辑模态框*/
+var ReviewEditModal = React.createClass({
+  componentDidMount:function(){
+      $(this.refs.modal).modal('show');
+      $(this.refs.modal).on('hidden.bs.modal', this.props.handleHideModal);
+  },
+  confirmEdition:function(){
+    var content = this.refs.content.value.trim();
+    if(!content){
+      return;
+    }
+    this.props.confirmEdition(this.props.review.id,content);
+    $(this.refs.modal).modal('toggle');
+  },
+  render:function(){
+    return (
+      <div ref="modal" className="modal fade" tabIndex="-1" role="dialog">
+      <div className="modal-dialog modal-lg">
+        <div className="modal-content">
+          <div className="modal-header">
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 className="modal-title" id="gridSystemModalLabel">编辑</h4>
+          </div>
+          <div className="modal-body">
+            <form className="form-horizontal">
+              <div className="form-group">
+                <textarea ref="content" rows="3" className="form-control" defaultValue={this.props.review.content}>
+                </textarea>
+              </div>
+              <div className="form-group">
+                <button type="button" onClick={this.confirmEdition} className="btn btn-primary">确认编辑</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
+    );
+  }
+});
+
 
 /*评审编写模块*/
 var ReviewWriter = React.createClass({
@@ -228,7 +278,7 @@ var ReviewWriter = React.createClass({
   render:function(){
     var page = this.props.type=="文档评审"?<div className={this.state.pageClass}><div className="input-group-addon">第</div><input type="text" ref="page" className="form-control" placeholder={this.state.pageHolder} /><div className="input-group-addon">页</div></div>:<div className="input-group row-bottom"><div className="input-group-addon">文件名</div><input type="text" ref="page" className="form-control" /></div>;
     return(
-      <div className="tile col-lg-10 col-md-10 col-sm-10 col-lg-offset-1 col-md-offset-1 col-sm-offset-1">
+      <div className="tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
         <form onSubmit={this.submitReview}>
           {page}
           <div className={this.state.rowClass}>
@@ -249,50 +299,48 @@ var ReviewWriter = React.createClass({
 
 /*评审展示和编辑的结合模块，掌握状态信息*/
 var ReviewPanel = React.createClass({
-  addReview:function(review){
-    var freshList = this.state.reviewList;
-    freshList.push(review);
-    this.setState({reviewList:freshList});
-
-    review.writer = this.props.id;
-    review.task = this.props.task;
-    
-    //TODO:submit to server
-  },
   getInitialState:function() {
       return {
         reviewList:[
           {
+            "id":"1111",
             "page":"5",
             "row":"9",
             "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况"
           },
           {
+            "id":"1112",
             "page":"5",
             "row":"11",
             "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况,打开房间阿斯利康大家立刻精神的快乐都是减肥了科技发达时考虑范式大积分卡上就打开了房间里看圣诞节啊风口浪尖阿斯顿了房间里撒打开进风口拉萨的建立开放式的拉开将"
           },
-          {
+          { 
+            "id":"1113",
             "page":"5",
             "row":"25",
             "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况"
           },
           {
+            "id":"1114",
             "page":"6",
             "row":"9",
             "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况"
           },
           {
+            "id":"1115",
             "page":"7",
             "row":"9",
             "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况"
           },
           {
+            "id":"1116",
             "page":"8",
             "row":"9",
             "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况"
           }
-        ]
+        ],
+        showModal:false,
+        review:{}
       };
   },
   componentDidMount: function() {
@@ -308,19 +356,47 @@ var ReviewPanel = React.createClass({
       }.bind(this)
     });
   },
+  addReview:function(review){
+    var freshList = this.state.reviewList;
+
+    review.writer = this.props.id;
+    review.task = this.props.task;
+    
+    //TODO:submit to server
+    freshList.push(review);
+    this.setState({reviewList:freshList});
+  },
+  handleHideModal:function(){
+    this.setState({showModal:false});
+  },
+  handleShowModal:function(){
+    this.setState({showModal:true});
+  },
+  editReview:function(id){
+    for(var i = 0;i < this.state.reviewList.length; i++){
+      if(this.state.reviewList[i].id == id ){
+        this.setState({review:this.state.reviewList[i]});
+        break;
+      }
+    }
+    this.handleShowModal();
+  },
+  confirmEdition:function(id,content){
+    var updated = JSON.parse(JSON.stringify(this.state.reviewList));
+    for(var i =0;i < updated.length; i++){
+      if(updated[i].id == id){
+        updated[i].content = content;
+        this.setState({reviewList:updated});
+        break;
+      }
+    }
+    //TODO:服务器更新编辑
+  },
   render:function(){
-    if(this.props.type=="文档评审"){       
-      var reviews = this.state.reviewList.map(function(review){
-        return(
-          <Review type="文档评审" review={review} />
-        );
-      });
-    } else {
-      var reviews = this.state.reviewList.map(function(review){
-        return(
-          <Review type="代码评审" review={review} />
-        );
-      });
+    var reviews = [];
+    for(var i = 0;i < this.state.reviewList.length;i++){
+      var temp = <Review type={this.props.type} review={this.state.reviewList[i]} editReview={this.editReview} />;
+      reviews.push(temp);
     }
     var writer = this.props.state=="true"?<ReviewWriter type={this.props.type} addReview={this.addReview}/>:null;
 
@@ -328,6 +404,8 @@ var ReviewPanel = React.createClass({
       <div className="container">
         {reviews}
         {writer}
+        {this.state.showModal?<ReviewEditModal confirmEdition={this.confirmEdition}
+             review={this.state.review} handleHideModal={this.handleHideModal} />:null}
       </div>
     );
   }
