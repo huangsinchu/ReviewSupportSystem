@@ -5,19 +5,9 @@ var Navbar = React.createClass({
       return {
           messageList:[
             {"id":"111",
-            "title":"陆云昊的毕业论文",
-            "url":"https://www.github.com",
-            "type":"文档评审",
-            "state":true,
-            "content":"论文内容",
             "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"111",
-            "title":"陆云昊的毕业论文",
-            "url":"https://www.github.com",
-            "type":"文档评审",
-            "state":true,
-            "content":"论文内容",
-            "hint":"荣老师邀请你评审陆云昊大爷的文章"}
+            {"id":"112",
+            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
           ],
           hasMessage:false
 
@@ -25,6 +15,7 @@ var Navbar = React.createClass({
   },
   read:function(e){
     this.setState({hasMessage:false});
+    //TODO:标记信息已读
   },
 
   loadMessageFromServer:function(){
@@ -53,15 +44,10 @@ var Navbar = React.createClass({
         messages = this.state.messageList.map(function(message){
           var goReview = function(e){
           e.preventDefault();
-          localStorage["rs_id"] = message.id.toString();
-          localStorage["rs_title"] = message.title.toString();
-          localStorage["rs_url"] = message.url.toString();
-          localStorage["rs_type"] = message.type.toString();
-          localStorage["rs_state"] = message.state.toString();
-          localStorage["rs_content"] = message.content.toString();
-          location.href="review.html";
+          var target = "review.html?id=" + message.id.toString();
+          location.href=target;
 
-          };
+        };
           return (
               <li><a onClick={goReview}> {message.hint}</a></li>
               
@@ -93,7 +79,7 @@ var Navbar = React.createClass({
               </ul>
           </li>
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+            <a className="dropdown-toggle" data-toggle="dropdown">
                {this.props.profile.name}<b className="caret"></b>
             </a>
             <ul className="dropdown-menu">
