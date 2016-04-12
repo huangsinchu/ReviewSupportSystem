@@ -1,3 +1,9 @@
+<?php 
+	session_start(); 
+	if(!isset($_SESSION['logged_mail'])){
+		echo "<head><meta http-equiv='refresh' content='0;url=login.html'></head>";
+	}else{
+?>
 <!DOCTYPE html>
 <html lang="zh-CN">
   <head>
@@ -23,3 +29,6 @@
     <script type="text/babel" src="components/Report.js"></script>
   </body>
 </html>
+<?php
+	}
+?>

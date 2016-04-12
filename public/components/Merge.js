@@ -93,7 +93,7 @@ var Navbar = React.createClass({
               </ul>
           </li>
           <li className="dropdown">
-            <a className="dropdown-toggle" data-toggle="dropdown">
+            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
                {this.props.profile.name}<b className="caret"></b>
             </a>
             <ul className="dropdown-menu">
@@ -101,7 +101,7 @@ var Navbar = React.createClass({
                <li><a href="info.html">账号信息</a></li>
             </ul>
          </li>
-        </ul>
+      </ul>
       </div>
     </nav>
     </div>
@@ -111,6 +111,8 @@ var Navbar = React.createClass({
 
 /*任务描述信息*/
 var TaskDescription = React.createClass({
+    componentDidMount:function() {
+  },
     render:function(){
       var state = this.props.state=="true"?"评审中":"评审结束";
       return(
@@ -155,6 +157,27 @@ var Position = React.createClass({
   }
 });
 
+/*图例组件，给出不同颜色评审的状态*/
+var Explain = React.createClass({
+  render:function(){
+    return(
+      <div className="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+        <div className="row">
+          <div className="col-lg-3 col-lg-offset-1 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-4">
+            <span className="normal-span">&#12288;&#12288;</span><label className="text-primary">一般评审</label>
+          </div>
+          <div className="col-lg-3 col-lg-offset-1 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-4">
+            <span className="merge-span">&#12288;&#12288;</span><label className="text-primary">合并评审</label>
+          </div>
+          <div className="col-lg-3 col-lg-offset-1 col-md-3 col-md-offset-1 col-sm-3 col-sm-offset-1 col-xs-4">
+            <span className="denied-span">&#12288;&#12288;</span><label className="text-primary">否决评审</label>
+          </div>
+        </div>
+      </div>
+    );
+  }
+});
+
 /*评审展示组件*/
 var MerReview = React.createClass({
   choose:function(){
@@ -165,12 +188,15 @@ var MerReview = React.createClass({
     this.props.deny(this.props.review.id);
 
   },
+  edit:function(){
+    this.props.editReview(this.props.review.id);
+  },
   render:function(){
     return(
       <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1 row-bottom">
         <div className="row divline shadow">
           <div className="divchoose col-lg-1 log-md-1 col-sm-1 col-xs-12">
-            <input type="checkbox" ref="choose" onClick={this.choose} data-toggle="checkbox"/>
+            <input type="checkbox" className="choose" ref="choose" onClick={this.choose} data-toggle="checkbox"/>
           </div>
 
           <div className="divuser col-lg-1 col-md-1 col-sm-1 col-xs-12" >
@@ -185,8 +211,9 @@ var MerReview = React.createClass({
             <p>{this.props.review.content}</p>
           </div>
 
-          <div className="divact col-lg-1 col-md-1 col-sm-1 col-xs-12 text-center" onClick={this.deny}>
-            否决
+          <div className="divact col-lg-1 col-md-1 col-sm-1 col-xs-12 text-center">
+            <p onClick={this.deny}>否决</p>
+            <p onClick={this.edit}>编辑</p>
           </div>
         </div>
       </div>
@@ -196,19 +223,29 @@ var MerReview = React.createClass({
 
 /*合并展示组件*/
 var Merged = React.createClass({
+  componentDidMount:function() {
+    $(this.refs.tooltip).tooltip();
+  },
+  componentDidUpdate:function(prevProps, prevState) {
+    $(this.refs.tooltip).tooltip();
+  },
   split:function(){
     this.props.split(this.props.review.id);
+  },
+  edit:function(){
+    this.props.editReview(this.props.review.id);
   },
   choose:function(){
     var ifChoose = this.refs.choose.checked;
     this.props.updateChoose(this.props.review.id,ifChoose);
   },
   render:function(){
+    var children = this.props.source.join("<hr>");
     return(
       <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1 row-bottom">
         <div className="row divline shadow">
           <div className="divchoose col-lg-1 log-md-1 col-sm-1 col-xs-12">
-            <input ref="choose" type="checkbox" ref="choose" onClick={this.choose} data-toggle="checkbox"/>
+            <input ref="choose" type="checkbox" className="choose" onClick={this.choose} data-toggle="checkbox"/>
           </div>
 
           <div className="divuser col-lg-1 col-md-1 col-sm-1 col-xs-12" >
@@ -219,19 +256,20 @@ var Merged = React.createClass({
             <Position type={this.props.type} page={this.props.review.page} row={this.props.review.row} />
           </div>
 
-          <div className="divmerge col-lg-7 col-md-7 col-sm-7 col-xs-12">
+          <div ref="tooltip" data-placement="top" data-toggle="tooltip" data-html="true" data-original-title={children}
+             className="divmerge col-lg-7 col-md-7 col-sm-7 col-xs-12 dropup">
             <p>{this.props.review.content}</p>
           </div>
 
-          <div className="divact col-lg-1 col-md-1 col-sm-1 col-xs-12 text-center" onClick={this.split}>
-            拆分
+          <div className="divact col-lg-1 col-md-1 col-sm-1 col-xs-12 text-center">
+            <p onClick={this.split}>拆分</p>
+            <p onClick={this.edit}>编辑</p>
           </div>
         </div>
       </div>
     );
   }
 });
-
 /*被否决展示组件*/
 var Denied = React.createClass({
   undo:function(){
@@ -284,13 +322,22 @@ var MergeList = React.createClass({
       var temp = this.props.reviewList[i];
       var result;
       if(temp.state=="评审"){
-        result = <MerReview review={temp} type={this.props.type} updateChoose={this.updateChoose} deny={this.deny} />;
+        result = <MerReview editReview={this.props.editReview}
+         review={temp} type={this.props.type} updateChoose={this.updateChoose} deny={this.deny} />;
         list.push(result);
       } else if(temp.state=="被否决"){
         result = <Denied review={temp} type={this.props.type} undo={this.undo} />
         list.push(result);
       } else if(temp.state=="合并"){
-        result = <Merged review={temp} type={this.props.type} updateChoose={this.updateChoose} split={this.split} />
+        var source = [];
+        for(var j = 0;j < this.props.reviewList.length;j++){
+          if(temp.children.indexOf(this.props.reviewList[j].id) >= 0){
+            var info = this.props.reviewList[j].reviewer + "：" + this.props.reviewList[j].content;
+            source.push(info);
+          }
+        }
+        result = <Merged review={temp} source={source} type={this.props.type}
+                           updateChoose={this.updateChoose} split={this.split} editReview={this.props.editReview} />
         list.push(result);
       }
     }
@@ -299,6 +346,46 @@ var MergeList = React.createClass({
         {list}
       </div>
 
+    );
+  }
+});
+/*评审编辑模态框*/
+var ReviewEditModal = React.createClass({
+  componentDidMount:function(){
+      $(this.refs.modal).modal('show');
+      $(this.refs.modal).on('hidden.bs.modal', this.props.handleHideModal);
+  },
+  confirmEdition:function(){
+    var content = this.refs.content.value.trim();
+    if(!content){
+      return;
+    }
+    this.props.confirmEdition(this.props.review.id,content);
+    $(this.refs.modal).modal('toggle');
+  },
+  render:function(){
+    return (
+      <div ref="modal" className="modal fade" tabIndex="-1" role="dialog">
+      <div className="modal-dialog modal-lg">
+        <div className="modal-content">
+          <div className="modal-header">
+            <button type="button" className="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+            <h4 className="modal-title" id="gridSystemModalLabel">编辑</h4>
+          </div>
+          <div className="modal-body">
+            <form className="form-horizontal">
+              <div className="form-group">
+                <textarea ref="content" rows="3" className="form-control" defaultValue={this.props.review.content}>
+                </textarea>
+              </div>
+              <div className="form-group">
+                <button type="button" onClick={this.confirmEdition} className="btn btn-primary">确认编辑</button>
+              </div>
+            </form>
+          </div>
+        </div>
+      </div>
+    </div>
     );
   }
 });
@@ -388,7 +475,7 @@ var Merge = React.createClass({
             "row":"12",
             "reviewer":"屋顶上的羊驼",
             "state":"评审",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。"
+            "content":"1111111"
           },
           {
             "id":"1113",
@@ -396,7 +483,7 @@ var Merge = React.createClass({
             "row":"22",
             "reviewer":"羊驼",
             "state":"评审",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。"
+            "content":"222222222"
           },
           {
             "id":"1114",
@@ -404,7 +491,7 @@ var Merge = React.createClass({
             "row":"12",
             "reviewer":"屋顶",
             "state":"评审",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。"
+            "content":"3333333333"
           },
           {
             "id":"1115",
@@ -475,7 +562,9 @@ var Merge = React.createClass({
                       "1117":false,"1118":false,"1119":false,"1120":false,"1121":false,"1122":false},
           showModal:false,
           pos:[],
-          contents:[]
+          contents:[],
+          showEditModal:false,
+          editReview:{}
       };
   },
   handleHideModal:function(){
@@ -484,7 +573,12 @@ var Merge = React.createClass({
   handleShowModal:function(){
     this.setState({showModal:true});
   },
-
+  handleShowEditModal:function(){
+    this.setState({showEditModal:true});
+  },
+  handleHideEditModal:function(){
+    this.setState({showEditModal:false});
+  },
   componentDidMount: function() {
     $.ajax({
       url: "",//TODO:get customer profile url
@@ -538,8 +632,8 @@ var Merge = React.createClass({
   },
   confirmMerge:function(page,row,content){
     var children =[];
-    var outOfDate = [];
-    var outOfDateServer = [];
+    var outOfDate = [];//存放被合并的合并评审的数组下标
+    var outOfDateServer = [];//存放被合并的合并评审的id
     for(var key in this.state.chooseList){//找到所有的被合并评审，和过期的合并评审
       if(this.state.chooseList[key]){
         for(var i =0;i < this.state.reviewList.length;i++){
@@ -549,7 +643,7 @@ var Merge = React.createClass({
             } else {
               outOfDate.push(i);
               outOfDateServer.push(this.state.reviewList[i].id);
-              children.concat(this.state.reviewList[i].children);
+              children = children.concat(this.state.reviewList[i].children);
             }
           }
         }
@@ -656,6 +750,27 @@ var Merge = React.createClass({
     }
 
   },
+  editReview:function(id){
+    for(var i = 0;i < this.state.reviewList.length; i++){
+      if(this.state.reviewList[i].id == id ){
+        this.setState({editReview:this.state.reviewList[i]});
+        break;
+      }
+    }
+    this.handleShowEditModal();
+  },
+  confirmEdition:function(id,content){
+    var updated = JSON.parse(JSON.stringify(this.state.reviewList));
+    for(var i =0;i < updated.length; i++){
+      if(updated[i].id == id){
+        updated[i].content = content;
+        this.setState({reviewList:updated});
+        break;
+      }
+    }
+    //TODO:服务器更新编辑
+  },
+
   //将某个评审的状态从“评审”变成“被否决”
   deny:function(id){
     var updated = JSON.parse(JSON.stringify(this.state.reviewList));
@@ -731,8 +846,12 @@ var Merge = React.createClass({
       <div className="container">
         <TaskDescription title={title} url={url} type={type} state={state} content={content} />
       </div>
+      <div className="container">
+        <Explain />
+      </div>
       
-      <MergeList updateChoose={this.updateChoose} undo={this.undo} split={this.split} deny={this.deny} reviewList={this.state.reviewList} type={type} />
+      <MergeList updateChoose={this.updateChoose} editReview={this.editReview}
+       undo={this.undo} split={this.split} deny={this.deny} reviewList={this.state.reviewList} type={type} />
 
       <div className="container">
         <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1">
@@ -744,6 +863,8 @@ var Merge = React.createClass({
         <button type="button" onClick={this.merge} className="round-button shadow">合</button>
       </div>
       {this.state.showModal?<MergeModal type={type} handleHideModal={this.handleHideModal} confirmMerge={this.confirmMerge} pos={this.state.pos} contents={this.state.contents} />:null}
+      {this.state.showEditModal?<ReviewEditModal confirmEdition={this.confirmEdition}
+             review={this.state.editReview} handleHideModal={this.handleHideEditModal} />:null}
       </div>
     );
   }

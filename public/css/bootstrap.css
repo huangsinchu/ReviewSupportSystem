@@ -757,7 +757,10 @@ pre code {
     right: 10px;
   }
 }
-
+.choose{
+  width: 30px;
+  height: 30px;
+}
 .tree {
   min-height:20px;
   padding:19px;
@@ -780,7 +783,6 @@ pre code {
   border-radius:42px;
   border: 0px;
   color: #FFFFFF;  
-  font-size: 26px;
   outline: none;
 }
 
@@ -840,6 +842,18 @@ pre code {
 .login-body{
   background: #91989F;
 }
+.normal-span{
+  width: 40px;
+  background-color: #78C2C4;
+}
+.merge-span{
+  width: 40px;
+  background: #1E88A8;
+}
+.denied-span{
+  width: 40px;
+  background-color: #BDC0BA;
+}
 .divline{
   overflow: hidden;
 }
@@ -863,7 +877,7 @@ pre code {
   padding-bottom:10000px; 
 }
 .divmerge{
-  background: #bed3ca;
+  background: #1E88A8;
   margin-bottom:-10000px;
   padding-bottom:10000px; 
 }
@@ -884,13 +898,13 @@ pre code {
   padding-bottom:10000px; 
 }
 .divdenied{
-  background: #e95464;
+  background: #BDC0BA;
   margin-bottom:-10000px;
   padding-bottom:10000px; 
 }
 
 .divbody{
-  background: #BDC0BA;
+  background: #78C2C4;
   margin-bottom:-10000px; 
   padding-bottom:10000px;
 }
