@@ -232,6 +232,9 @@ var Merged = React.createClass({
   split:function(){
     this.props.split(this.props.review.id);
   },
+  edit:function(){
+    this.props.editReview(this.props.review.id);
+  },
   choose:function(){
     var ifChoose = this.refs.choose.checked;
     this.props.updateChoose(this.props.review.id,ifChoose);
@@ -258,15 +261,15 @@ var Merged = React.createClass({
             <p>{this.props.review.content}</p>
           </div>
 
-          <div className="divact col-lg-1 col-md-1 col-sm-1 col-xs-12 text-center" onClick={this.split}>
-            拆分
+          <div className="divact col-lg-1 col-md-1 col-sm-1 col-xs-12 text-center">
+            <p onClick={this.split}>拆分</p>
+            <p onClick={this.edit}>编辑</p>
           </div>
         </div>
       </div>
     );
   }
 });
-
 /*被否决展示组件*/
 var Denied = React.createClass({
   undo:function(){
@@ -334,7 +337,7 @@ var MergeList = React.createClass({
           }
         }
         result = <Merged review={temp} source={source} type={this.props.type}
-                           updateChoose={this.updateChoose} split={this.split} />
+                           updateChoose={this.updateChoose} split={this.split} editReview={this.props.editReview} />
         list.push(result);
       }
     }
