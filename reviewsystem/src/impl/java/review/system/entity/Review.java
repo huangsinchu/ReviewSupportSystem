@@ -9,10 +9,11 @@ import javax.persistence.Id;
 public class Review {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Long userId;
 	private String title;
+	private String address;
 	private String description;
 	private int status;
 	private int type;
@@ -39,6 +40,14 @@ public class Review {
 
 	public void setTitle(String title) {
 		this.title = title;
+	}
+
+	public String getAddress() {
+		return address;
+	}
+
+	public void setAddress(String address) {
+		this.address = address;
 	}
 
 	public String getDescription() {
