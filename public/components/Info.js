@@ -20,7 +20,7 @@ var Navbar = React.createClass({
 
   loadMessageFromServer:function(){
     $.ajax({
-    url: "",//TODO:complete with the url api
+    url: "./php/message.php",//TODO:complete with the url api
     dataType: 'json',
     cache: false,
     success: function(data) {
@@ -211,7 +211,7 @@ var EditPanel = React.createClass({
 var InfoPage = React.createClass({
   componentDidMount: function() {
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
