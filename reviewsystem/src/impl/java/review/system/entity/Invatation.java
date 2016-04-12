@@ -9,7 +9,7 @@ import javax.persistence.Id;
 public class Invatation {
 
 	@Id
-	@GeneratedValue(strategy=GenerationType.IDENTITY)
+	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Long reviewId;
 	private Long userId;
