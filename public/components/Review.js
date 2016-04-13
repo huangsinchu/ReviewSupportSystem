@@ -430,6 +430,10 @@ var ReviewPage = React.createClass({
         console.error("", status, err.toString());//TODO:as same as above
       }.bind(this)
     });
+    var query = location.search.substring(1);
+    var id = query.split("=")[1];
+    alert(id);
+    //TODO:根据id获取review数据
   },
 
 
