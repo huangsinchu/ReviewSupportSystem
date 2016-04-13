@@ -347,7 +347,9 @@ var ReviewPanel = React.createClass({
 
     review.writer = this.props.id;
     review.task = this.props.task;
-    
+    $.ajax({
+		
+	})
     //TODO:submit to server
     freshList.push(review);
     this.setState({reviewList:freshList});
@@ -420,7 +422,7 @@ var ReviewPage = React.createClass({
   },
   componentDidMount: function() {
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -431,9 +433,22 @@ var ReviewPage = React.createClass({
       }.bind(this)
     });
     var query = location.search.substring(1);
-    var id = query.split("=")[1];
-    alert(id);
+	var id = 0;
+    id = query.split("=")[1];
+   // alert(id);
     //TODO:根据id获取review数据
+	$.ajax({
+      url: "./php/review.php?id="+id,//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({review: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+		window.location.href="./index.html";
+      }.bind(this)
+    });
   },
 
 
