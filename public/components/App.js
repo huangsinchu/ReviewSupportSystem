@@ -387,6 +387,16 @@ var ReviewList = React.createClass({
     var newList = [newplan].concat(reviewPlans);
     
     //TODO:commit to server
+	$.ajax({  
+		type : "post",  
+		url : "./php/createreview.php",  
+		data : newplan,  
+		async : false,  
+		success : function(data){
+			//status = data;
+		}
+	}); 
+	
     this.setState({reviewPlanList:newList});
   },
   handleHideModal:function(){
@@ -408,7 +418,15 @@ var ReviewList = React.createClass({
           }
         }
         this.setState({reviewPlanList:reviewPlans});
-        //TODO:commit to server
+        $.ajax({  
+		type : "post",  
+		url : "./php/createreview.php",  
+		data : newplan,  
+		async : false,  
+		success : function(data){
+			//status = data;
+		}
+	}); 
   },
 
   

@@ -1,12 +1,12 @@
 <?php
 class review{
-	public id;
-	public title;
-	public url;
-	public type;
-	public state;
-	#public target;
-	public content;
+	public $id;
+	public $title;
+	public $url;
+	public $type;
+	public $state;
+	#public $target;
+	public $content;
 }
 
 session_start();
