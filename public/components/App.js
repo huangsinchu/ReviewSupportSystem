@@ -20,7 +20,7 @@ var Navbar = React.createClass({
 
   loadMessageFromServer:function(){
     $.ajax({
-    url: "",//TODO:complete with the url api
+    url: "./php/message.php",//TODO:complete with the url api
     dataType: 'json',
     cache: false,
     success: function(data) {
@@ -367,7 +367,7 @@ var ReviewList = React.createClass({
   },
   loadReviewsFromServer:function(){
     $.ajax({
-      url: "",//TODO:reviewPlan url
+      url: "./php/reviewlist.php",//TODO:reviewPlan url
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -452,7 +452,7 @@ var App = React.createClass({
 
   componentDidMount: function() {
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {

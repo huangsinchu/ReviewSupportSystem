@@ -20,7 +20,7 @@ var Navbar = React.createClass({
 
   loadMessageFromServer:function(){
     $.ajax({
-    url: "",//TODO:complete with the url api
+    url: "./php/message.php",//TODO:complete with the url api
     dataType: 'json',
     cache: false,
     success: function(data) {

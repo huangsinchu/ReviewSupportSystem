@@ -20,7 +20,7 @@ var Navbar = React.createClass({
 
   loadMessageFromServer:function(){
     $.ajax({
-    url: "",//TODO:complete with the url api
+    url: "./php/message.php",//TODO:complete with the url api
     dataType: 'json',
     cache: false,
     success: function(data) {
@@ -161,8 +161,18 @@ var ContactPanel = React.createClass({
   },
   check:function(mail){
     var id = this.props.profile.id;
+	var status = 0;
     //TODO:检查服务器，没有该账户返回0，已经添加返回1，尚未添加返回2
-    return 2;
+	$.ajax({
+		type : "post",  
+		url : "./php/check-contact.php",  
+        data : {mail:mail},  
+		async : false,  
+		success : function(data){
+			status = data;
+		}
+	});
+    return status;
   },
   search:function(e){
     e.preventDefault();
@@ -320,7 +330,7 @@ var ContactPage = React.createClass({
   },
   componentDidMount: function() {
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
