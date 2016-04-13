@@ -32,16 +32,16 @@ if(isset($_SESSION['uid'])){
 	$target = $_GET['target'];
 	$state = $_GET['state'];
 */
-	//´´½¨ÆÀÉó
+	//åˆ›å»ºè¯„å®¡
 	$re = new review;
 	$re->userId = $_SESSION['uid'];
 	$re->title = $title;
 	$re->address = $url;
 	$re->description = $content;
 	$re->status = $state?100:200;
-	if($type=="ÎÄµµÆÀÉó"){
+	if($type=="æ–‡æ¡£è¯„å®¡"){
 		$re->type = 100;
-	}elseif($type=="´úÂëÆÀÉó"){
+	}elseif($type=="ä»£ç è¯„å®¡"){
 		$re->type = 200;
 	}else{
 		$re->type = 100;
@@ -51,7 +51,7 @@ if(isset($_SESSION['uid'])){
 	$data = json_encode($re);
 	$rid = post_content($sub_url,$data);
 	
-	//»ñÈ¡ÓÃ»§µÄÁªÏµÈËÁĞ±í
+	//è·å–ç”¨æˆ·çš„è”ç³»äººåˆ—è¡¨
 	$sub_url = 'group?uid='.$_SESSION['uid'];
 	$grouplist = get_content($sub_url);
 	$gid = 0;
@@ -62,7 +62,7 @@ if(isset($_SESSION['uid'])){
 		}
 	}
 	
-	//¶ÔÄ¿±êÁªÏµ×éÀïËùÓĞÈË´´½¨Ò»¸öÑûÇë
+	//å¯¹ç›®æ ‡è”ç³»ç»„é‡Œæ‰€æœ‰äººåˆ›å»ºä¸€ä¸ªé‚€è¯·
 	$sub_url = 'contact?groupId='.$gid;
 	$userlist = get_content($sub_url);
 	#$arr = array();
