@@ -30,12 +30,15 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])){
 		header('HTTP/1.1 503 Service Unavailable');
 		header('Status: 503 Service Unavailable');
 	}else{
+		$_SESSION['rid'] = $rid;
+		
 		$sub_url = 'review/'.$rid;
 		$review = get_content($sub_url);
 		$re = new review;
 		$re->id = $review->id;
 		$re->title = $review->title;
 		$re->url = $review->address;
+		$_SESSION['rtype'] = $review->type;
 		if($review->type==100){
 			$re->type = "文档评审";
 		}else{

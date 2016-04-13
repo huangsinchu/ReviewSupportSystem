@@ -419,12 +419,12 @@ var ReviewList = React.createClass({
         }
         this.setState({reviewPlanList:reviewPlans});
         $.ajax({  
-		type : "post",  
-		url : "./php/updatereview.php",  
-		data : newplan,  
-		async : false,  
-		success : function(data){
-			//status = data;
+			type : "post",  
+			url : "./php/updatereview.php",  
+			data : newplan,  
+			async : false,  
+			success : function(data){
+				//status = data;
 		}
 	}); 
   },

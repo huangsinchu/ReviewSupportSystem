@@ -98,7 +98,7 @@ var Navbar = React.createClass({
 /*任务描述信息*/
 var TaskDescription = React.createClass({
     render:function(){
-      var state = this.props.state=="true"?"评审中":"评审结束";
+      var state = this.props.state?"评审中":"评审结束";
       return(
         <div className="tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1 shadow">
           <div className="row">
@@ -347,9 +347,15 @@ var ReviewPanel = React.createClass({
 
     review.writer = this.props.id;
     review.task = this.props.task;
-    $.ajax({
-		
-	})
+    $.ajax({  
+		type : "post",  
+		url : "./php/adddeficiency.php",  
+		data : review,  
+		async : false,  
+		success : function(data){
+			//status = data;
+		}
+	}); 
     //TODO:submit to server
     freshList.push(review);
     this.setState({reviewList:freshList});
@@ -378,7 +384,15 @@ var ReviewPanel = React.createClass({
         break;
       }
     }
-    //TODO:服务器更新编辑
+    $.ajax({
+		type : "post",  
+		url : "./php/updatedeficiency.php",  
+		data : {id:id, content:content},  
+		async : false,  
+		success : function(data){
+			//status = data;
+		}
+	});
   },
   render:function(){
     var reviews = [];
@@ -386,7 +400,7 @@ var ReviewPanel = React.createClass({
       var temp = <Review type={this.props.type} review={this.state.reviewList[i]} editReview={this.editReview} />;
       reviews.push(temp);
     }
-    var writer = this.props.state=="true"?<ReviewWriter type={this.props.type} addReview={this.addReview}/>:null;
+    var writer = this.props.state?<ReviewWriter type={this.props.type} addReview={this.addReview}/>:null;
 
     return(
       <div className="container">

@@ -15,12 +15,16 @@ foreach($list as $m){
 	if($m->read==false){
 		$me = new message;
 		$me->id = $m->reviewId;
-		$sub_url = '/user/'.$m->userId;
-		$user = get_content($sub_url);
-		$name = $user->name;
-		$sub_url = '/review/'.$m->reviewId;
+		
+		$sub_url = 'review/'.$m->reviewId;
 		$review = get_content($sub_url);
 		$title = $review->title;
+		$ownerid = $review->userId;
+		
+		$sub_url = 'user/'.$ownerid;
+		$user = get_content($sub_url);
+		$name = $user->name;
+		
 		$me->hint = $name."邀请你评审".$title;
 		$arr[] = $me;
 	}
