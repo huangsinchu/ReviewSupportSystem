@@ -420,7 +420,7 @@ var ReviewList = React.createClass({
         this.setState({reviewPlanList:reviewPlans});
         $.ajax({  
 		type : "post",  
-		url : "./php/createreview.php",  
+		url : "./php/updatereview.php",  
 		data : newplan,  
 		async : false,  
 		success : function(data){

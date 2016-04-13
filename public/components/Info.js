@@ -121,19 +121,27 @@ var EditPanel = React.createClass({
       if(!op||!np||!cp){
         this.props.updateProfile(newProfile);
       } else {
-        if (op==this.props.profile.password){
-          if(np==cp){
+		if(np==cp){
             newProfile.password = np;
-            this.props.updateProfile(newProfile);
-            this.refs.op.value = "";
-            this.refs.np.value = "";
-            this.refs.cp.value = "";
-            var newState = this.state.inputState;
-            newState.op = "form-group has-success";
-            newState.np = "form-group has-success";
-            newState.opHolder = "密码修改成功";
-            newState.cpHolder = "";
-            this.setState({inputState:newState});
+            var sucess = this.props.updateProfile(op,newProfile);
+			if(sucess){
+				this.refs.op.value = "";
+				this.refs.np.value = "";
+				this.refs.cp.value = "";
+				var newState = this.state.inputState;
+				newState.op = "form-group has-success";
+				newState.np = "form-group has-success";
+				newState.opHolder = "密码修改成功";
+				newState.cpHolder = "";
+				this.setState({inputState:newState});
+			}else{
+				var newState = this.state.inputState;
+			  newState.op = "form-group has-error";
+			  this.refs.op.value = "";
+			  newState.opHolder = "原密码输入错误！";
+			  this.setState({inputState:newState});
+			}
+            
           }else{//np!=cp
             var newState = this.state.inputState;
             newState.op = "form-group";
@@ -144,13 +152,7 @@ var EditPanel = React.createClass({
             newState.cpHolder = "确认密码与新密码不一致！";
             this.setState({inputState:newState});
           }
-        } else { //wrong password
-          var newState = this.state.inputState;
-          newState.op = "form-group has-error";
-          this.refs.op.value = "";
-          newState.opHolder = "原密码输入错误！";
-          this.setState({inputState:newState});
-        }
+		
       }
   },
 
@@ -234,9 +236,25 @@ var InfoPage = React.createClass({
           } 
       };
   },
-  updateProfile:function(newProfile){
-    //TODO:update in server
-    this.setState({profile:newProfile});
+  updateProfile:function(op,newProfile){
+	var status = 2;
+	var p = newProfile;
+	p.oldpassword = op;
+    $.ajax({  
+		type : "post",  
+		url : "./php/updateuserinfo.php",  
+		data : p,  
+		async : false,  
+		success : function(data){
+			status = data;
+		}
+	}); 
+    if(status==1){
+		this.setState({profile:newProfile});
+		return ture;
+	}else{
+		return false;
+	}
   },
 
   render: function(){

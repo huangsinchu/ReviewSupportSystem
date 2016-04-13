@@ -22,12 +22,12 @@ if($user!=null){
 		}
 		$str .= chr($r);
 	}
-	$file = fopen("tmp/".$str, "w") or die("Unable to open file!");
-	fwrite($file, $data);
-	fclose($file);
+	#$file = fopen("tmp/".$str, "w") or die("Unable to open file!");
+	#fwrite($file, $data);
+	#fclose($file);
 	
-	require("smtp.php");
-	send_email($mail,$str);
+	#require("smtp.php");
+	#send_email($mail,$str);
 
 	$sub_url = 'user/';
 	post_content($sub_url, $data);

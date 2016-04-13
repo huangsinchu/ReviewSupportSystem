@@ -55,7 +55,7 @@ if(isset($_SESSION['uid'])){
 	$sub_url = 'group?uid='.$_SESSION['uid'];
 	$grouplist = get_content($sub_url);
 	$gid = 0;
-	foreach($grouplist as group){
+	foreach($grouplist as $group){
 		if($target==$group->groupName){
 			$gid = $group->id;
 			break;
