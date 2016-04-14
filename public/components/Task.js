@@ -249,7 +249,7 @@ var TaskList = React.createClass({
   },
   componentDidMount: function() {
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/task.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {

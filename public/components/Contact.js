@@ -165,7 +165,7 @@ var ContactPanel = React.createClass({
     //TODO:检查服务器，没有该账户返回0，已经添加返回1，尚未添加返回2
 	$.ajax({
 		type : "post",  
-		url : "./php/check-contact.php",  
+		url : "./php/checkcontact.php",  
         data : {mail:mail},  
 		async : false,  
 		success : function(data){
@@ -341,7 +341,7 @@ var ContactPage = React.createClass({
       }.bind(this)
     });
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/contact.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -383,11 +383,13 @@ var ContactPage = React.createClass({
     
     //TODO:提交服务器
     $.ajax({
-      url: "",//TODO:get customer profile url
+	  type : "post",
+      url: "./php/updategroup.php",//TODO:get customer profile url
       dataType: 'json',
+	  data : {'groups':groups},
       cache: false,
       success: function(data) {
-        this.setState({profile: data});
+       // this.setState({profile: data});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error("", status, err.toString());//TODO:as same as above
@@ -406,15 +408,34 @@ var ContactPage = React.createClass({
       deleted[key] = updateList;
     }
     this.setState({contactors:deleted});
-    //TODO:服务器删除联系人，将某个用户所有组中的这个联系人删除
+    
+	$.ajax({  
+		type : "post",  
+		url : "./php/updatecontact.php",  
+		data : {action:"delete",mail:mail},  
+		async : false,  
+		success : function(data){
+			//status = data;
+		}
+	}); 
+	//TODO:服务器删除联系人，将某个用户所有组中的这个联系人删除
   },
   makeGroups:function(groups,mail){
-    var updated = JSON.parse(JSON.stringify(this.state.contactors));
-    for(var i in groups){
-      updated[groups[i]].push(mail);
-    }
-    this.setState({contactors:updated});
+    //alert(groups)
     //TODO:将添加过后的联系人更新到服务器,其中groups是选中的组名，mail是被添加联系人的邮件
+	$.ajax({  
+		type : "post",  
+		url : "./php/updatecontact.php",  
+		data : {action:"add", mail:mail, groups:groups},  
+		async : false,  
+		success : function(data){
+			var updated = JSON.parse(JSON.stringify(this.state.contactors));
+			for(var i in groups){
+			  updated[groups[i]].push(mail);
+			}
+			this.setState({contactors:updated});
+		}
+	}); 
   },
 
   render: function(){

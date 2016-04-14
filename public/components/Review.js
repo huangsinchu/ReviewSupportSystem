@@ -347,7 +347,15 @@ var ReviewPanel = React.createClass({
 
     review.writer = this.props.id;
     review.task = this.props.task;
-    
+    $.ajax({  
+		type : "post",  
+		url : "./php/adddeficiency.php",  
+		data : review,  
+		async : false,  
+		success : function(data){
+			//status = data;
+		}
+	}); 
     //TODO:submit to server
     freshList.push(review);
     this.setState({reviewList:freshList});
@@ -376,7 +384,15 @@ var ReviewPanel = React.createClass({
         break;
       }
     }
-    //TODO:服务器更新编辑
+    $.ajax({
+		type : "post",  
+		url : "./php/updatedeficiency.php",  
+		data : {id:id, content:content},  
+		async : false,  
+		success : function(data){
+			//status = data;
+		}
+	});
   },
   render:function(){
     var reviews = [];
@@ -420,7 +436,7 @@ var ReviewPage = React.createClass({
   },
   componentDidMount: function() {
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -431,9 +447,27 @@ var ReviewPage = React.createClass({
       }.bind(this)
     });
     var query = location.search.substring(1);
+<<<<<<< HEAD
     var id = query.split("=")[1];
     
+=======
+	var id = 0;
+    id = query.split("=")[1];
+   // alert(id);
+>>>>>>> a693a82a4c8d2ae2e566fcbe2a6d61cdcd82004c
     //TODO:根据id获取review数据
+	$.ajax({
+      url: "./php/review.php?id="+id,//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({review: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+		window.location.href="./index.html";
+      }.bind(this)
+    });
   },
 
 

@@ -5,7 +5,6 @@ class review{
 	public $url;
 	public $type;
 	public $state;
-	#public $target;
 	public $content;
 }
 
@@ -14,10 +13,13 @@ if(!isset($_SESSION['uid'])){
 	echo "";
 }else{
 	require 'connect.php';
-	$sub_url = 'review?uid='.$_SESSION['uid'];
+	
+	$sub_url = 'invatation?uid='.$_SESSION['uid'];
 	$list = get_content($sub_url);
 	$arr = array();
-	foreach($list as $r){
+	foreach($list as $m){
+		$sub_url = 'review/'.$m->reviewId;
+		$r = get_content($sub_url);
 		$re = new review;
 		$re->id = $r->id;
 		$re->title = $r->title;
