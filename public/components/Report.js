@@ -131,6 +131,79 @@ var TaskDescription = React.createClass({
     }
 });
 
+/*用户阅读时间分布表*/
+var TimeChart = React.createClass({
+  componentDidMount:function() {
+    var people =  parseInt(this.props.analysis.people, 10);
+    var reviews = parseInt(this.props.analysis.reviews, 10);
+    var merged = parseInt(this.props.analysis.merged, 10);
+    var guess = parseInt(this.props.analysis.guess, 10); 
+    $(this.refs.chart).highcharts({                                           
+        chart: {                                                           
+            type: 'column'                                                    
+        },                                                                 
+        title: {                                                           
+            text: '阅读时间分布表'                    
+        },                                                                 
+        subtitle: {                                                        
+            text: ''                                  
+        },                                                                 
+        xAxis: {                                                           
+            categories: ['0～1小时', '1～2小时', '2～3小时', '3小时以上'],
+            title: {                                                       
+                text: null                                                 
+            }                                                              
+        },                                                                 
+        yAxis: {                                                           
+            min: 0,                                                        
+            title: {                                                       
+                text: '人数 (个)',                             
+                align: 'high'                                              
+            },                                                             
+            labels: {                                                      
+                overflow: 'justify'                                        
+            }                                                              
+        },                                                                 
+        tooltip: {                                                         
+            valueSuffix: 'h'                                       
+        },                                                                 
+        plotOptions: {                                                     
+            bar: {                                                         
+                dataLabels: {                                              
+                    enabled: true                                          
+                }                                                          
+            }                                                              
+        },                                                                 
+        legend: {                                                          
+            layout: 'vertical',                                            
+            align: 'right',                                                
+            verticalAlign: 'top',                                          
+            x: -40,                                                        
+            y: 100,                                                        
+            floating: true,                                                
+            borderWidth: 1,                                                
+            backgroundColor: '#708FA3',                                    
+            shadow: true                                                   
+        },                                                                 
+        credits: {                                                         
+            enabled: false                                                 
+        },                                                                 
+        series: [{                                                         
+            name: '个数',                                             
+            data: [people,reviews,merged,guess]                                   
+        }]                                                                 
+    });  
+
+  },
+  render:function(){
+    return(
+      <div className="col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1">
+        <div ref="chart"></div>
+      </div>
+    );
+  }
+});
+
 /*展示分析信息的图表*/
 var AnalysisChart = React.createClass({
   setTheme:function(){
@@ -474,8 +547,8 @@ var Report = React.createClass({
          type={this.state.review.type} state={this.state.review.state} content={this.state.review.content}/>
         </div>
 
-        
-          <AnalysisChart analysis={this.state.analysis} />
+        <TimeChart analysis={this.state.analysis} />
+        <AnalysisChart analysis={this.state.analysis} />
         
 
       </div>
