@@ -98,7 +98,7 @@ var Navbar = React.createClass({
 /*任务描述信息*/
 var TaskDescription = React.createClass({
     render:function(){
-      var state = this.props.state=="true"?"评审中":"评审结束";
+      var state = this.props.state?"评审中":"评审结束";
       return(
         <div className="tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1 shadow">
           <div className="row">
@@ -384,7 +384,7 @@ var ReviewPanel = React.createClass({
       var temp = <Review type={this.props.type} review={this.state.reviewList[i]} editReview={this.editReview} />;
       reviews.push(temp);
     }
-    var writer = this.props.state=="true"?<ReviewWriter type={this.props.type} addReview={this.addReview}/>:null;
+    var writer = this.props.state?<ReviewWriter type={this.props.type} addReview={this.addReview}/>:null;
 
     return(
       <div className="container">
@@ -413,7 +413,7 @@ var ReviewPage = React.createClass({
            "title":"陆云昊的毕业论文",
            "url":"https://www.github.com",
            "type":"文档评审",
-           "state":false,
+           "state":true,
            "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
           }
       };
@@ -432,7 +432,7 @@ var ReviewPage = React.createClass({
     });
     var query = location.search.substring(1);
     var id = query.split("=")[1];
-    alert(id);
+    
     //TODO:根据id获取review数据
   },
 
