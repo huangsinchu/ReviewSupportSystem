@@ -453,6 +453,14 @@ var Merge = React.createClass({
             "passworld":"123456",
             "group":["所有联系人","代码评审组","文档评审组","公司"]
           },
+          review:{
+            "id":"111",
+           "title":"陆云昊的毕业论文",
+           "url":"https://www.github.com",
+           "type":"文档评审",
+           "state":true,
+           "content":"论文内容"
+          },
           reviewList:[
           {
             "id":"1112",
@@ -812,16 +820,17 @@ var Merge = React.createClass({
     }
   },
   completeMerge:function(){
-    location.href = "report.html";
+    var target = "report.html?id="+ this.state.review.id;
+    location.href = target;
   },
 
   render: function(){
-    var id = localStorage["rs_id"];
-    var title = localStorage["rs_title"];
-    var url = localStorage["rs_url"];
-    var type = localStorage["rs_type"];
-    var state = localStorage["rs_state"];
-    var content = localStorage["rs_content"];
+    var id = this.state.review.id;
+    var title = this.state.review.title;
+    var url = this.state.review.url;
+    var type = this.state.review.type;
+    var state = this.state.review.state;
+    var content = this.state.review.content;
     
     return(
       <div>
