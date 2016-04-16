@@ -6,16 +6,15 @@ import javax.persistence.GenerationType;
 import javax.persistence.Id;
 
 @Entity
-public class Deficiency {
+public class Reading {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.IDENTITY)
 	private Long id;
 	private Long reviewId;
 	private Long userId;
-	private Long positionId;
-	private int status;
-	private String content;
+	private String startTime;
+	private String endTime;
 
 	public Long getId() {
 		return id;
@@ -41,28 +40,20 @@ public class Deficiency {
 		this.userId = userId;
 	}
 
-	public Long getPositionId() {
-		return positionId;
+	public String getStartTime() {
+		return startTime;
 	}
 
-	public void setPositionId(Long positionId) {
-		this.positionId = positionId;
+	public void setStartTime(String startTime) {
+		this.startTime = startTime;
 	}
 
-	public int getStatus() {
-		return status;
+	public String getEndTime() {
+		return endTime;
 	}
 
-	public void setStatus(int status) {
-		this.status = status;
-	}
-
-	public String getContent() {
-		return content;
-	}
-
-	public void setContent(String content) {
-		this.content = content;
+	public void setEndTime(String endTime) {
+		this.endTime = endTime;
 	}
 
 }

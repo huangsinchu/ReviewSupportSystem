@@ -15,6 +15,7 @@
 				<ref bean="GroupService" />
 				<ref bean="PositionService" />
 				<ref bean="InvatationService" />
+				<ref bean="ReadingService" />
 			</list>
 		</property>
 	</bean>

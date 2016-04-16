@@ -22,8 +22,8 @@ public class PositionServiceImpl implements PositionService {
 	}
 
 	@Override
-	public void createCodePosition(CodePosition codePosition) {
-		codePositionRepository.save(codePosition);
+	public Long createCodePosition(CodePosition codePosition) {
+		return codePositionRepository.save(codePosition).getId();
 	}
 
 	@Override
@@ -32,8 +32,8 @@ public class PositionServiceImpl implements PositionService {
 	}
 
 	@Override
-	public void createDocPosition(DocPosition docPosition) {
-		docPositionRepository.save(docPosition);
+	public Long createDocPosition(DocPosition docPosition) {
+		return docPositionRepository.save(docPosition).getId();
 	}
 
 }

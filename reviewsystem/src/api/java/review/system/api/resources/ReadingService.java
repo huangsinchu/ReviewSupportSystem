@@ -12,28 +12,22 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.QueryParam;
 import javax.ws.rs.core.MediaType;
 
-import review.system.api.model.ReviewCount;
-import review.system.entity.Review;
+import review.system.entity.Reading;
 
-@Path("/review")
+@Path("/reading")
 @Consumes(MediaType.APPLICATION_JSON)
 @Produces(MediaType.APPLICATION_JSON)
-public interface ReviewService {
+public interface ReadingService {
 
 	@GET
 	@Path("/{id}")
-	Review getReview(@PathParam("id") Long id);
+	Reading getReading(@PathParam("id") Long id);
 
 	@GET
 	@Path("/")
-	ArrayList<Review> getReviewByUser(@QueryParam("uid") Long uid);
+	ArrayList<Reading> getReadingByReview(@QueryParam("reviewId") Long reviewId);
 
 	@POST
 	@Path("/")
-	Long createReview(@Valid Review review);
-
-	@GET
-	@Path("/{id}/count")
-	ReviewCount getReviewCount(@PathParam("id") Long id);
-
+	Long createReading(@Valid Reading reading);
 }

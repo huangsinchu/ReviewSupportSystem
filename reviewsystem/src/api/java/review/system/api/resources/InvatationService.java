@@ -29,5 +29,5 @@ public interface InvatationService {
 
 	@POST
 	@Path("/")
-	void createInvatation(@Valid Invatation invatation);
+	Long createInvatation(@Valid Invatation invatation);
 }

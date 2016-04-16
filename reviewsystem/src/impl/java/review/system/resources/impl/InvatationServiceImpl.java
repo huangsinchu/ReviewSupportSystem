@@ -24,8 +24,8 @@ public class InvatationServiceImpl implements InvatationService {
 	}
 
 	@Override
-	public void createInvatation(Invatation invatation) {
-		invatationRepository.save(invatation);
+	public Long createInvatation(Invatation invatation) {
+		return invatationRepository.save(invatation).getId();
 	}
 
 }

@@ -70,8 +70,8 @@ public class EncrypDES3 {
 	public static void main(String[] args) {
 		try {
 			byte[] r = new EncrypDES3().Encrytor("Sakura");
-			String string = new String(new EncrypDES3().Decryptor(r), "GB2312");
-			System.out.println(string);
+			String string2 = new String(new EncrypDES3().Decryptor(r), "GB2312");
+			System.out.println(string2);
 		} catch (UnsupportedEncodingException e) {
 			e.printStackTrace();
 		}

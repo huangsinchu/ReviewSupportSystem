@@ -27,5 +27,5 @@ public interface UserService {
 
 	@POST
 	@Path("/")
-	void createUser(@Valid User user);
+	Long createUser(@Valid User user);
 }

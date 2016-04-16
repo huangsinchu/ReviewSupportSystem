@@ -31,7 +31,7 @@ public interface DeficiencyService {
 
 	@POST
 	@Path("/")
-	void createDeficiency(@Valid Deficiency deficiency);
+	Long createDeficiency(@Valid Deficiency deficiency);
 
 	@GET
 	@Path("/combine/{id}")

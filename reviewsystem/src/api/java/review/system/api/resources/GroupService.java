@@ -29,7 +29,7 @@ public interface GroupService {
 
 	@POST
 	@Path("/")
-	void createGroup(@Valid ContactGroup group);
+	Long createGroup(@Valid ContactGroup group);
 
 	@DELETE
 	@Path("/{id}")

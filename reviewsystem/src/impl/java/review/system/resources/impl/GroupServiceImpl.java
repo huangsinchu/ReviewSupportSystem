@@ -24,8 +24,8 @@ public class GroupServiceImpl implements GroupService {
 	}
 
 	@Override
-	public void createGroup(ContactGroup group) {
-		groupRepository.save(group);
+	public Long createGroup(ContactGroup group) {
+		return groupRepository.save(group).getId();
 	}
 
 	@Override

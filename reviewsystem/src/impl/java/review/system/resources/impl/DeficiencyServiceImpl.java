@@ -24,8 +24,8 @@ public class DeficiencyServiceImpl implements DeficiencyService {
 	}
 
 	@Override
-	public void createDeficiency(Deficiency deficiency) {
-		deficiencyRepository.save(deficiency);
+	public Long createDeficiency(Deficiency deficiency) {
+		return deficiencyRepository.save(deficiency).getId();
 	}
 
 	@Override

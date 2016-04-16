@@ -68,7 +68,7 @@ CREATE TABLE if not exists `deficiency` (
   `Id` bigint  NOT NULL auto_increment,
   `ReviewId` bigint NOT NULL,
   `UserId` bigint NOT NULL,
-  `PostionId` bigint NOT NULL,
+  `PositionId` bigint NOT NULL,
   `Status` int NOT NULL,
   `Content` varchar(400) NOT NULL,
   PRIMARY KEY (`Id`),
@@ -79,6 +79,16 @@ CREATE TABLE if not exists `deficiency_combination_record` (
   `Id` bigint  NOT NULL auto_increment,
   `DeficiencyId` bigint NOT NULL,
   `CombinedId` bigint NOT NULL,
+  PRIMARY KEY (`Id`),
+  UNIQUE KEY `id_UNIQUE` (`Id`)
+) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;
+
+CREATE TABLE if not exists `Reading` (
+  `Id` bigint  NOT NULL auto_increment,
+  `ReviewId` bigint NOT NULL,
+  `UserId` bigint NOT NULL,
+  `StartTime` varchar(50) NOT NULL,
+  `EndTime`  varchar(50) NOT NULL,
   PRIMARY KEY (`Id`),
   UNIQUE KEY `id_UNIQUE` (`Id`)
 ) ENGINE=InnoDB DEFAULT CHARSET=utf8mb4;

@@ -22,7 +22,7 @@ public interface PositionService {
 
 	@POST
 	@Path("/code/")
-	void createCodePosition(@Valid CodePosition codePosition);
+	Long createCodePosition(@Valid CodePosition codePosition);
 
 	@GET
 	@Path("/doc/{id}")
@@ -30,5 +30,5 @@ public interface PositionService {
 
 	@POST
 	@Path("/doc/")
-	void createDocPosition(@Valid DocPosition docPosition);
+	Long createDocPosition(@Valid DocPosition docPosition);
 }

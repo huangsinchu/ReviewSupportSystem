@@ -29,7 +29,7 @@ public interface ContactService {
 
 	@POST
 	@Path("/")
-	void createContact(@Valid Contact contact);
+	Long createContact(@Valid Contact contact);
 
 	@DELETE
 	@Path("/")
