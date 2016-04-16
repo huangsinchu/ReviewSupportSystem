@@ -5,19 +5,9 @@ var Navbar = React.createClass({
       return {
           messageList:[
             {"id":"111",
-            "title":"陆云昊的毕业论文",
-            "url":"https://www.github.com",
-            "type":"文档评审",
-            "state":true,
-            "content":"论文内容",
             "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"111",
-            "title":"陆云昊的毕业论文",
-            "url":"https://www.github.com",
-            "type":"文档评审",
-            "state":true,
-            "content":"论文内容",
-            "hint":"荣老师邀请你评审陆云昊大爷的文章"}
+            {"id":"112",
+            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
           ],
           hasMessage:false
 
@@ -25,11 +15,12 @@ var Navbar = React.createClass({
   },
   read:function(e){
     this.setState({hasMessage:false});
+    //TODO:标记信息已读
   },
 
   loadMessageFromServer:function(){
     $.ajax({
-    url: "",//TODO:complete with the url api
+    url: "./php/message.php",//TODO:complete with the url api
     dataType: 'json',
     cache: false,
     success: function(data) {
@@ -53,13 +44,8 @@ var Navbar = React.createClass({
         messages = this.state.messageList.map(function(message){
           var goReview = function(e){
           e.preventDefault();
-          localStorage["rs_id"] = message.id.toString();
-          localStorage["rs_title"] = message.title.toString();
-          localStorage["rs_url"] = message.url.toString();
-          localStorage["rs_type"] = message.type.toString();
-          localStorage["rs_state"] = message.state.toString();
-          localStorage["rs_content"] = message.content.toString();
-          location.href="review.html";
+          var target = "review.html?id=" + message.id.toString();
+          location.href=target;
 
         };
           return (
@@ -93,7 +79,7 @@ var Navbar = React.createClass({
               </ul>
           </li>
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+            <a className="dropdown-toggle" data-toggle="dropdown">
                {this.props.profile.name}<b className="caret"></b>
             </a>
             <ul className="dropdown-menu">
@@ -117,7 +103,8 @@ var EditPanel = React.createClass({
             "np":"form-group",
             "opHolder":"",
             "cpHolder":""
-          }
+          },
+          name:this.props.profile.name
       };
   },
 
@@ -135,19 +122,27 @@ var EditPanel = React.createClass({
       if(!op||!np||!cp){
         this.props.updateProfile(newProfile);
       } else {
-        if (op==this.props.profile.password){
-          if(np==cp){
+		if(np==cp){
             newProfile.password = np;
-            this.props.updateProfile(newProfile);
-            this.refs.op.value = "";
-            this.refs.np.value = "";
-            this.refs.cp.value = "";
-            var newState = this.state.inputState;
-            newState.op = "form-group has-success";
-            newState.np = "form-group has-success";
-            newState.opHolder = "密码修改成功";
-            newState.cpHolder = "";
-            this.setState({inputState:newState});
+            var sucess = this.props.updateProfile(op,newProfile);
+			if(sucess){
+				this.refs.op.value = "";
+				this.refs.np.value = "";
+				this.refs.cp.value = "";
+				var newState = this.state.inputState;
+				newState.op = "form-group has-success";
+				newState.np = "form-group has-success";
+				newState.opHolder = "密码修改成功";
+				newState.cpHolder = "";
+				this.setState({inputState:newState});
+			}else{
+				var newState = this.state.inputState;
+			  newState.op = "form-group has-error";
+			  this.refs.op.value = "";
+			  newState.opHolder = "原密码输入错误！";
+			  this.setState({inputState:newState});
+			}
+            
           }else{//np!=cp
             var newState = this.state.inputState;
             newState.op = "form-group";
@@ -158,16 +153,12 @@ var EditPanel = React.createClass({
             newState.cpHolder = "确认密码与新密码不一致！";
             this.setState({inputState:newState});
           }
-        } else { //wrong password
-          var newState = this.state.inputState;
-          newState.op = "form-group has-error";
-          this.refs.op.value = "";
-          newState.opHolder = "原密码输入错误！";
-          this.setState({inputState:newState});
-        }
+		
       }
   },
-
+  handleChange:function(event){
+    this.setState({value: event.target.value});
+  },
   render:function(){
     return(
       <div className="container">
@@ -177,7 +168,7 @@ var EditPanel = React.createClass({
         <div className="form-group">
           <label for="name-input" className="control-label col-sm-2 col-md-2 col-lg-2">昵称</label>
           <div className="col-sm-8 col-md-8 col-lg-8">
-            <input type="text" className="form-control" id="name-input" ref="name" defaultValue={this.props.profile.name} />
+            <input type="text" className="form-control" ref="name" value={this.state.name} onchange={this.handleChange}/>
           </div>
         </div>
 
@@ -225,7 +216,7 @@ var EditPanel = React.createClass({
 var InfoPage = React.createClass({
   componentDidMount: function() {
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -248,9 +239,25 @@ var InfoPage = React.createClass({
           } 
       };
   },
-  updateProfile:function(newProfile){
-    //TODO:update in server
-    this.setState({profile:newProfile});
+  updateProfile:function(op,newProfile){
+	var status = 2;
+	var p = newProfile;
+	p.oldpassword = op;
+    $.ajax({  
+		type : "post",  
+		url : "./php/updateuserinfo.php",  
+		data : p,  
+		async : false,  
+		success : function(data){
+			status = data;
+		}
+	}); 
+    if(status==1){
+		this.setState({profile:newProfile});
+		return ture;
+	}else{
+		return false;
+	}
   },
 
   render: function(){

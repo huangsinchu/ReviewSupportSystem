@@ -5,19 +5,9 @@ var Navbar = React.createClass({
       return {
           messageList:[
             {"id":"111",
-            "title":"陆云昊的毕业论文",
-            "url":"https://www.github.com",
-            "type":"文档评审",
-            "state":true,
-            "content":"论文内容",
             "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"111",
-            "title":"陆云昊的毕业论文",
-            "url":"https://www.github.com",
-            "type":"文档评审",
-            "state":true,
-            "content":"论文内容",
-            "hint":"荣老师邀请你评审陆云昊大爷的文章"}
+            {"id":"112",
+            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
           ],
           hasMessage:false
 
@@ -25,11 +15,12 @@ var Navbar = React.createClass({
   },
   read:function(e){
     this.setState({hasMessage:false});
+    //TODO:标记信息已读
   },
 
   loadMessageFromServer:function(){
     $.ajax({
-    url: "",//TODO:complete with the url api
+    url: "./php/message.php",//TODO:complete with the url api
     dataType: 'json',
     cache: false,
     success: function(data) {
@@ -53,13 +44,8 @@ var Navbar = React.createClass({
         messages = this.state.messageList.map(function(message){
           var goReview = function(e){
           e.preventDefault();
-          localStorage["rs_id"] = message.id.toString();
-          localStorage["rs_title"] = message.title.toString();
-          localStorage["rs_url"] = message.url.toString();
-          localStorage["rs_type"] = message.type.toString();
-          localStorage["rs_state"] = message.state.toString();
-          localStorage["rs_content"] = message.content.toString();
-          location.href="review.html";
+          var target = "review.html?id=" + message.id.toString();
+          location.href=target;
 
         };
           return (
@@ -93,7 +79,7 @@ var Navbar = React.createClass({
               </ul>
           </li>
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+            <a className="dropdown-toggle" data-toggle="dropdown">
                {this.props.profile.name}<b className="caret"></b>
             </a>
             <ul className="dropdown-menu">
@@ -108,7 +94,6 @@ var Navbar = React.createClass({
     );
   }
 });
-
 /*任务描述信息*/
 var TaskDescription = React.createClass({
     componentDidMount:function() {
@@ -467,6 +452,14 @@ var Merge = React.createClass({
             "mail":"maomao75979@gmail.com",
             "passworld":"123456",
             "group":["所有联系人","代码评审组","文档评审组","公司"]
+          },
+          review:{
+            "id":"111",
+           "title":"陆云昊的毕业论文",
+           "url":"https://www.github.com",
+           "type":"文档评审",
+           "state":true,
+           "content":"论文内容"
           },
           reviewList:[
           {
@@ -827,16 +820,17 @@ var Merge = React.createClass({
     }
   },
   completeMerge:function(){
-    location.href = "report.html";
+    var target = "report.html?id="+ this.state.review.id;
+    location.href = target;
   },
 
   render: function(){
-    var id = localStorage["rs_id"];
-    var title = localStorage["rs_title"];
-    var url = localStorage["rs_url"];
-    var type = localStorage["rs_type"];
-    var state = localStorage["rs_state"];
-    var content = localStorage["rs_content"];
+    var id = this.state.review.id;
+    var title = this.state.review.title;
+    var url = this.state.review.url;
+    var type = this.state.review.type;
+    var state = this.state.review.state;
+    var content = this.state.review.content;
     
     return(
       <div>

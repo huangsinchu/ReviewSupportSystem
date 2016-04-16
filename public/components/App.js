@@ -5,19 +5,9 @@ var Navbar = React.createClass({
       return {
           messageList:[
             {"id":"111",
-            "title":"陆云昊的毕业论文",
-            "url":"https://www.github.com",
-            "type":"文档评审",
-            "state":true,
-            "content":"论文内容",
             "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"111",
-            "title":"陆云昊的毕业论文",
-            "url":"https://www.github.com",
-            "type":"文档评审",
-            "state":true,
-            "content":"论文内容",
-            "hint":"荣老师邀请你评审陆云昊大爷的文章"}
+            {"id":"112",
+            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
           ],
           hasMessage:false
 
@@ -25,11 +15,12 @@ var Navbar = React.createClass({
   },
   read:function(e){
     this.setState({hasMessage:false});
+    //TODO:标记信息已读
   },
 
   loadMessageFromServer:function(){
     $.ajax({
-    url: "",//TODO:complete with the url api
+    url: "./php/message.php",//TODO:complete with the url api
     dataType: 'json',
     cache: false,
     success: function(data) {
@@ -53,13 +44,8 @@ var Navbar = React.createClass({
         messages = this.state.messageList.map(function(message){
           var goReview = function(e){
           e.preventDefault();
-          localStorage["rs_id"] = message.id.toString();
-          localStorage["rs_title"] = message.title.toString();
-          localStorage["rs_url"] = message.url.toString();
-          localStorage["rs_type"] = message.type.toString();
-          localStorage["rs_state"] = message.state.toString();
-          localStorage["rs_content"] = message.content.toString();
-          location.href="review.html";
+          var target = "review.html?id=" + message.id.toString();
+          location.href=target;
 
         };
           return (
@@ -93,7 +79,7 @@ var Navbar = React.createClass({
               </ul>
           </li>
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+            <a className="dropdown-toggle" data-toggle="dropdown">
                {this.props.profile.name}<b className="caret"></b>
             </a>
             <ul className="dropdown-menu">
@@ -108,7 +94,6 @@ var Navbar = React.createClass({
     );
   }
 });
-
 /*用于展示评审计划的展示框组件*/
 
  var ReviewPlan = React.createClass({
@@ -382,7 +367,7 @@ var ReviewList = React.createClass({
   },
   loadReviewsFromServer:function(){
     $.ajax({
-      url: "",//TODO:reviewPlan url
+      url: "./php/reviewlist.php",//TODO:reviewPlan url
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -402,6 +387,16 @@ var ReviewList = React.createClass({
     var newList = [newplan].concat(reviewPlans);
     
     //TODO:commit to server
+	$.ajax({  
+		type : "post",  
+		url : "./php/createreview.php",  
+		data : newplan,  
+		async : false,  
+		success : function(data){
+			//status = data;
+		}
+	}); 
+	
     this.setState({reviewPlanList:newList});
   },
   handleHideModal:function(){
@@ -423,7 +418,15 @@ var ReviewList = React.createClass({
           }
         }
         this.setState({reviewPlanList:reviewPlans});
-        //TODO:commit to server
+        $.ajax({  
+			type : "post",  
+			url : "./php/updatereview.php",  
+			data : newplan,  
+			async : false,  
+			success : function(data){
+				//status = data;
+		}
+	}); 
   },
 
   
@@ -467,7 +470,7 @@ var App = React.createClass({
 
   componentDidMount: function() {
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {

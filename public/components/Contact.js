@@ -5,19 +5,9 @@ var Navbar = React.createClass({
       return {
           messageList:[
             {"id":"111",
-            "title":"陆云昊的毕业论文",
-            "url":"https://www.github.com",
-            "type":"文档评审",
-            "state":true,
-            "content":"论文内容",
             "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"111",
-            "title":"陆云昊的毕业论文",
-            "url":"https://www.github.com",
-            "type":"文档评审",
-            "state":true,
-            "content":"论文内容",
-            "hint":"荣老师邀请你评审陆云昊大爷的文章"}
+            {"id":"112",
+            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
           ],
           hasMessage:false
 
@@ -25,11 +15,12 @@ var Navbar = React.createClass({
   },
   read:function(e){
     this.setState({hasMessage:false});
+    //TODO:标记信息已读
   },
 
   loadMessageFromServer:function(){
     $.ajax({
-    url: "",//TODO:complete with the url api
+    url: "./php/message.php",//TODO:complete with the url api
     dataType: 'json',
     cache: false,
     success: function(data) {
@@ -53,13 +44,8 @@ var Navbar = React.createClass({
         messages = this.state.messageList.map(function(message){
           var goReview = function(e){
           e.preventDefault();
-          localStorage["rs_id"] = message.id.toString();
-          localStorage["rs_title"] = message.title.toString();
-          localStorage["rs_url"] = message.url.toString();
-          localStorage["rs_type"] = message.type.toString();
-          localStorage["rs_state"] = message.state.toString();
-          localStorage["rs_content"] = message.content.toString();
-          location.href="review.html";
+          var target = "review.html?id=" + message.id.toString();
+          location.href=target;
 
         };
           return (
@@ -93,7 +79,7 @@ var Navbar = React.createClass({
               </ul>
           </li>
           <li className="dropdown">
-            <a href="#" className="dropdown-toggle" data-toggle="dropdown">
+            <a className="dropdown-toggle" data-toggle="dropdown">
                {this.props.profile.name}<b className="caret"></b>
             </a>
             <ul className="dropdown-menu">
@@ -175,8 +161,18 @@ var ContactPanel = React.createClass({
   },
   check:function(mail){
     var id = this.props.profile.id;
+	var status = 0;
     //TODO:检查服务器，没有该账户返回0，已经添加返回1，尚未添加返回2
-    return 2;
+	$.ajax({
+		type : "post",  
+		url : "./php/checkcontact.php",  
+        data : {mail:mail},  
+		async : false,  
+		success : function(data){
+			status = data;
+		}
+	});
+    return status;
   },
   search:function(e){
     e.preventDefault();
@@ -334,7 +330,7 @@ var ContactPage = React.createClass({
   },
   componentDidMount: function() {
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -345,7 +341,7 @@ var ContactPage = React.createClass({
       }.bind(this)
     });
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/contact.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -387,11 +383,13 @@ var ContactPage = React.createClass({
     
     //TODO:提交服务器
     $.ajax({
-      url: "",//TODO:get customer profile url
+	  type : "post",
+      url: "./php/updategroup.php",//TODO:get customer profile url
       dataType: 'json',
+	  data : {'groups':groups},
       cache: false,
       success: function(data) {
-        this.setState({profile: data});
+       // this.setState({profile: data});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error("", status, err.toString());//TODO:as same as above
@@ -410,15 +408,34 @@ var ContactPage = React.createClass({
       deleted[key] = updateList;
     }
     this.setState({contactors:deleted});
-    //TODO:服务器删除联系人，将某个用户所有组中的这个联系人删除
+    
+	$.ajax({  
+		type : "post",  
+		url : "./php/updatecontact.php",  
+		data : {action:"delete",mail:mail},  
+		async : false,  
+		success : function(data){
+			//status = data;
+		}
+	}); 
+	//TODO:服务器删除联系人，将某个用户所有组中的这个联系人删除
   },
   makeGroups:function(groups,mail){
-    var updated = JSON.parse(JSON.stringify(this.state.contactors));
-    for(var i in groups){
-      updated[groups[i]].push(mail);
-    }
-    this.setState({contactors:updated});
+    //alert(groups)
     //TODO:将添加过后的联系人更新到服务器,其中groups是选中的组名，mail是被添加联系人的邮件
+	$.ajax({  
+		type : "post",  
+		url : "./php/updatecontact.php",  
+		data : {action:"add", mail:mail, groups:groups},  
+		async : false,  
+		success : function(data){
+			var updated = JSON.parse(JSON.stringify(this.state.contactors));
+			for(var i in groups){
+			  updated[groups[i]].push(mail);
+			}
+			this.setState({contactors:updated});
+		}
+	}); 
   },
 
   render: function(){
