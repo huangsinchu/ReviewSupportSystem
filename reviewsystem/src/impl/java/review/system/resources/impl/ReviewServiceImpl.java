@@ -4,8 +4,6 @@ import java.util.ArrayList;
 
 import org.springframework.beans.factory.annotation.Autowired;
 
-import com.fasterxml.jackson.annotation.JsonIgnore;
-
 import review.system.api.model.ReviewCount;
 import review.system.api.resources.ReviewService;
 import review.system.entity.Deficiency;
@@ -57,6 +55,7 @@ public class ReviewServiceImpl implements ReviewService {
 				countedReviewer++;
 				deficiencyCount = 0;
 				combinedDeficiencyCount = 0;
+				previousUser = deficiency.getUserId();
 			}
 
 			if (deficiency.getStatus() == 200) {
@@ -81,11 +80,17 @@ public class ReviewServiceImpl implements ReviewService {
 
 		}
 
-		double p = (maxDeficiencyCount + maxCombinedDeficiencyCount)
-				/ maxCombinedDeficiencyCount;
-		double predictedDeficiencyCount = p
-				* (totalDeficiencyCount + totalCombinedDeficiencyCount
-						- maxDeficiencyCount - maxCombinedDeficiencyCount);
+		double predictedDeficiencyCount;
+
+		if (maxCombinedDeficiencyCount != 0) {
+			double p = (maxDeficiencyCount + maxCombinedDeficiencyCount)
+					/ maxCombinedDeficiencyCount;
+			predictedDeficiencyCount = p
+					* (totalDeficiencyCount + totalCombinedDeficiencyCount
+							- maxDeficiencyCount - maxCombinedDeficiencyCount);
+		} else {
+			predictedDeficiencyCount = 0;
+		}
 		ReviewCount reviewCount = new ReviewCount(countedReviewer,
 				totalDeficiencyCount + totalDeclainedDeficiencyCount
 						+ totalCombinedDeficiencyCount, totalDeficiencyCount
