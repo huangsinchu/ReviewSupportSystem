@@ -47,7 +47,18 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])){
 		$re->state = ($review->status==100);
 		$re->content = $review->description;
 		$json_text = json_encode($re);
+		
+		$startTime = date("ymdHis");
+		$endTime = date("ymdHis",strtotime("+1minutes",strtotime($startTime)));
+		$uid = $_SESSION['uid'];
+		$sub_url = 'reading/';
+		$data = json_encode(array('reviewId'=>$rid, 'userId'=>$uid, 'startTime'=>$startTime, 'endTime'=>$endTime));
+		$readingid = post_content($sub_url, $data);
+		$_SESSION['readingId'] = $readingid;
+		
 		echo $json_text;
+		
+		
 	}
 }
 ?>

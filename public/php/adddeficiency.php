@@ -56,5 +56,13 @@ if(isset($_SESSION['uid'])&&isset($_SESSION['rid'])&&isset($_SESSION['rtype'])){
 		}
 	}
 	
+	$readingId = $_SESSION['readingId'];
+	$sub_url = 'reading/'.$readingId;
+	$readingRecord = get_content($sub_url);
+	$readingRecord->endTime = date("ymdHis");
+	$sub_url = 'reading/';
+	$data = json_encode($readingRecord);
+	post_content($sub_url, $data);
+	
 }
 ?>
