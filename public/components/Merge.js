@@ -574,7 +574,7 @@ var Merge = React.createClass({
   },
   componentDidMount: function() {
     $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -585,7 +585,7 @@ var Merge = React.createClass({
       }.bind(this)
     });
      $.ajax({
-      url: "",//TODO:get customer profile url
+      url: "./php/deficiencylist.php",//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -651,7 +651,7 @@ var Merge = React.createClass({
     merged["children"] = children;
     var id;// 用来接受服务器的合并id
     $.ajax({
-      url: "",//TODO:将合并后的信息上传到服务器，服务器返回一个id，即合并的id;同时将被合并的合并评审删除
+      url: "./php/merge.php",//TODO:将合并后的信息上传到服务器，服务器返回一个id，即合并的id;同时将被合并的合并评审删除
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -753,27 +753,44 @@ var Merge = React.createClass({
     this.handleShowEditModal();
   },
   confirmEdition:function(id,content){
-    var updated = JSON.parse(JSON.stringify(this.state.reviewList));
-    for(var i =0;i < updated.length; i++){
-      if(updated[i].id == id){
-        updated[i].content = content;
-        this.setState({reviewList:updated});
-        break;
-      }
-    }
+    
+	$.ajax({  
+		type : "post",  
+		url : "./php/merge.php",  
+		data : {action:'edit', defiId:id, content:content},  
+		async : false,  
+		success : function(data){
+			var updated = JSON.parse(JSON.stringify(this.state.reviewList));
+			for(var i =0;i < updated.length; i++){
+				if(updated[i].id == id){
+					updated[i].content = content;
+					this.setState({reviewList:updated});
+					break;
+				}
+			}
+		}
+	}); 
     //TODO:服务器更新编辑
   },
 
   //将某个评审的状态从“评审”变成“被否决”
   deny:function(id){
-    var updated = JSON.parse(JSON.stringify(this.state.reviewList));
-    for(var i = 0;i < updated.length;i++){
-      if(updated[i].id==id){
-        updated[i].state = "被否决";
-        this.setState({reviewList:updated});
-        break;
-      }
-    }
+    $.ajax({ 
+		type : "post",  
+		url : "./php/merge.php",  
+		data : {action:'deny', defiId:id},  
+		async : false,  
+		success : function(data){
+			var updated = JSON.parse(JSON.stringify(this.state.reviewList));
+			for(var i = 0;i < updated.length;i++){
+				if(updated[i].id==id){
+					updated[i].state = "被否决";
+					this.setState({reviewList:updated});
+					break;
+				}
+			}
+		}
+	}); 
     //TODO:提交到服务器
   },
   split:function(id){
@@ -786,27 +803,43 @@ var Merge = React.createClass({
         index = i;
       }
     }
-    //删除被拆分的合并评审
-    updated.splice(index,1);
-    //TODO:通知服务器
-    //释放被合并的评审
-    for(var i =0;i < updated.length;i++){
-      if(children.indexOf(updated[i].id) >= 0){
-        updated[i].state = "评审";
-      }
-    }
-    this.setState({reviewList:updated});
+	$.ajax({ 
+		type : "post",  
+		url : "./php/merge.php",  
+		data : {action:'split', defiId:id},  
+		async : false,  
+		success : function(data){
+			 //删除被拆分的合并评审
+			updated.splice(index,1);
+			//TODO:通知服务器
+			//释放被合并的评审
+			for(var i =0;i < updated.length;i++){
+			  if(children.indexOf(updated[i].id) >= 0){
+				updated[i].state = "评审";
+			  }
+			}
+			this.setState({reviewList:updated});
+		}
+	}); 
   },
   //将某个评审的状态从“被否决”变成“评审”
   undo:function(id){
-    var updated = JSON.parse(JSON.stringify(this.state.reviewList));
-    for(var i = 0;i < updated.length;i++){
-      if(updated[i].id==id){
-        updated[i].state = "评审";
-        this.setState({reviewList:updated});
-        break;
-      }
-    }
+	$.ajax({ 
+		type : "post",  
+		url : "./php/merge.php",  
+		data : {action:'undeny', defiId:id},  
+		async : false,  
+		success : function(data){
+			var updated = JSON.parse(JSON.stringify(this.state.reviewList));
+			for(var i = 0;i < updated.length;i++){
+			  if(updated[i].id==id){
+				updated[i].state = "评审";
+				this.setState({reviewList:updated});
+				break;
+			  }
+			}
+		}
+	}); 
     //TODO:提交到服务器
   },
   updateChoose:function(id,state){

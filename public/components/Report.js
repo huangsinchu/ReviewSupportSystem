@@ -745,7 +745,44 @@ var Report = React.createClass({
     var query = location.search.substring(1);
     var id = query.split("=")[1];
     //TODO:根据id查询服务器,返回评审信息和CRC分析信息
-
+	$.ajax({
+      url: "./php/review.php?id="+id,//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({review: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+		window.location.href="./index.html";
+      }.bind(this)
+    });
+	
+	 $.ajax({
+      url: "./php/report.php?type=analysis&id="+id,//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({analysis: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+		window.location.href="./index.html";
+      }.bind(this)
+    });
+	
+	$.ajax({
+      url: "./php/report.php?type=time&id="+id,//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({time: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+		window.location.href="./index.html";
+      }.bind(this)
+    });
   },
 
   render: function(){
