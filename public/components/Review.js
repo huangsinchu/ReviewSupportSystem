@@ -334,7 +334,7 @@ var ReviewPanel = React.createClass({
     var id = query.split("=")[1];
 	
     $.ajax({
-      url: "./php/deficiencylist.php"+id,//TODO:get customer profile url
+      url: "./php/deficiencylist.php?type=review&id="+id,//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {

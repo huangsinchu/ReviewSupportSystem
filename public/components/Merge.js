@@ -584,8 +584,12 @@ var Merge = React.createClass({
         console.error("", status, err.toString());//TODO:as same as above
       }.bind(this)
     });
+	
+	var query = location.search.substring(1);
+    var id = query.split("=")[1];
+	
      $.ajax({
-      url: "./php/deficiencylist.php",//TODO:get customer profile url
+      url: "./php/deficiencylist.php?type=merge&id="+id,//TODO:get customer profile url
       dataType: 'json',
       cache: false,
       success: function(data) {
