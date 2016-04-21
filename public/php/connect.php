@@ -3,6 +3,7 @@ $GLOBALS['domain']='http://172.17.182.186:8989/application/';
 
 function get_content($sub_url){
 	$json_txt = file_get_contents($GLOBALS['domain'].$sub_url);
+	error_log("GET  ".$sub_url, 3, "connect.log");
 	return json_decode($json_txt);
 }
 

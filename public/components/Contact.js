@@ -327,10 +327,11 @@ var ContactPage = React.createClass({
           }
       };
   },
-  componentDidMount: function() {
+  componentWillMount: function() {
     $.ajax({
       url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
+	  async : false, 
       cache: false,
       success: function(data) {
         this.setState({profile: data});

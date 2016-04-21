@@ -156,7 +156,7 @@ var EditPanel = React.createClass({
       }
   },
   handleChange:function(event){
-    this.setState({value: event.target.value});
+    this.setState({name: event.target.value});
   },
   render:function(){
     return(
@@ -167,7 +167,7 @@ var EditPanel = React.createClass({
         <div className="form-group">
           <label for="name-input" className="control-label col-sm-2 col-md-2 col-lg-2">昵称</label>
           <div className="col-sm-8 col-md-8 col-lg-8">
-            <input type="text" className="form-control" ref="name" value={this.state.name} onchange={this.handleChange}/>
+            <input type="text" className="form-control" ref="name" value={this.state.name} onChange={this.handleChange}/>
           </div>
         </div>
 
@@ -213,9 +213,10 @@ var EditPanel = React.createClass({
 /*组装所有的组件的app*/
 
 var InfoPage = React.createClass({
-  componentDidMount: function() {
+  componentWillMount: function() {
     $.ajax({
       url: "./php/userinfo.php",//TODO:get customer profile url
+	  async : false, 
       dataType: 'json',
       cache: false,
       success: function(data) {
