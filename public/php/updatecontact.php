@@ -53,7 +53,7 @@ if(!assert($_SESSION['uid'])){
 				$sub_url = 'contact?groupId='.$gid;
 				$contactlist = get_content($sub_url);
 				foreach($contactlist as $contact){
-					if($userid==$contact->id){
+					if($userid==$contact->contactId){
 						$sub_url = 'contact?contactId='.$userid.'&groupId='.$gid;
 						delete_content($sub_url);
 					}

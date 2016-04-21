@@ -654,21 +654,25 @@ var Merge = React.createClass({
     merged["state"] = "合并";
     merged["content"] = content;
     merged["children"] = children;
+	
+	var post_data = merged;
+	post_data["action"] = "merge";
     var id;// 用来接受服务器的合并id
     $.ajax({
       url: "./php/merge.php",//TODO:将合并后的信息上传到服务器，服务器返回一个id，即合并的id;同时将被合并的合并评审删除
       dataType: 'json',
+	  data: post_data,
       cache: false,
       success: function(data) {
-        //id = data;
-        id = "22222";
+        id = data;
+        //id = "22222";
       }.bind(this),
       error: function(xhr, status, err) {
         //console.error("", status, err.toString())
-        id = "22222";
+       // id = "22222";
       }.bind(this)
     });
-    merged["id"] = "22222";
+    merged["id"] = id;
     var updated = JSON.parse(JSON.stringify(this.state.reviewList));
     var index;
     //删除被合并的合并评审

@@ -19,7 +19,7 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 		$sub_url = 'deficiency/'.$defiId;
 		$defi = get_content($sub_url);
 		$reviewId = $defi->reviewId;
-		if($!checkowner($reviewId)){
+		if(!checkowner($reviewId)){
 			header('HTTP/1.1 503 Service Unavailable');
 			header('Status: 503 Service Unavailable');
 		}else{
@@ -34,7 +34,7 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 		$sub_url = 'deficiency/'.$defiId;
 		$defi = get_content($sub_url);
 		$reviewId = $defi->reviewId;
-		if($!checkowner($reviewId)){
+		if(!checkowner($reviewId)){
 			header('HTTP/1.1 503 Service Unavailable');
 			header('Status: 503 Service Unavailable');
 		}else{
@@ -54,7 +54,7 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 		$sub_url = 'deficiency/'.$defiId;
 		$defi = get_content($sub_url);
 		$reviewId = $defi->reviewId;
-		if($!checkowner($reviewId)){
+		if(!checkowner($reviewId)){
 			header('HTTP/1.1 503 Service Unavailable');
 			header('Status: 503 Service Unavailable');
 		}else{

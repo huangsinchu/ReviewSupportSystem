@@ -1,4 +1,9 @@
 <?php
+class report{
+	public $type;
+	public $count;
+}
+
 session_start();
 if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 	header('HTTP/1.1 503 Service Unavailable');
@@ -32,11 +37,11 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 			$timerec = array();
 			foreach($recordlist as $record){
 				$user = $record->userId;
-				$lastTime = $record->endTime-$record->startTime;
+				$lastTime = (int)$record->endTime-(int)$record->startTime;
 				if(!isset($timerec[$user]))$timerec[$user]=0;
 				$timerec[$user]+=$lastTime;
 			}
-			$type = ("0~1Сʱ","1~2Сʱ","2��3Сʱ","3��4Сʱ","4Сʱ����");
+			$type = array("0~1小时","1~2小时","2～3小时","3～4小时","4小时以上");
 			$count = array(0,0,0,0,0);
 			foreach($timerec as $rec){
 				$hours = floor($rec/3600);

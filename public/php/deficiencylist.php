@@ -74,11 +74,13 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 			header('HTTP/1.1 503 Service Unavailable');
 			header('Status: 503 Service Unavailable');
 		}else{
+			$rtype = $review->type;
+			
 			$sub_url = 'deficiency?rid='.$rid;
 			$defilist = get_content($sub_url);
 			$arr = array();
 			foreach($defilist as $defi){
-				$d = new defi_merge();
+				$d = new defi_merge;
 				$d->id = $defi->id;
 				
 				$positionId = $defi->positionId;
@@ -95,9 +97,10 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 				}
 				
 				$sub_url = 'user/'.$defi->userId;
-				$d->reviewer = get_content($sub_url)->name;
+				$usr = get_content($sub_url);
+				$d->reviewer = $usr->name;
 				
-				$staus = $defi->status;
+				$status = $defi->status;
 				if($status==100){
 					$d->state = '评审';
 				}elseif($status==200){
@@ -117,6 +120,7 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 				}
 				
 				$d->content = $defi->content;
+				$arr[] = $d;
 			}
 			echo json_encode($arr);
 		}

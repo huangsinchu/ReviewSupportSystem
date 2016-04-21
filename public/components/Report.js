@@ -728,7 +728,7 @@ var Report = React.createClass({
       };
   },
 
-  componentDidMount: function() {
+  componentWillMount: function() {
     $.ajax({
       url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
@@ -764,6 +764,7 @@ var Report = React.createClass({
       url: "./php/report.php?type=analysis&id="+id,//TODO:get customer profile url
       dataType: 'json',
       cache: false,
+	  async : false,  
       success: function(data) {
         this.setState({analysis: data});
       }.bind(this),
@@ -777,6 +778,7 @@ var Report = React.createClass({
       url: "./php/report.php?type=time&id="+id,//TODO:get customer profile url
       dataType: 'json',
       cache: false,
+	  async : false,  
       success: function(data) {
         this.setState({time: data});
       }.bind(this),
