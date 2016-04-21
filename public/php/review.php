@@ -15,14 +15,14 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])){
 	header('Status: 503 Service Unavailable');
 }else{
 	require 'connect.php';
-	
+	$rid = $_GET['id'];
 	$sub_url = 'review/'.$rid;
 	$review = get_content($sub_url);
 	$re = new review;
 	$re->id = $review->id;
 	$re->title = $review->title;
 	$re->url = $review->address;
-	$_SESSION['rtype'] = $review->type;
+	
 	if($review->type==100){
 		$re->type = "文档评审";
 	}else{
@@ -37,7 +37,7 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])){
 	}else{
 		$sub_url = 'invatation?uid='.$_SESSION['uid'];
 		$list = get_content($sub_url);
-		$rid = $_GET['id'];
+		
 		$found = false;
 		foreach($list as $i){
 			if($i->reviewId==$rid){
@@ -50,7 +50,7 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])){
 			header('Status: 503 Service Unavailable');
 		}else{
 			$_SESSION['rid'] = $rid;
-			
+			$_SESSION['rtype'] = $review->type;
 			$startTime = strtotime("now");
 			$endTime = strtotime("+1 minute");
 			$uid = $_SESSION['uid'];

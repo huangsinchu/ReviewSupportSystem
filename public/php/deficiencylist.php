@@ -74,7 +74,7 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 			header('HTTP/1.1 503 Service Unavailable');
 			header('Status: 503 Service Unavailable');
 		}else{
-			$sub_url = 'deficiency?rid='$rid;
+			$sub_url = 'deficiency?rid='.$rid;
 			$defilist = get_content($sub_url);
 			$arr = array();
 			foreach($defilist as $defi){

@@ -449,8 +449,12 @@ var ReviewPage = React.createClass({
         console.error("", status, err.toString());//TODO:as same as above
       }.bind(this)
     });
-    var query = location.search.substring(1);
-    var id = query.split("=")[1];
+	
+	var id;
+	var reg = new RegExp("(^|&)id=([^&]*)(&|$)");
+	var r = window.location.search.substr(1).match(reg);
+    if (r != null) id= unescape(r[2]);
+	
     
     //TODO:根据id获取review数据
 	$.ajax({
@@ -462,7 +466,7 @@ var ReviewPage = React.createClass({
       }.bind(this),
       error: function(xhr, status, err) {
         console.error("", status, err.toString());//TODO:as same as above
-		window.location.href="./index.html";
+		//window.location.href="./index.html";
       }.bind(this)
     });
   },

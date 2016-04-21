@@ -742,8 +742,11 @@ var Report = React.createClass({
       }.bind(this)
     });
 
-    var query = location.search.substring(1);
-    var id = query.split("=")[1];
+    var id;
+	var reg = new RegExp("(^|&)id=([^&]*)(&|$)");
+	var r = window.location.search.substr(1).match(reg);
+    if (r != null) id= unescape(r[2]);
+	
     //TODO:根据id查询服务器,返回评审信息和CRC分析信息
 	$.ajax({
       url: "./php/review.php?id="+id,//TODO:get customer profile url
