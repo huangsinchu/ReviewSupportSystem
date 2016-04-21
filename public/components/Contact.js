@@ -34,7 +34,6 @@ var Navbar = React.createClass({
   },
   componentDidMount:function() {
     this.loadMessageFromServer();
-    setInterval(this.loadCommentsFromServer,3000);
   },
   render: function() {
     var unread = this.state.hasMessage?<span className="navbar-unread">1</span>:null;

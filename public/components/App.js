@@ -34,7 +34,6 @@ var Navbar = React.createClass({
   },
   componentDidMount:function() {
     this.loadMessageFromServer();
-    setInterval(this.loadCommentsFromServer,3000);
   },
   render: function() {
     var unread = this.state.hasMessage?<span className="navbar-unread">1</span>:null;
@@ -102,18 +101,13 @@ var Navbar = React.createClass({
   },
   merge:function(e){
     e.preventDefault();
-    localStorage["rs_id"] = this.props.reviewPlan.id.toString();
-    localStorage["rs_title"] = this.props.reviewPlan.title.toString();
-    localStorage["rs_url"] = this.props.reviewPlan.url.toString();
-    localStorage["rs_type"] = this.props.reviewPlan.type.toString();
-    localStorage["rs_state"] = this.props.reviewPlan.state.toString();
-    localStorage["rs_content"] = this.props.reviewPlan.content.toString();
-    location.href="merge.html";
+    var id = this.props.reviewPlan.id.toString();
+    location.href="merge.html?id="+id;
   },
   report:function(e){
     e.preventDefault();
-    localStorage["rs_id"] = this.props.reviewPlan.id.toString();
-    location.href="report.html";
+    var id = this.props.reviewPlan.id.toString();
+    location.href="report.html?id="+id;
   },
   render: function(){
   	var id = "#"+this.props.reviewPlan.id;
@@ -380,7 +374,6 @@ var ReviewList = React.createClass({
   },
   componentDidMount: function() {
     this.loadReviewsFromServer();
-    setInterval(this.loadReviewsFromServer,1000);
   },
   addReviewPlan:function(newplan){
     var reviewPlans = this.state.reviewPlanList;
