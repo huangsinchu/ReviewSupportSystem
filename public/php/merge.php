@@ -71,7 +71,20 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 	}elseif($action=='merge'){
 		
 	}elseif($action=='split'){
+		$defiId = $_POST['defiId'];
 		
+		$sub_url = 'deficiency/'.$defiId;
+		$defi = get_content($sub_url);
+		if(($defi->status!=200)||($defi->userId!=$_SESSION['uid'])){
+			header('HTTP/1.1 503 Service Unavailable');
+			header('Status: 503 Service Unavailable');
+		}else{
+			$sub_url = 'deficiency/'.$defiId;
+			delete_content($sub_url);
+			
+			$sub_url = 'deficiency/combine/'.$defiId;
+			delete_content($sub_url);
+		}
 	}
 }
 ?>
