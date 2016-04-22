@@ -108,11 +108,18 @@ var SignupForm = React.createClass({
 			this.props.hint();
 		} else if (status == 2){
 			this.refs.mail.value = "";
-			this.refs.name.value = "";
 			this.refs.password.value = "";
 			this.refs.passconfirm.value = "";
 			this.setState({mailState:"form-group has-error",
 	       		mailHolder:"邮箱已被注册",
+	       		passconfirmState:"form-group",
+	       		passconfirmHolder:"确认密码"});	
+		} else if (status == 3){
+			this.refs.mail.value = "";
+			this.refs.password.value = "";
+			this.refs.passconfirm.value = "";
+			this.setState({mailState:"form-group has-error",
+	       		mailHolder:"邮箱格式不正确",
 	       		passconfirmState:"form-group",
 	       		passconfirmHolder:"确认密码"});	
 		}
