@@ -223,13 +223,12 @@ var EditModal = React.createClass({
     var type = this.refs.type.value;
     var url = this.refs.url.value.trim();
     var content = this.refs.content.value.trim();
-    var target = this.refs.target.value;
     var state = $(this.refs.switch).is(":checked");
     if(!title||!content){
         return;
     }
     
-    var newplan = {"id":id,"title":title,"type":type,"url":url,"content":content,"target":target,"state":state};
+    var newplan = {"id":id,"title":title,"type":type,"url":url,"content":content,"state":state};
     
     this.props.updateReviewPlan(newplan);
 
@@ -245,11 +244,7 @@ var EditModal = React.createClass({
 
 	render: function(){
     var checkBox = this.props.reviewPlan.state?<input type="checkbox" ref="switch" data-toggle="switch" checked/>:<input ref="switch" type="checkbox" data-toggle="switch"/>;
-		var options = [];
-    for(var i =0;i < this.props.group.length;i++){
-      var temp = <option value={this.props.group[i]}>{this.props.group[i]}</option>;
-      options.push(temp);
-    }
+	
     return(
       	<div className="modal fade" ref="modal" tabIndex="-1" role="dialog">
   			<div className="modal-dialog modal-lg">
