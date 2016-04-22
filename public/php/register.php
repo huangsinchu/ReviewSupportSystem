@@ -26,8 +26,8 @@ if(!preg_match($pattern,$mail)){
 		}
 		
 		$faultmail = $str.":".$mail;
-		
-		$data = json_encode(array('emailAddress'=>$faultmail, 'name'=>$name, 'password'=>$password));
+		$md5 = md5($password);
+		$data = json_encode(array('emailAddress'=>$faultmail, 'name'=>$name, 'password'=>$md5));
 		$sub_url = 'user/';
 		$uid = post_content($sub_url, $data);
 		
