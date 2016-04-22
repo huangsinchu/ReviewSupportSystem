@@ -69,7 +69,63 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 			}
 		}
 	}elseif($action=='merge'){
+		$page = $_POST['page'];
+		$line = $_POST['row'];
+		$content = $_POST['content'];
+		$children = $_POST['children'];
+		$reviewId = 0;
+		foreach($children as $child){
+			$sub_url = 'deficiency/'.$child;
+			$defi = get_content($sub_url);
+			if($reviewId==0){
+				$reviewId = $defi->reviewId;
+			}elseif($reviewId!=$defi->reviewId){
+				return;
+			}
+		}
+		$sub_url = 'review/'.$reviewId;
+		$review = get_content($sub_url);
 		
+		if($_SESSION['uid']!=$review->userId){
+			header('HTTP/1.1 503 Service Unavailable');
+			header('Status: 503 Service Unavailable');
+		}else{
+			$sub_url = '';
+			if($review->type==100){
+				$sub_url = 'position/doc/';
+				$data = json_encode(array('page'=>$page, 'line'=>$line));
+			}elseif($review->type==200){
+				$sub_url = 'position/code/';
+				$data = json_encode(array('fileName'=>$page, 'line'=>$line));
+			}
+			$newPosiId = post_content($sub_url, $data);
+			
+			$sub_url = 'deficiency/';
+			$data = json_encode(array(
+				'reviewId'=>$reviewId, 
+				'userId'=>$_SESSION['uid'], 
+				'positionId'=>$newPosiId, 
+				'status'=>200, 
+				'content'=>$content
+			));
+			
+			$newDefiId = post_content($sub_url,$data);
+			
+			foreach($children as $child){
+				$sub_url = 'deficiency/'.$child;
+				$defi = get_content($sub_url);
+				$defi->status = 400;
+				$sub_url = 'deficiency/';
+				$data = json_encode($defi);
+				post_content($sub_url,$data);
+				
+				$sub_url = 'deficiency/combine/';
+				$data = json_encode(array('deficiencyId'=>$newDefiId, 'combinedId'=>$child));
+				post_content($sub_url,$data);
+			}
+			
+			echo $newDefiId;
+		}
 	}elseif($action=='split'){
 		$defiId = $_POST['defiId'];
 		
@@ -81,6 +137,18 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 		}else{
 			$sub_url = 'deficiency/'.$defiId;
 			delete_content($sub_url);
+			
+			$sub_url = 'deficiency/combine/'.$defiId;
+			$list = get_content($sub_url);
+			foreach($list as $combine){
+				$did = $combine->combinedId;
+				$sub_url = 'deficiency/'.$did;
+				$defi = get_content($sub_url);
+				$defi->status = 100;
+				$sub_url = 'deficiency/';
+				$data = json_encode($defi);
+				post_content($sub_url,$data);
+			}
 			
 			$sub_url = 'deficiency/combine/'.$defiId;
 			delete_content($sub_url);

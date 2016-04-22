@@ -594,7 +594,16 @@ var Merge = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data) {
+		var list = {};
+		for(var defi in data){
+			//console.log(data[defi].id);
+			var defiId = data[defi].id;
+			list[defiId]=false;
+		}
+		
+		//console.log(list);
         this.setState({reviewList: data});
+		this.setState({chooseList: list});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error("", status, err.toString());//TODO:as same as above
@@ -610,6 +619,7 @@ var Merge = React.createClass({
 
     for(var key in this.state.chooseList){
       if(this.state.chooseList[key]){
+		console.log(key);
         count++;
         var po = {};
         for(var i =0;i < this.state.reviewList.length;i++){
@@ -625,6 +635,7 @@ var Merge = React.createClass({
     if(count<=1){
       return;
     }
+	//alert("1321");
     this.setState({pos:updatedPos,contents:updatedContents});
     this.handleShowModal();
   },
@@ -661,6 +672,7 @@ var Merge = React.createClass({
     $.ajax({
       url: "./php/merge.php",//TODO:将合并后的信息上传到服务器，服务器返回一个id，即合并的id;同时将被合并的合并评审删除
       dataType: 'json',
+	  type : "post",  
 	  data: post_data,
       cache: false,
       success: function(data) {

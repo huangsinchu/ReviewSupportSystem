@@ -1,6 +1,6 @@
 <?php
 $GLOBALS['domain']='http://172.17.182.186:8989/application/';
-$GLOBALS['enablelog']=true;
+$GLOBALS['enablelog']=false;
 
 function get_content($sub_url){
 	$json_txt = file_get_contents($GLOBALS['domain'].$sub_url);

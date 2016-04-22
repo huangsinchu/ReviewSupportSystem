@@ -16,6 +16,49 @@ class defi_merge{
 	public $children;
 }
 
+function compare($a,$b){
+	if($a->page==$b->page){
+		return $a->row<$b->row;
+	}else{
+		return $a->page<$b->page;
+	}
+}
+
+function fastsort($left,$right,&$list){
+	$judge = $list[$right];
+	$i=$left;
+	$j=$right-1;
+	while($i<=$j){
+		if(compare($list[$i],$judge)){
+			if(compare($list[$j],$judge)){
+				$i+=1;
+			}else{
+				$i+=1;
+				$j-=1;
+			}
+		}else{
+			if(compare($list[$j],$judge)){
+				$tmp = $list[$i];
+				$list[$i] = $list[$j];
+				$list[$j] = $tmp;
+				$i+=1;
+				$j-=1;
+			}else{
+				$j-=1;
+			}
+		}
+	}
+	$list[$right] = $list[$i];
+	$list[$i] = $judge;
+	if($left<$i-1)fastsort($left,$i-1,$list);
+	if($i+1<$right)fastsort($i+1,$right,$list);
+}
+
+function sortdefi(&$list){
+	$n = sizeof($list);
+	fastsort(0,$n-1,$list);
+}
+
 session_start();
 if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 	header('HTTP/1.1 503 Service Unavailable');
@@ -64,6 +107,7 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 					$d->content = $defi->content;
 					$arr[] = $d;
 				}
+				sortdefi($arr);
 				echo json_encode($arr);
 			}
 		}
@@ -106,7 +150,7 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 				}elseif($status==200){
 					$d->state = '合并';
 					$sub_url = 'deficiency/combine/'.$defi->id;
-					$childlist = get_content;
+					$childlist = get_content($sub_url);
 					$child = array();
 					foreach($childlist as $c){
 						$child[] = $c->combinedId;
@@ -122,6 +166,8 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 				$d->content = $defi->content;
 				$arr[] = $d;
 			}
+			
+			sortdefi($arr);
 			echo json_encode($arr);
 		}
 	}
