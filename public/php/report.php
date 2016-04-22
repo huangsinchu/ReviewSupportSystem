@@ -41,17 +41,40 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 				if(!isset($timerec[$user]))$timerec[$user]=0;
 				$timerec[$user]+=$lastTime;
 			}
-			$type = array("0~1小时","1~2小时","2～3小时","3～4小时","4小时以上");
-			$count = array(0,0,0,0,0);
-			foreach($timerec as $rec){
-				$hours = floor($rec/3600);
-				if($hours<=3){
-					$count[$hours]+=1;
-				}else{
-					$count[4]+=1;
+			
+			$name = array();
+			$count = array();
+			foreach($timerec as $rec=>$rec_value){
+				$sub_url = 'user/'.$rec;
+				$usr = get_content($sub_url);
+				$name[] = $usr->name;
+				$count[] = round($rec_value/3600,2);
+			}
+			
+			$json_text = json_encode(array('name'=>$name, 'count'=>$count));
+			echo $json_text;
+		}elseif($type=='defiDistribution'){
+			$sub_url = 'deficiency?rid='.$reviewid;
+			$defilist = get_content($sub_url);
+			$defirec = array();
+			foreach($defilist as $defi){
+				$user = $defi->userId;
+				if(($defi->status==100)||($defi->status==400)){
+					if(!isset($defirec[$user]))$defirec[$user]=0;
+					$defirec[$user]+=1;
 				}
 			}
-			$json_text = json_encode(array('type'=>$type, 'count'=>$count));
+			
+			$name = array();
+			$count = array();
+			foreach($defirec as $rec=>$rec_value){
+				$sub_url = 'user/'.$rec;
+				$usr = get_content($sub_url);
+				$name[] = $usr->name;
+				$count[] = $rec_value;
+			}
+			
+			$json_text = json_encode(array('name'=>$name, 'count'=>$count));
 			echo $json_text;
 		}
 	}
