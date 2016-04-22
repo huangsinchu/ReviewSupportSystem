@@ -123,8 +123,8 @@ var EditPanel = React.createClass({
       } else {
 		if(np==cp){
             newProfile.password = np;
-            var sucess = this.props.updateProfile(op,newProfile);
-			if(sucess){
+            var status = this.props.updateProfile(op,newProfile);
+			if(status==1){
 				this.refs.op.value = "";
 				this.refs.np.value = "";
 				this.refs.cp.value = "";
@@ -213,9 +213,10 @@ var EditPanel = React.createClass({
 /*组装所有的组件的app*/
 
 var InfoPage = React.createClass({
-  componentDidMount: function() {
+  componentWillMount: function() {
     $.ajax({
       url: "./php/userinfo.php",//TODO:get customer profile url
+	  async : false, 
       dataType: 'json',
       cache: false,
       success: function(data) {
@@ -251,13 +252,9 @@ var InfoPage = React.createClass({
 		success : function(data){
 			status = data;
 		}
-	}); 
-    if(status==1){
-		this.setState({profile:newProfile});
-		return ture;
-	}else{
-		return false;
-	}
+	});
+
+	return status;
   },
 
   render: function(){

@@ -1,8 +1,13 @@
 <?php
 $GLOBALS['domain']='http://172.17.182.186:8989/application/';
+$GLOBALS['enablelog']=false;
 
 function get_content($sub_url){
 	$json_txt = file_get_contents($GLOBALS['domain'].$sub_url);
+	if($GLOBALS['enablelog']){
+		$log = date("[y-m-d H:i:s]")."GET    ".$sub_url."\n";
+		error_log($log, 3, "connect.log");
+	}
 	return json_decode($json_txt);
 }
 
@@ -19,6 +24,12 @@ function post_content($sub_url,$data){
 	curl_exec($ch);  
 	$return_content = ob_get_contents();  
 	ob_end_clean();
+	
+	if($GLOBALS['enablelog']){
+		$log = date("[y-m-d H:i:s]")."POST   ".$sub_url." ".$data."\n";
+		error_log($log, 3, "connect.log");
+	}	
+	
 	return $return_content;
 	#return json_decode($return_content);
 	
@@ -35,6 +46,12 @@ function delete_content($sub_url){
 	curl_exec($ch);  
 	$return_content = ob_get_contents();  
 	ob_end_clean();
+	
+	if($GLOBALS['enablelog']){
+		$log = date("[y-m-d H:i:s]")."DELETE ".$sub_url."\n";
+		error_log($log, 3, "connect.log");
+	}
+	
 	return $return_content;
 }
 ?>	

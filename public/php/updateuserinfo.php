@@ -16,6 +16,7 @@ if($user==null){
 	$data = json_encode(array('id'=>$id, 'emailAddress'=>$_SESSION['logged_mail'], 'name'=>$name, 'password'=>$password));
 	$sub_url = 'user/';
 	post_content($sub_url, $data);
+	$_SESSION['name'] = $name;
 	echo 1;
 }
 ?>

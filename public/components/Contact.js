@@ -327,10 +327,11 @@ var ContactPage = React.createClass({
           }
       };
   },
-  componentDidMount: function() {
+  componentWillMount: function() {
     $.ajax({
       url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
+	  async : false, 
       cache: false,
       success: function(data) {
         this.setState({profile: data});
@@ -420,6 +421,7 @@ var ContactPage = React.createClass({
 	//TODO:服务器删除联系人，将某个用户所有组中的这个联系人删除
   },
   makeGroups:function(groups,mail){
+	var sucess = false;
     //alert(groups)
     //TODO:将添加过后的联系人更新到服务器,其中groups是选中的组名，mail是被添加联系人的邮件
 	$.ajax({  
@@ -428,13 +430,16 @@ var ContactPage = React.createClass({
 		data : {action:"add", mail:mail, groups:groups},  
 		async : false,  
 		success : function(data){
-			var updated = JSON.parse(JSON.stringify(this.state.contactors));
-			for(var i in groups){
-			  updated[groups[i]].push(mail);
-			}
-			this.setState({contactors:updated});
+			
 		}
 	}); 
+	if(sucess){
+		var updated = JSON.parse(JSON.stringify(this.state.contactors));
+		for(var i in groups){
+		  updated[groups[i]].push(mail);
+		}
+		this.setState({contactors:updated});
+	}
   },
 
   render: function(){

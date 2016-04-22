@@ -17,7 +17,7 @@ if(isset($_SESSION['uid'])){
 	$url = $_POST['url'];
 	$content = $_POST['content'];
 	#$target = $_POST['target'];
-	$state = $_POST['state'];
+	$state = $_POST['state']=='true';
 
 	$re = new review;
 	$re->id = $rid;
@@ -25,10 +25,14 @@ if(isset($_SESSION['uid'])){
 	$re->title = $title;
 	$re->address = $url;
 	$re->description = $content;
-	$re->status = $state?100:200;
-	if($type=="ÎÄµµÆÀÉó"){
+	if($state){
+		$re->status = 100;
+	}else{
+		$re->status = 200;
+	}
+	if($type=="æ–‡æ¡£è¯„å®¡"){
 		$re->type = 100;
-	}elseif($type=="´úÂëÆÀÉó"){
+	}elseif($type=="ä»£ç è¯„å®¡"){
 		$re->type = 200;
 	}else{
 		$re->type = 100;

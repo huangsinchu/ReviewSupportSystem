@@ -594,7 +594,16 @@ var Merge = React.createClass({
       dataType: 'json',
       cache: false,
       success: function(data) {
+		var list = {};
+		for(var defi in data){
+			//console.log(data[defi].id);
+			var defiId = data[defi].id;
+			list[defiId]=false;
+		}
+		
+		//console.log(list);
         this.setState({reviewList: data});
+		this.setState({chooseList: list});
       }.bind(this),
       error: function(xhr, status, err) {
         console.error("", status, err.toString());//TODO:as same as above
@@ -610,6 +619,7 @@ var Merge = React.createClass({
 
     for(var key in this.state.chooseList){
       if(this.state.chooseList[key]){
+		console.log(key);
         count++;
         var po = {};
         for(var i =0;i < this.state.reviewList.length;i++){
@@ -625,6 +635,7 @@ var Merge = React.createClass({
     if(count<=1){
       return;
     }
+	//alert("1321");
     this.setState({pos:updatedPos,contents:updatedContents});
     this.handleShowModal();
   },
@@ -654,21 +665,26 @@ var Merge = React.createClass({
     merged["state"] = "合并";
     merged["content"] = content;
     merged["children"] = children;
+	
+	var post_data = merged;
+	post_data["action"] = "merge";
     var id;// 用来接受服务器的合并id
     $.ajax({
       url: "./php/merge.php",//TODO:将合并后的信息上传到服务器，服务器返回一个id，即合并的id;同时将被合并的合并评审删除
       dataType: 'json',
+	  type : "post",  
+	  data: post_data,
       cache: false,
       success: function(data) {
-        //id = data;
-        id = "22222";
+        id = data;
+        //id = "22222";
       }.bind(this),
       error: function(xhr, status, err) {
         //console.error("", status, err.toString())
-        id = "22222";
+       // id = "22222";
       }.bind(this)
     });
-    merged["id"] = "22222";
+    merged["id"] = id;
     var updated = JSON.parse(JSON.stringify(this.state.reviewList));
     var index;
     //删除被合并的合并评审
@@ -758,45 +774,53 @@ var Merge = React.createClass({
     this.handleShowEditModal();
   },
   confirmEdition:function(id,content){
-    
+    var sucess = false;
 	$.ajax({  
 		type : "post",  
 		url : "./php/merge.php",  
 		data : {action:'edit', defiId:id, content:content},  
 		async : false,  
 		success : function(data){
-			var updated = JSON.parse(JSON.stringify(this.state.reviewList));
-			for(var i =0;i < updated.length; i++){
-				if(updated[i].id == id){
-					updated[i].content = content;
-					this.setState({reviewList:updated});
-					break;
-				}
-			}
+			sucess = true;
 		}
 	}); 
     //TODO:服务器更新编辑
+	if(sucess){
+		var updated = JSON.parse(JSON.stringify(this.state.reviewList));
+		for(var i =0;i < updated.length; i++){
+			if(updated[i].id == id){
+				updated[i].content = content;
+				this.setState({reviewList:updated});
+				break;
+			}
+		}
+	}
   },
 
   //将某个评审的状态从“评审”变成“被否决”
   deny:function(id){
+	var sucess = false;
     $.ajax({ 
 		type : "post",  
 		url : "./php/merge.php",  
 		data : {action:'deny', defiId:id},  
 		async : false,  
 		success : function(data){
-			var updated = JSON.parse(JSON.stringify(this.state.reviewList));
-			for(var i = 0;i < updated.length;i++){
-				if(updated[i].id==id){
-					updated[i].state = "被否决";
-					this.setState({reviewList:updated});
-					break;
-				}
-			}
+			sucess = true;
 		}
 	}); 
     //TODO:提交到服务器
+	if(sucess){
+		var updated = JSON.parse(JSON.stringify(this.state.reviewList));
+		for(var i = 0;i < updated.length;i++){
+			if(updated[i].id==id){
+				updated[i].state = "被否决";
+				this.setState({reviewList:updated});
+				break;
+			}
+		}	
+	}
+	
   },
   split:function(id){
     var updated = JSON.parse(JSON.stringify(this.state.reviewList));
@@ -808,44 +832,53 @@ var Merge = React.createClass({
         index = i;
       }
     }
+	var sucess = false;
 	$.ajax({ 
 		type : "post",  
 		url : "./php/merge.php",  
 		data : {action:'split', defiId:id},  
 		async : false,  
 		success : function(data){
-			 //删除被拆分的合并评审
-			updated.splice(index,1);
-			//TODO:通知服务器
-			//释放被合并的评审
-			for(var i =0;i < updated.length;i++){
-			  if(children.indexOf(updated[i].id) >= 0){
-				updated[i].state = "评审";
-			  }
-			}
-			this.setState({reviewList:updated});
+			sucess = true;
 		}
 	}); 
+	if(sucess){
+		 //删除被拆分的合并评审
+		updated.splice(index,1);
+		//TODO:通知服务器
+		//释放被合并的评审
+		for(var i =0;i < updated.length;i++){
+		  if(children.indexOf(updated[i].id) >= 0){
+			updated[i].state = "评审";
+		  }
+		}
+		this.setState({reviewList:updated});
+	}
   },
   //将某个评审的状态从“被否决”变成“评审”
   undo:function(id){
+	var sucess = false;
 	$.ajax({ 
 		type : "post",  
 		url : "./php/merge.php",  
 		data : {action:'undeny', defiId:id},  
 		async : false,  
 		success : function(data){
-			var updated = JSON.parse(JSON.stringify(this.state.reviewList));
-			for(var i = 0;i < updated.length;i++){
-			  if(updated[i].id==id){
-				updated[i].state = "评审";
-				this.setState({reviewList:updated});
-				break;
-			  }
-			}
+			sucess = true;
 		}
 	}); 
     //TODO:提交到服务器
+	
+	if(sucess){
+		var updated = JSON.parse(JSON.stringify(this.state.reviewList));
+		for(var i = 0;i < updated.length;i++){
+		if(updated[i].id==id){
+			updated[i].state = "评审";
+			this.setState({reviewList:updated});
+			break;
+		  }
+		}
+	}
   },
   updateChoose:function(id,state){
     var updated = JSON.parse(JSON.stringify(this.state.chooseList));
