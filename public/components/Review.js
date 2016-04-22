@@ -18,8 +18,13 @@ var Navbar = React.createClass({
     //TODO:标记信息已读
   },
   logOut:function(e){
-    Session['logged_mail'] = null;
-    href.location = "login.html";
+    $.ajax({
+		url: "./php/logout.php",
+		async : false,  
+		success : function(data){
+			 window.location.href = "./login.html";
+		}
+	});
   },
 
   loadMessageFromServer:function(){
