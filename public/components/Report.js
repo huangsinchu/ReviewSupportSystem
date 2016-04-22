@@ -17,6 +17,10 @@ var Navbar = React.createClass({
     this.setState({hasMessage:false});
     //TODO:标记信息已读
   },
+  logOut:function(e){
+    Session['logged_mail'] = null;
+    href.location = "login.html";
+  },
 
   loadMessageFromServer:function(){
     $.ajax({
@@ -84,6 +88,7 @@ var Navbar = React.createClass({
             <ul className="dropdown-menu">
                <li><a href="contact.html">联系人</a></li>
                <li><a href="info.html">账号信息</a></li>
+               <li><a href="#" onClick={this.logOut}>账号信息</a></li>
             </ul>
          </li>
       </ul>
@@ -93,7 +98,6 @@ var Navbar = React.createClass({
     );
   }
 });
-
 /*任务描述信息*/
 var TaskDescription = React.createClass({
     render:function(){
@@ -359,7 +363,7 @@ Highcharts.setOptions(Highcharts.theme);
             text: '基于CRC算法'                                  
         },                                                                 
         xAxis: {                                                           
-            categories: ['评审人数', '评审数', '合并后评审数', '预计剩余缺陷'],
+            categories: ['评审人数', '缺陷数', '合并后缺陷数', '预计剩余缺陷'],
             title: {                                                       
                 text: null                                                 
             }                                                              
@@ -639,7 +643,7 @@ Highcharts.setOptions(Highcharts.theme);
             text: ''                                  
         },                                                                 
         xAxis: {                                                           
-            categories: this.props.time.type,
+            categories: this.props.time.names,
             title: {                                                       
                 text: null                                                 
             }                                                              
@@ -647,7 +651,287 @@ Highcharts.setOptions(Highcharts.theme);
         yAxis: {                                                           
             min: 0,                                                        
             title: {                                                       
-                text: '人数 (个)',                             
+                text: '时间 (小时)',                             
+                align: 'high'                                              
+            },                                                             
+            labels: {                                                      
+                overflow: 'justify'                                        
+            }                                                              
+        },                                                                 
+        tooltip: {                                                         
+            valueSuffix: '小时'                                       
+        },                                                                 
+        plotOptions: {                                                     
+            bar: {                                                         
+                dataLabels: {                                              
+                    enabled: true                                          
+                }                                                          
+            }                                                              
+        },                                                                 
+        legend: {                                                          
+            layout: 'vertical',                                            
+            align: 'right',                                                
+            verticalAlign: 'top',                                          
+            x: -40,                                                        
+            y: 100,                                                        
+            floating: true,                                                
+            borderWidth: 1,                                                
+            backgroundColor: '#34495E',                                    
+            shadow: true                                                   
+        },                                                                 
+        credits: {                                                         
+            enabled: false                                                 
+        },                                                                 
+        series: [{                                                         
+            name: '时间',                                             
+            data: this.props.time.count                                  
+        }]                                                                 
+    });  
+
+  },
+  render:function(){
+    return(
+      <div className="col-lg-12 col-md-12 col-sm-12">
+        <div ref="chart"></div>
+      </div>
+    );
+  }
+});
+
+/*用户独立发现的缺陷的统计表*/
+var DeficicencyChart = React.createClass({
+  setTheme:function(){
+    Highcharts.createElement('link', {
+    href: '/../css/unica.css',
+    rel: 'stylesheet',
+    type: 'text/css'
+  }, null, document.getElementsByTagName('head')[0]);
+
+  Highcharts.theme = {
+    colors: ["#2b908f", "#90ee7e", "#f45b5b", "#7798BF", "#aaeeee", "#ff0066", "#eeaaee",
+      "#55BF3B", "#DF5353", "#7798BF", "#aaeeee"],
+    chart: {
+      backgroundColor: {
+        linearGradient: { x1: 0, y1: 0, x2: 1, y2: 1 },
+        stops: [
+          [0, '#34495E'],
+          [1, '#34495E']
+        ]
+      },
+      style: {
+        fontFamily: "'Unica One', sans-serif"
+      },
+      plotBorderColor: '#606063'
+    },
+    title: {
+      style: {
+        color: '#E0E0E3',
+        textTransform: 'uppercase',
+        fontSize: '20px'
+      }
+    },
+    subtitle: {
+      style: {
+        color: '#E0E0E3',
+        textTransform: 'uppercase'
+      }
+    },
+    xAxis: {
+      gridLineColor: '#707073',
+      labels: {
+        style: {
+          color: '#E0E0E3'
+        }
+      },
+      lineColor: '#707073',
+      minorGridLineColor: '#505053',
+      tickColor: '#707073',
+      title: {
+        style: {
+          color: '#A0A0A3'
+  
+        }
+      }
+    },
+    yAxis: {
+      gridLineColor: '#707073',
+      labels: {
+        style: {
+          color: '#E0E0E3'
+        }
+      },
+      lineColor: '#707073',
+      minorGridLineColor: '#505053',
+      tickColor: '#707073',
+      tickWidth: 1,
+      title: {
+        style: {
+          color: '#A0A0A3'
+        }
+      }
+    },
+    tooltip: {
+      backgroundColor: 'rgba(0, 0, 0, 0.85)',
+      style: {
+        color: '#F0F0F0'
+      }
+    },
+    plotOptions: {
+      series: {
+        dataLabels: {
+          color: '#B0B0B3'
+        },
+        marker: {
+          lineColor: '#333'
+        }
+      },
+      boxplot: {
+        fillColor: '#505053'
+      },
+      candlestick: {
+        lineColor: 'white'
+      },
+      errorbar: {
+        color: 'white'
+      }
+    },
+    legend: {
+      itemStyle: {
+        color: '#E0E0E3'
+      },
+      itemHoverStyle: {
+        color: '#FFF'
+      },
+      itemHiddenStyle: {
+        color: '#606063'
+      }
+    },
+    credits: {
+      style: {
+        color: '#666'
+      }
+    },
+    labels: {
+      style: {
+        color: '#707073'
+      }
+    },
+  
+    drilldown: {
+      activeAxisLabelStyle: {
+        color: '#F0F0F3'
+      },
+      activeDataLabelStyle: {
+        color: '#F0F0F3'
+      }
+    },
+  
+    navigation: {
+      buttonOptions: {
+        symbolStroke: '#DDDDDD',
+        theme: {
+          fill: '#505053'
+        }
+      }
+    },
+
+  // scroll charts
+  rangeSelector: {
+    buttonTheme: {
+      fill: '#505053',
+      stroke: '#000000',
+      style: {
+        color: '#CCC'
+      },
+      states: {
+        hover: {
+          fill: '#707073',
+          stroke: '#000000',
+          style: {
+            color: 'white'
+          }
+        },
+        select: {
+          fill: '#000003',
+          stroke: '#000000',
+          style: {
+            color: 'white'
+          }
+        }
+      }
+    },
+    inputBoxBorderColor: '#505053',
+    inputStyle: {
+      backgroundColor: '#333',
+      color: 'silver'
+    },
+    labelStyle: {
+      color: 'silver'
+    }
+  },
+
+  navigator: {
+    handles: {
+      backgroundColor: '#666',
+      borderColor: '#AAA'
+    },
+    outlineColor: '#CCC',
+    maskFill: 'rgba(255,255,255,0.1)',
+    series: {
+      color: '#7798BF',
+      lineColor: '#A6C7ED'
+    },
+    xAxis: {
+      gridLineColor: '#505053'
+    }
+  },
+
+  scrollbar: {
+    barBackgroundColor: '#808083',
+    barBorderColor: '#808083',
+    buttonArrowColor: '#CCC',
+    buttonBackgroundColor: '#606063',
+    buttonBorderColor: '#606063',
+    rifleColor: '#FFF',
+    trackBackgroundColor: '#404043',
+    trackBorderColor: '#404043'
+  },
+
+  // special colors for some of the
+  legendBackgroundColor: 'rgba(0, 0, 0, 0.5)',
+  background2: '#505053',
+  dataLabelsColor: '#B0B0B3',
+  textColor: '#C0C0C0',
+  contrastTextColor: '#F0F0F3',
+  maskColor: 'rgba(255,255,255,0.3)'
+};
+
+// Apply the theme
+Highcharts.setOptions(Highcharts.theme);
+  
+  },
+  componentDidMount:function() {
+    this.setTheme();
+    $(this.refs.chart).highcharts({                                           
+        chart: {                                                           
+            type: 'column'                                                    
+        },                                                                 
+        title: {                                                           
+            text: '独立发现缺陷分布表'                    
+        },                                                                 
+        subtitle: {                                                        
+            text: ''                                  
+        },                                                                 
+        xAxis: {                                                           
+            categories: this.props.distribution.names,
+            title: {                                                       
+                text: null                                                 
+            }                                                              
+        },                                                                 
+        yAxis: {                                                           
+            min: 0,                                                        
+            title: {                                                       
+                text: '个数 (个)',                             
                 align: 'high'                                              
             },                                                             
             labels: {                                                      
@@ -679,8 +963,8 @@ Highcharts.setOptions(Highcharts.theme);
             enabled: false                                                 
         },                                                                 
         series: [{                                                         
-            name: '人数',                                             
-            data: this.props.time.count                                  
+            name: '个数',                                             
+            data: this.props.distribution.count                                  
         }]                                                                 
     });  
 
@@ -722,9 +1006,14 @@ var Report = React.createClass({
             "guess":"10"
           },
           time:{
-            "type":["0~1小时","1~2小时","2～3小时","3小时以上"],
+            "names":["0~1小时","1~2小时","2～3小时","3小时以上"],
             "count":[9,8,6,2]
-          }
+          },
+          defiDistribution:{
+            "name":[],
+            "count":[]
+          },
+          failHint:false
       };
   },
 
@@ -766,6 +1055,9 @@ var Report = React.createClass({
       cache: false,
 	  async : false,  
       success: function(data) {
+        if(data.guess==0){
+          this.setState({failHint:true});
+        }
         this.setState({analysis: data});
       }.bind(this),
       error: function(xhr, status, err) {
@@ -788,8 +1080,16 @@ var Report = React.createClass({
       }.bind(this)
     });
   },
+  Rereview:function(){
+    var id = this.state.review.id;
+    //TODO:该评审的状态打开，发出新的邀请
+  },
 
   render: function(){
+    var hint = <div className="tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1 shadow">
+                <p className="text-primary">由于评审信息过少，无法给出预测结果，请考虑重新评审。</p>
+                <button className="btn btn-primary" onClick={this.Rereview}>重新评审</button>
+              </div>;
     
     return(
       <div>
@@ -806,9 +1106,14 @@ var Report = React.createClass({
         </div>
         <br/>
         <div>
+          <DeficiencyChart distribution={this.state.defiDistribution} />
+        </div>
+        <br/>
+        <div>
           <AnalysisChart analysis={this.state.analysis} />
         </div>
-        <AnalysisChart analysis={this.state.analysis} />
+        {this.state.failHint?<br/>:null}
+        {this.state.failHint?hint:null}
         
 
       </div>

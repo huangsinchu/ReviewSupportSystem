@@ -17,6 +17,10 @@ var Navbar = React.createClass({
     this.setState({hasMessage:false});
     //TODO:标记信息已读
   },
+  logOut:function(e){
+    Session['logged_mail'] = null;
+    href.location = "login.html";
+  },
 
   loadMessageFromServer:function(){
     $.ajax({
@@ -84,6 +88,7 @@ var Navbar = React.createClass({
             <ul className="dropdown-menu">
                <li><a href="contact.html">联系人</a></li>
                <li><a href="info.html">账号信息</a></li>
+               <li><a href="#" onClick={this.logOut}>账号信息</a></li>
             </ul>
          </li>
       </ul>
