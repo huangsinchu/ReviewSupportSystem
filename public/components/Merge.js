@@ -589,6 +589,19 @@ var Merge = React.createClass({
 	var r = window.location.search.substr(1).match(reg);
     if (r != null) id= unescape(r[2]);
 	
+	$.ajax({
+      url: "./php/review.php?id="+id,//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({review: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+		//window.location.href="./index.html";
+      }.bind(this)
+    });
+	
      $.ajax({
       url: "./php/deficiencylist.php?type=merge&id="+id,//TODO:get customer profile url
       dataType: 'json',

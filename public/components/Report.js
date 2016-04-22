@@ -808,7 +808,7 @@ var Report = React.createClass({
         <div>
           <AnalysisChart analysis={this.state.analysis} />
         </div>
-        <AnalysisChart analysis={this.state.analysis} />
+
         
 
       </div>

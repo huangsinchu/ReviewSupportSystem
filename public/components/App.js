@@ -111,7 +111,7 @@ var Navbar = React.createClass({
   },
   render: function(){
   	var id = "#"+this.props.reviewPlan.id;
-    var state = this.props.reviewPlan.type+"----"+this.props.reviewPlan.target+"----"+(this.props.reviewPlan.state?"评审中":"评审结束");
+    var state = this.props.reviewPlan.type+"----"+(this.props.reviewPlan.state?"评审中":"评审结束");
     var colorHead = this.props.reviewPlan.state?"palette palette-peter-river shadow":"palette palette-concrete shadow";
     var colorTail = this.props.reviewPlan.state?"palette palette-belize-hole shadow":"palette palette-silver shadow";
     var text = this.props.reviewPlan.content;
@@ -293,14 +293,7 @@ var EditModal = React.createClass({
 	      					</div>
 
 	      					
-	      					<div className="form-group">
-	      						<label for="target-choose" className="col-sm-2 control-label">目标</label>
-	      						<div className="col-sm-10">
-	      							<select className="form-control select select-primary" ref="target" defaultValue={this.props.reviewPlan.target} data-toggle="select">
-	                		 {options}			
-              				</select>
-	      						</div>
-	      					</div>
+	      					
 
                   <div className="form-group">
                     <label for="state-choose" className="col-sm-2 control-label">状态</label>
