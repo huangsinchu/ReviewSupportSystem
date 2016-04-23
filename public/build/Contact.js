@@ -41,15 +41,16 @@ var Navbar = React.createClass({displayName: "Navbar",
     $.ajax({
     url: "./php/message.php",//TODO:complete with the url api
     dataType: 'json',
+	async : false,  
     cache: false,
     success: function(data) {
       this.setState({messageList: data});
+	  this.setState({hasMessage:data.length!=0});
     }.bind(this),
     error: function(xhr, status, err) {
       console.error("", status, err.toString());
     }.bind(this)
     });
-    this.setState({hasMessage:this.state.messageList.length!=0});
   },
   componentDidMount:function() {
     this.loadMessageFromServer();
