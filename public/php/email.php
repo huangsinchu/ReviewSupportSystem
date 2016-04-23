@@ -1,8 +1,8 @@
 <?php
 function send_mail($to,$str) {
-	$domain = 'http://172.17.187.238/ReviewSupportSystem/public/php/confirmregister.php';
+	$domain = '172.17.187.238/ReviewSupportSystem/public/php/confirmregister.php';
 	$url = 'http://sendcloud.sohu.com/webapi/mail.send.json';
-	$API_USER = 'huangsinchu_test_mg5o6K';
+	$API_USER = 'review_system';
 	$API_KEY = 'Orpw1oYnSZD2sfPy';
 
 	$param = array(
