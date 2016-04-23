@@ -14,12 +14,27 @@ var Navbar = React.createClass({
       };
   },
   read:function(e){
-    this.setState({hasMessage:false});
+    var sucess=false;
+	$.ajax({
+		url: "./php/readnotice.php",
+		async : false,  
+		success : function(data){
+			sucess=true; 
+		}
+	});
+	if(sucess){
+		this.setState({hasMessage:false});
+	}
     //TODO:标记信息已读
   },
   logOut:function(e){
-    Session['logged_mail'] = null;
-    href.location = "login.html";
+    $.ajax({
+		url: "./php/logout.php",
+		async : false,  
+		success : function(data){
+			 window.location.href = "./login.html";
+		}
+	});
   },
 
   loadMessageFromServer:function(){
@@ -88,7 +103,7 @@ var Navbar = React.createClass({
             <ul className="dropdown-menu">
                <li><a href="contact.html">联系人</a></li>
                <li><a href="info.html">账号信息</a></li>
-               <li><a href="#" onClick={this.logOut}>账号信息</a></li>
+               <li><a href="#" onClick={this.logOut}>退出</a></li>
             </ul>
          </li>
       </ul>
@@ -147,111 +162,11 @@ var TaskList = React.createClass({
 
   getInitialState:function(){
       return {
-          taskList:[
-          {"id":"111",
-           "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "content":"论文内容"
-          },
-          {"id":"112",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":false,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"113",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"114",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":false,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"115",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"代码评审",
-           "state":true,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。论文内容包含对中国dota的局势分析，请仔细评审。论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"116",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":false,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"117",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          }
-          ],
-          showList:[
-          {"id":"111",
-           "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "content":"论文内容"
-          },
-          {"id":"112",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":false,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"113",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"114",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":false,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"115",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。论文内容包含对中国dota的局势分析，请仔细评审。论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"116",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":false,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"117",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          }
-          ]
+          taskList:[],
+          showList:[]
         };
   },
-  componentDidMount: function() {
+  componentWillMount: function() {
     $.ajax({
       url: "./php/task.php",//TODO:get customer profile url
       dataType: 'json',
@@ -315,7 +230,7 @@ var TaskList = React.createClass({
 /*组装所有的组件的app*/
 
 var TaskPage = React.createClass({
- componentDidMount: function() {
+ componentWillMount: function() {
     $.ajax({
       url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',
@@ -332,11 +247,7 @@ var TaskPage = React.createClass({
   getInitialState:function() {
       return {
            profile:{
-            "id":"11111",
-            "name":"屋顶上的羊驼",
-            "mail":"maomao75979@gmail.com",
-            "passworld":"123456",
-            "group":["所有联系人","代码评审组","文档评审组","公司"]
+            
           } 
       };
   },

@@ -14,12 +14,27 @@ var Navbar = React.createClass({
       };
   },
   read:function(e){
-    this.setState({hasMessage:false});
+    var sucess=false;
+	$.ajax({
+		url: "./php/readnotice.php",
+		async : false,  
+		success : function(data){
+			sucess=true; 
+		}
+	});
+	if(sucess){
+		this.setState({hasMessage:false});
+	}
     //TODO:标记信息已读
   },
   logOut:function(e){
-    Session['logged_mail'] = null;
-    href.location = "login.html";
+    $.ajax({
+		url: "./php/logout.php",
+		async : false,  
+		success : function(data){
+			 window.location.href = "./login.html";
+		}
+	});
   },
 
   loadMessageFromServer:function(){
@@ -88,7 +103,7 @@ var Navbar = React.createClass({
             <ul className="dropdown-menu">
                <li><a href="contact.html">联系人</a></li>
                <li><a href="info.html">账号信息</a></li>
-               <li><a href="#" onClick={this.logOut}>账号信息</a></li>
+               <li><a href="#" onClick={this.logOut}>退出</a></li>
             </ul>
          </li>
       </ul>
@@ -643,7 +658,7 @@ Highcharts.setOptions(Highcharts.theme);
             text: ''                                  
         },                                                                 
         xAxis: {                                                           
-            categories: this.props.time.names,
+            categories: this.props.time.name,
             title: {                                                       
                 text: null                                                 
             }                                                              
@@ -699,7 +714,7 @@ Highcharts.setOptions(Highcharts.theme);
 });
 
 /*用户独立发现的缺陷的统计表*/
-var DeficicencyChart = React.createClass({
+var DeficiencyChart = React.createClass({
   setTheme:function(){
     Highcharts.createElement('link', {
     href: '/../css/unica.css',
@@ -923,7 +938,7 @@ Highcharts.setOptions(Highcharts.theme);
             text: ''                                  
         },                                                                 
         xAxis: {                                                           
-            categories: this.props.distribution.names,
+            categories: this.props.distribution.name,
             title: {                                                       
                 text: null                                                 
             }                                                              
@@ -1006,12 +1021,12 @@ var Report = React.createClass({
             "guess":"10"
           },
           time:{
-            "names":["0~1小时","1~2小时","2～3小时","3小时以上"],
-            "count":[9,8,6,2]
+            "name":["burning","rotk","maybe","zmsj"],
+            "count":[2.123,8,6,2]
           },
           defiDistribution:{
-            "name":[],
-            "count":[]
+            "name":["burning","rotk","maybe","zmsj"],
+            "count":[1,3,3,3]
           },
           failHint:false
       };
@@ -1079,6 +1094,20 @@ var Report = React.createClass({
 		window.location.href="./index.html";
       }.bind(this)
     });
+	
+	$.ajax({
+      url: "./php/report.php?type=defiDistribution&id="+id,//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+	  async : false,  
+      success: function(data) {
+        this.setState({defiDistribution: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+		window.location.href="./index.html";
+      }.bind(this)
+    });
   },
   Rereview:function(){
     var id = this.state.review.id;
@@ -1112,9 +1141,10 @@ var Report = React.createClass({
         <div>
           <AnalysisChart analysis={this.state.analysis} />
         </div>
+
+
         {this.state.failHint?<br/>:null}
         {this.state.failHint?hint:null}
-        
 
       </div>
     );

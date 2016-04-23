@@ -14,12 +14,27 @@ var Navbar = React.createClass({
       };
   },
   read:function(e){
-    this.setState({hasMessage:false});
+    var sucess=false;
+	$.ajax({
+		url: "./php/readnotice.php",
+		async : false,  
+		success : function(data){
+			sucess=true; 
+		}
+	});
+	if(sucess){
+		this.setState({hasMessage:false});
+	}
     //TODO:标记信息已读
   },
   logOut:function(e){
-    Session['logged_mail'] = null;
-    href.location = "login.html";
+    $.ajax({
+		url: "./php/logout.php",
+		async : false,  
+		success : function(data){
+			 window.location.href = "./login.html";
+		}
+	});
   },
 
   loadMessageFromServer:function(){
@@ -88,7 +103,7 @@ var Navbar = React.createClass({
             <ul className="dropdown-menu">
                <li><a href="contact.html">联系人</a></li>
                <li><a href="info.html">账号信息</a></li>
-               <li><a href="#" onClick={this.logOut}>账号信息</a></li>
+               <li><a href="#" onClick={this.logOut}>退出</a></li>
             </ul>
          </li>
       </ul>
@@ -593,6 +608,19 @@ var Merge = React.createClass({
 	var reg = new RegExp("(^|&)id=([^&]*)(&|$)");
 	var r = window.location.search.substr(1).match(reg);
     if (r != null) id= unescape(r[2]);
+	
+	$.ajax({
+      url: "./php/review.php?id="+id,//TODO:get customer profile url
+      dataType: 'json',
+      cache: false,
+      success: function(data) {
+        this.setState({review: data});
+      }.bind(this),
+      error: function(xhr, status, err) {
+        console.error("", status, err.toString());//TODO:as same as above
+		//window.location.href="./index.html";
+      }.bind(this)
+    });
 	
      $.ajax({
       url: "./php/deficiencylist.php?type=merge&id="+id,//TODO:get customer profile url
