@@ -1,6 +1,6 @@
 /*导航栏组建，需要传入用户信息作为组建的状态
 */
-var Navbar = React.createClass({
+var Navbar = React.createClass({displayName: "Navbar",
   getInitialState: function() {
       return {
           messageList:[
@@ -55,7 +55,7 @@ var Navbar = React.createClass({
     this.loadMessageFromServer();
   },
   render: function() {
-    var unread = this.state.hasMessage?<span className="navbar-unread">1</span>:null;
+    var unread = this.state.hasMessage?React.createElement("span", {className: "navbar-unread"}, "1"):null;
 
     var messages;
     if(this.state.messageList.length > 0){
@@ -67,90 +67,90 @@ var Navbar = React.createClass({
 
         };
           return (
-              <li><a onClick={goReview}> {message.hint}</a></li>
+              React.createElement("li", null, React.createElement("a", {onClick: goReview}, " ", message.hint))
               
           );
         });
     } else {
-        messages = <li><a>暂无消息</a></li>
+        messages = React.createElement("li", null, React.createElement("a", null, "暂无消息"))
     }
 
     return (
-      <div>
-      <nav className="navbar navbar-inverse navbar-fixed-top" role="navigation">
-      <div className="navbar-header">
-        <button type="button" className="navbar-toggle" data-toggle="collapse" data-target="#example-navbar-collapse">
-          <span className="sr-only"></span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-          <span className="icon-bar"></span>
-        </button>
-        <a className="navbar-brand" href="#fake"><span className="text-primary">审</span></a>
-      </div>
-      <div className="collapse navbar-collapse" id="example-navbar-collapse">
-        <ul className="nav navbar-nav">
-          <li><a href="index.html">评审</a></li>
-          <li><a href="task.html">任务</a></li>
-          <li><a onClick={this.read} className="dropdown-toggle" data-toggle="dropdown">通知{unread}</a>
-              <ul className="dropdown-menu">
-                {messages}
-              </ul>
-          </li>
-          <li className="dropdown">
-            <a className="dropdown-toggle" data-toggle="dropdown">
-               {this.props.profile.name}<b className="caret"></b>
-            </a>
-            <ul className="dropdown-menu">
-               <li><a href="contact.html">联系人</a></li>
-               <li><a href="info.html">账号信息</a></li>
-               <li><a href="#" onClick={this.logOut}>退出</a></li>
-            </ul>
-         </li>
-      </ul>
-      </div>
-    </nav>
-    </div>
+      React.createElement("div", null, 
+      React.createElement("nav", {className: "navbar navbar-inverse navbar-fixed-top", role: "navigation"}, 
+      React.createElement("div", {className: "navbar-header"}, 
+        React.createElement("button", {type: "button", className: "navbar-toggle", "data-toggle": "collapse", "data-target": "#example-navbar-collapse"}, 
+          React.createElement("span", {className: "sr-only"}), 
+          React.createElement("span", {className: "icon-bar"}), 
+          React.createElement("span", {className: "icon-bar"}), 
+          React.createElement("span", {className: "icon-bar"})
+        ), 
+        React.createElement("a", {className: "navbar-brand", href: "#fake"}, React.createElement("span", {className: "text-primary"}, "审"))
+      ), 
+      React.createElement("div", {className: "collapse navbar-collapse", id: "example-navbar-collapse"}, 
+        React.createElement("ul", {className: "nav navbar-nav"}, 
+          React.createElement("li", null, React.createElement("a", {href: "index.html"}, "评审")), 
+          React.createElement("li", null, React.createElement("a", {href: "task.html"}, "任务")), 
+          React.createElement("li", null, React.createElement("a", {onClick: this.read, className: "dropdown-toggle", "data-toggle": "dropdown"}, "通知", unread), 
+              React.createElement("ul", {className: "dropdown-menu"}, 
+                messages
+              )
+          ), 
+          React.createElement("li", {className: "dropdown"}, 
+            React.createElement("a", {className: "dropdown-toggle", "data-toggle": "dropdown"}, 
+               this.props.profile.name, React.createElement("b", {className: "caret"})
+            ), 
+            React.createElement("ul", {className: "dropdown-menu"}, 
+               React.createElement("li", null, React.createElement("a", {href: "contact.html"}, "联系人")), 
+               React.createElement("li", null, React.createElement("a", {href: "info.html"}, "账号信息")), 
+               React.createElement("li", null, React.createElement("a", {href: "#", onClick: this.logOut}, "退出"))
+            )
+         )
+      )
+      )
+    )
+    )
     );
   }
 });
 /*任务描述信息*/
-var TaskDescription = React.createClass({
+var TaskDescription = React.createClass({displayName: "TaskDescription",
     render:function(){
       var state = this.props.state=="true"?"评审中":"评审结束";
       return(
-        <div className="tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1 shadow">
-          <div className="row">
-            <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">名称:</label>
-            <label className="col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left">{this.props.title}</label>
-          </div>
+        React.createElement("div", {className: "tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1 shadow"}, 
+          React.createElement("div", {className: "row"}, 
+            React.createElement("label", {className: "col-lg-2 col-md-2 col-sm-3 col-xs-3"}, "名称:"), 
+            React.createElement("label", {className: "col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left"}, this.props.title)
+          ), 
 
-          <div className="row">
-            <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">地址:</label>
-            <a className="col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left" href={this.props.url} target="_blank">{this.props.url}</a>
-          </div>
+          React.createElement("div", {className: "row"}, 
+            React.createElement("label", {className: "col-lg-2 col-md-2 col-sm-3 col-xs-3"}, "地址:"), 
+            React.createElement("a", {className: "col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left", href: this.props.url, target: "_blank"}, this.props.url)
+          ), 
 
-          <div className="row">
-            <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">类型:</label>
-            <label className="col-lg-10 col-md-10 col-xs-9 col-sm-9 text-primary text-left">{this.props.type}</label>
-          </div>
+          React.createElement("div", {className: "row"}, 
+            React.createElement("label", {className: "col-lg-2 col-md-2 col-sm-3 col-xs-3"}, "类型:"), 
+            React.createElement("label", {className: "col-lg-10 col-md-10 col-xs-9 col-sm-9 text-primary text-left"}, this.props.type)
+          ), 
 
-          <div className="row">
-            <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">状态:</label>
-            <label className="col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left">{state}</label>
-          </div>
+          React.createElement("div", {className: "row"}, 
+            React.createElement("label", {className: "col-lg-2 col-md-2 col-sm-3 col-xs-3"}, "状态:"), 
+            React.createElement("label", {className: "col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left"}, state)
+          ), 
 
-          <div className="row">
-            <label className="col-lg-2 col-md-2 col-sm-3 col-xs-3">描述:</label>
-            <p className="col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left">{this.props.content}</p>
-          </div>
+          React.createElement("div", {className: "row"}, 
+            React.createElement("label", {className: "col-lg-2 col-md-2 col-sm-3 col-xs-3"}, "描述:"), 
+            React.createElement("p", {className: "col-lg-10 col-md-10 col-sm-9 col-xs-9 text-primary text-left"}, this.props.content)
+          )
 
-        </div>
+        )
       );
     }
 });
 
 /*展示分析信息的图表*/
-var AnalysisChart = React.createClass({
+var AnalysisChart = React.createClass({displayName: "AnalysisChart",
   setTheme:function(){
     Highcharts.createElement('link', {
     href: '/../css/unica.css',
@@ -425,16 +425,16 @@ Highcharts.setOptions(Highcharts.theme);
   },
   render:function(){
     return(
-      <div className="col-lg-12 col-md-12 col-sm-12">
-        <div ref="chart" ></div>
-      </div>
+      React.createElement("div", {className: "col-lg-12 col-md-12 col-sm-12"}, 
+        React.createElement("div", {ref: "chart"})
+      )
 
     );
   }
 });
 
 /*用户阅读时间分布表*/
-var TimeChart = React.createClass({
+var TimeChart = React.createClass({displayName: "TimeChart",
   setTheme:function(){
     Highcharts.createElement('link', {
     href: '/../css/unica.css',
@@ -706,15 +706,15 @@ Highcharts.setOptions(Highcharts.theme);
   },
   render:function(){
     return(
-      <div className="col-lg-12 col-md-12 col-sm-12">
-        <div ref="chart"></div>
-      </div>
+      React.createElement("div", {className: "col-lg-12 col-md-12 col-sm-12"}, 
+        React.createElement("div", {ref: "chart"})
+      )
     );
   }
 });
 
 /*用户独立发现的缺陷的统计表*/
-var DeficiencyChart = React.createClass({
+var DeficiencyChart = React.createClass({displayName: "DeficiencyChart",
   setTheme:function(){
     Highcharts.createElement('link', {
     href: '/../css/unica.css',
@@ -986,16 +986,16 @@ Highcharts.setOptions(Highcharts.theme);
   },
   render:function(){
     return(
-      <div className="col-lg-12 col-md-12 col-sm-12">
-        <div ref="chart"></div>
-      </div>
+      React.createElement("div", {className: "col-lg-12 col-md-12 col-sm-12"}, 
+        React.createElement("div", {ref: "chart"})
+      )
     );
   }
 });
 
 /*组装所有的组件的app*/
 
-var Report = React.createClass({
+var Report = React.createClass({displayName: "Report",
 
   getInitialState:function() {
       return {
@@ -1115,40 +1115,40 @@ var Report = React.createClass({
   },
 
   render: function(){
-    var hint = <div className="tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1 shadow">
-                <p className="text-primary">由于评审信息过少，无法给出预测结果，请考虑重新评审。</p>
-                <button className="btn btn-primary" onClick={this.Rereview}>重新评审</button>
-              </div>;
+    var hint = React.createElement("div", {className: "tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1 shadow"}, 
+                React.createElement("p", {className: "text-primary"}, "由于评审信息过少，无法给出预测结果，请考虑重新评审。"), 
+                React.createElement("button", {className: "btn btn-primary", onClick: this.Rereview}, "重新评审")
+              );
     
     return(
-      <div>
-        <Navbar profile={this.state.profile} />
-      <br/>
-      <br/>
-        <div className="container">
-        <TaskDescription  title={this.state.review.title} url={this.state.review.url}
-         type={this.state.review.type} state={this.state.review.state} content={this.state.review.content}/>
-        </div>
+      React.createElement("div", null, 
+        React.createElement(Navbar, {profile: this.state.profile}), 
+      React.createElement("br", null), 
+      React.createElement("br", null), 
+        React.createElement("div", {className: "container"}, 
+        React.createElement(TaskDescription, {title: this.state.review.title, url: this.state.review.url, 
+         type: this.state.review.type, state: this.state.review.state, content: this.state.review.content})
+        ), 
 
-        <div>
-          <TimeChart time={this.state.time} />
-        </div>
-        <br/>
-        <div>
-          <DeficiencyChart distribution={this.state.defiDistribution} />
-        </div>
-        <br/>
-        <div>
-          <AnalysisChart analysis={this.state.analysis} />
-        </div>
+        React.createElement("div", null, 
+          React.createElement(TimeChart, {time: this.state.time})
+        ), 
+        React.createElement("br", null), 
+        React.createElement("div", null, 
+          React.createElement(DeficiencyChart, {distribution: this.state.defiDistribution})
+        ), 
+        React.createElement("br", null), 
+        React.createElement("div", null, 
+          React.createElement(AnalysisChart, {analysis: this.state.analysis})
+        ), 
 
 
-        {this.state.failHint?<br/>:null}
-        {this.state.failHint?hint:null}
+        this.state.failHint?React.createElement("br", null):null, 
+        this.state.failHint?hint:null
 
-      </div>
+      )
     );
   }
 });
 
-ReactDOM.render(<Report />, document.getElementById("app"));
+ReactDOM.render(React.createElement(Report, null), document.getElementById("app"));
