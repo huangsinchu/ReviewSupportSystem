@@ -377,7 +377,7 @@ Highcharts.setOptions(Highcharts.theme);
             labels: {                                                      
                 overflow: 'justify'                                        
             }                                                              
-        },                                                                 
+        },                                                 f                
         tooltip: {                                                         
             valueSuffix: '个'                                       
         },                                                                 
