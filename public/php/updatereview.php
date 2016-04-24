@@ -45,7 +45,7 @@ if(isset($_SESSION['uid'])){
 	if($re->status==100){
 		$sub_url = 'invatation?rid='.$rid;
 		$invalist = get_content($sub_url);
-		for($invalist as $inva){
+		foreach($invalist as $inva){
 			$inva->read = false;
 			$sub_url = 'invatation/';
 			$data = json_encode($inva);
