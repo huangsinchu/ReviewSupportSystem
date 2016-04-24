@@ -949,7 +949,7 @@ var Merge = React.createClass({
 
       <div className="container">
         <div className="col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1">
-          <button type="button" onClick={this.completeMerge} className="btn btn-primary btn-block">完成合并</button>
+          <button type="button" onClick={this.completeMerge} className="btn btn-primary btn-block">完成合并，查看报表</button>
         </div>
       </div>
 
