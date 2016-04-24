@@ -14,17 +14,12 @@ var Navbar = React.createClass({displayName: "Navbar",
       };
   },
   read:function(e){
-    var sucess=false;
-	$.ajax({
+    $.ajax({
 		url: "./php/readnotice.php",
-		async : false,  
 		success : function(data){
-			sucess=true; 
-		}
+			this.setState({hasMessage:false});
+		}.bind(this)
 	});
-	if(sucess){
-		this.setState({hasMessage:false});
-	}
     //TODO:标记信息已读
   },
   logOut:function(e){
@@ -381,7 +376,7 @@ var ReviewList = React.createClass({displayName: "ReviewList",
       }.bind(this)
     });
   },
-  componentDidMount: function() {
+  componentWillMount: function() {
     this.loadReviewsFromServer();
   },
   addReviewPlan:function(newplan){
@@ -470,7 +465,7 @@ var App = React.createClass({displayName: "App",
       };
   },
 
-  componentDidMount: function() {
+  componentWillMount: function() {
     $.ajax({
       url: "./php/userinfo.php",//TODO:get customer profile url
       dataType: 'json',

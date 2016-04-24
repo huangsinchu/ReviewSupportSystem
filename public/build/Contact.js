@@ -14,17 +14,12 @@ var Navbar = React.createClass({displayName: "Navbar",
       };
   },
   read:function(e){
-    var sucess=false;
-	$.ajax({
+    $.ajax({
 		url: "./php/readnotice.php",
-		async : false,  
 		success : function(data){
-			sucess=true; 
-		}
+			this.setState({hasMessage:false});
+		}.bind(this)
 	});
-	if(sucess){
-		this.setState({hasMessage:false});
-	}
     //TODO:标记信息已读
   },
   logOut:function(e){
