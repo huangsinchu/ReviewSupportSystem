@@ -61,7 +61,7 @@ if(isset($_SESSION['uid'])){
 	foreach($userlist as $user){
 		$i = new invatation;
 		$i->reviewId = $rid;
-		$i->userId = $user->id;
+		$i->userId = $user->contactId;
 		$i->read = false;
 		#$arr[] = $i;
 		$data = json_encode($i);
