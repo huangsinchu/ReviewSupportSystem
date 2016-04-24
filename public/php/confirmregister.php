@@ -1,7 +1,6 @@
 <?php
 if(!isset($_GET['id'])||!isset($_GET['check'])){
-	header('HTTP/1.1 503 Service Unavailable');
-	header('Status: 503 Service Unavailable');
+	header('HTTP/1.1 403 Forbidden'); 
 }else{
 	$id = $_GET['id'];
 	$check = $_GET['check'];
@@ -28,8 +27,7 @@ if(!isset($_GET['id'])||!isset($_GET['check'])){
 		}
 		
 	}else{
-		header('HTTP/1.1 503 Service Unavailable');
-		header('Status: 503 Service Unavailable');
+		header('HTTP/1.1 403 Forbidden'); 
 	}
 }
 ?>

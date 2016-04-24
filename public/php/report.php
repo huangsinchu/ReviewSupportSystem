@@ -6,8 +6,7 @@ class report{
 
 session_start();
 if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
-	header('HTTP/1.1 503 Service Unavailable');
-	header('Status: 503 Service Unavailable');
+	header('HTTP/1.1 403 Forbidden'); 
 }else{
 	$reviewid = $_GET['id'];
 	$type = $_GET['type'];
@@ -16,8 +15,7 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 	$sub_url = 'review/'.$reviewid;
 	$review = get_content($sub_url);
 	if($review->userId!=$_SESSION['uid']||$review->status!=200){
-		header('HTTP/1.1 503 Service Unavailable');
-		header('Status: 503 Service Unavailable');
+		header('HTTP/1.1 403 Forbidden'); 
 	}else{
 		if($type=='analysis'){
 			$sub_url = 'review/'.$reviewid.'/count';

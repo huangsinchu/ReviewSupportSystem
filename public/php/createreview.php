@@ -23,15 +23,7 @@ if(isset($_SESSION['uid'])){
 	$content = $_POST['content'];
 	$target = $_POST['target'];
 	$state = $_POST['state'];
-	
-/*
-	$title = $_GET['title'];
-	$type = $_GET['type'];
-	$url = $_GET['url'];
-	$content = $_GET['content'];
-	$target = $_GET['target'];
-	$state = $_GET['state'];
-*/
+
 	//创建评审
 	$re = new review;
 	$re->userId = $_SESSION['uid'];

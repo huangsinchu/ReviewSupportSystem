@@ -1,17 +1,14 @@
 <?php
 session_start();
 if(!assert($_SESSION['uid'])){
-	header('HTTP/1.1 503 Service Unavailable');
-	header('Status: 503 Service Unavailable');
+	header('HTTP/1.1 403 Forbidden'); 
 }elseif(!isset($_POST['action'])){
-	header('HTTP/1.1 503 Service Unavailable');
-	header('Status: 503 Service Unavailable');
+	header('HTTP/1.1 403 Forbidden'); 
 }else{
 	$action = $_POST['action'];
 	if($action=='add'){
 		if(!isset($_POST['mail'])||!isset($_POST['groups'])){
-			header('HTTP/1.1 503 Service Unavailable');
-			header('Status: 503 Service Unavailable');
+			header('HTTP/1.1 403 Forbidden'); 
 		}else{
 			require_once 'connect.php';
 			$mail = $_POST['mail'];
@@ -37,8 +34,7 @@ if(!assert($_SESSION['uid'])){
 		}
 	}elseif($action=='delete'){
 		if(!isset($_POST['mail'])){
-			header('HTTP/1.1 503 Service Unavailable');
-			header('Status: 503 Service Unavailable');
+			header('HTTP/1.1 403 Forbidden'); 
 		}else{
 			require_once 'connect.php';
 			$mail = $_POST['mail'];

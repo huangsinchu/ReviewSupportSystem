@@ -1,11 +1,9 @@
 <?php
 session_start();
 if(!assert($_SESSION['uid'])){
-	header('HTTP/1.1 503 Service Unavailable');
-	header('Status: 503 Service Unavailable');
+	header('HTTP/1.1 403 Forbidden'); 
 }elseif(!isset($_POST['groups'])){
-	header('HTTP/1.1 503 Service Unavailable');
-	header('Status: 503 Service Unavailable');
+	header('HTTP/1.1 403 Forbidden'); 
 }else{
 	require 'connect.php';
 	$groups = $_POST['groups'];

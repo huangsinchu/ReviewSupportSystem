@@ -8,17 +8,20 @@ class deficiency{
 }
 
 session_start();
-if(isset($_SESSION['uid'])&&isset($_SESSION['rid'])&&isset($_SESSION['rtype'])){
+if(isset($_SESSION['uid'])&&isset($_POST['task'])&&isset($_POST['page'])&&isset($_POST['row'])&&isset($_POST['content'])&&isset($_POST['writer'])){
 	$uid = $_SESSION['uid'];
-	$rid = $_SESSION['rid'];
+	$rid = $_POST['task'];
+	$page = $_POST['page'];
+	$row = $_POST['row'];
+	$content = $_POST['content'];
+	$writer = $_POST['writer'];
 	require 'connect.php';
-	if($_SESSION['rtype']==100){
-		$page = $_POST['page'];
-		$row = $_POST['row'];
-		$content = $_POST['content'];
-		$writer = $_POST['writer'];
-		$task = $_POST['task'];
-		if(($writer==$uid)&&($task==$rid)){
+	$sub_url = 'review/'.$rid;
+	$review = get_content($sub_url);
+	if(($writer!=$uid)||($review->status!=100)){
+		header('HTTP/1.1 403 Forbidden'); 
+	}else{
+		if($review->type==100){
 			$sub_url = 'position/doc/';
 			$data = json_encode(array('line'=>$row, 'page'=>$page));
 			$pid = post_content($sub_url,$data);
@@ -32,16 +35,9 @@ if(isset($_SESSION['uid'])&&isset($_SESSION['rid'])&&isset($_SESSION['rtype'])){
 			$sub_url = 'deficiency/';
 			$data = json_encode($defi);
 			$defiid = post_content($sub_url,$data);
-		}
-	}elseif($_SESSION['rtype']==200){
-		$filename = $_POST['page'];
-		$row = $_POST['row'];
-		$content = $_POST['content'];
-		$writer = $_POST['writer'];
-		$task = $_POST['task'];
-		if(($writer==$uid)&&($task==$rid)){
+		}elseif($review->type==200){
 			$sub_url = 'position/code/';
-			$data = json_encode(array('line'=>$row, 'fileName'=>$filename));
+			$data = json_encode(array('line'=>$row, 'fileName'=>$page));
 			$pid = post_content($sub_url,$data);
 			$defi = new deficiency;
 			$defi->reviewId = $rid;
@@ -54,15 +50,14 @@ if(isset($_SESSION['uid'])&&isset($_SESSION['rid'])&&isset($_SESSION['rtype'])){
 			$data = json_encode($defi);
 			$defiid = post_content($sub_url,$data);
 		}
+		
+		$readingId = $_SESSION['readingId'];
+		$sub_url = 'reading/'.$readingId;
+		$readingRecord = get_content($sub_url);
+		$readingRecord->endTime = strtotime("now");
+		$sub_url = 'reading/';
+		$data = json_encode($readingRecord);
+		post_content($sub_url, $data);
 	}
-	
-	$readingId = $_SESSION['readingId'];
-	$sub_url = 'reading/'.$readingId;
-	$readingRecord = get_content($sub_url);
-	$readingRecord->endTime = strtotime("now");
-	$sub_url = 'reading/';
-	$data = json_encode($readingRecord);
-	post_content($sub_url, $data);
-	
 }
 ?>

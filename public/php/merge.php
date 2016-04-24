@@ -7,8 +7,7 @@ function checkowner($reviewId){
 }
 
 if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
-	header('HTTP/1.1 503 Service Unavailable');
-	header('Status: 503 Service Unavailable');
+	header('HTTP/1.1 403 Forbidden'); 
 }else{
 	require 'connect.php';
 	$action = $_POST['action'];
@@ -20,8 +19,7 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 		$defi = get_content($sub_url);
 		$reviewId = $defi->reviewId;
 		if(!checkowner($reviewId)){
-			header('HTTP/1.1 503 Service Unavailable');
-			header('Status: 503 Service Unavailable');
+			header('HTTP/1.1 403 Forbidden'); 
 		}else{
 			$defi->content = $content;
 			$sub_url = 'deficiency';
@@ -35,8 +33,7 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 		$defi = get_content($sub_url);
 		$reviewId = $defi->reviewId;
 		if(!checkowner($reviewId)){
-			header('HTTP/1.1 503 Service Unavailable');
-			header('Status: 503 Service Unavailable');
+			header('HTTP/1.1 403 Forbidden'); 
 		}else{
 			if($defi->status==100){
 				$defi->status = 300;
@@ -44,8 +41,7 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 				$data = json_encode($defi);
 				post_content($sub_url,$data);
 			}else{
-				header('HTTP/1.1 503 Service Unavailable');
-				header('Status: 503 Service Unavailable');
+				header('HTTP/1.1 403 Forbidden'); 
 			}
 		}
 	}elseif($action=='undeny'){
@@ -55,8 +51,7 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 		$defi = get_content($sub_url);
 		$reviewId = $defi->reviewId;
 		if(!checkowner($reviewId)){
-			header('HTTP/1.1 503 Service Unavailable');
-			header('Status: 503 Service Unavailable');
+			header('HTTP/1.1 403 Forbidden'); 
 		}else{
 			if($defi->status==300){
 				$defi->status = 100;
@@ -64,8 +59,7 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 				$data = json_encode($defi);
 				post_content($sub_url,$data);
 			}else{
-				header('HTTP/1.1 503 Service Unavailable');
-				header('Status: 503 Service Unavailable');
+				header('HTTP/1.1 403 Forbidden'); 
 			}
 		}
 	}elseif($action=='merge'){
@@ -87,8 +81,7 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 		$review = get_content($sub_url);
 		
 		if($_SESSION['uid']!=$review->userId){
-			header('HTTP/1.1 503 Service Unavailable');
-			header('Status: 503 Service Unavailable');
+			header('HTTP/1.1 403 Forbidden'); 
 		}else{
 			$sub_url = '';
 			if($review->type==100){
@@ -132,8 +125,7 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 		$sub_url = 'deficiency/'.$defiId;
 		$defi = get_content($sub_url);
 		if(($defi->status!=200)||($defi->userId!=$_SESSION['uid'])){
-			header('HTTP/1.1 503 Service Unavailable');
-			header('Status: 503 Service Unavailable');
+			header('HTTP/1.1 403 Forbidden'); 
 		}else{
 			$sub_url = 'deficiency/'.$defiId;
 			delete_content($sub_url);

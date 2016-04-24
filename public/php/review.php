@@ -11,8 +11,7 @@ class review{
 
 session_start();
 if(!isset($_SESSION['uid'])||!isset($_GET['id'])){
-	header('HTTP/1.1 503 Service Unavailable');
-	header('Status: 503 Service Unavailable');
+	header('HTTP/1.1 403 Forbidden'); 
 }else{
 	require 'connect.php';
 	$rid = $_GET['id'];
@@ -46,19 +45,17 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])){
 			}
 		}
 		if(!$found){
-			header('HTTP/1.1 503 Service Unavailable');
-			header('Status: 503 Service Unavailable');
+			header('HTTP/1.1 403 Forbidden'); 
 		}else{
-			$_SESSION['rid'] = $rid;
-			$_SESSION['rtype'] = $review->type;
-			$startTime = strtotime("now");
-			$endTime = strtotime("+1 minute");
-			$uid = $_SESSION['uid'];
-			$sub_url = 'reading/';
-			$data = json_encode(array('reviewId'=>$rid, 'userId'=>$uid, 'startTime'=>$startTime, 'endTime'=>$endTime));
-			$readingid = post_content($sub_url, $data);
-			$_SESSION['readingId'] = $readingid;
-			
+			if($review->status==100){
+				$startTime = strtotime("now");
+				$endTime = strtotime("+1 minute");
+				$uid = $_SESSION['uid'];
+				$sub_url = 'reading/';
+				$data = json_encode(array('reviewId'=>$rid, 'userId'=>$uid, 'startTime'=>$startTime, 'endTime'=>$endTime));
+				$readingid = post_content($sub_url, $data);
+				$_SESSION['readingId'] = $readingid;
+			}
 			echo $json_text;
 		}
 	}

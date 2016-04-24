@@ -10,7 +10,7 @@ class review{
 
 session_start();
 if(!isset($_SESSION['uid'])){
-	echo "";
+	header('HTTP/1.1 403 Forbidden'); 
 }else{
 	require 'connect.php';
 	
