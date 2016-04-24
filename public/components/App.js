@@ -155,7 +155,7 @@ var Navbar = React.createClass({
                 <div className="btn-group" role="group">
                   <button className="btn btn-primary" type="button" onClick={this.edit}>编辑</button>
                   <button className="btn btn-info" type="button" disabled={disabled} onClick={this.merge}>合并</button>
-                  <button className="btn btn-primary" type="button" onClick={this.report}>报表</button>
+                  <button className="btn btn-primary" type="button" disabled={disabled} onClick={this.report}>报表</button>
                 </div>
                 </dd>
               </dl>

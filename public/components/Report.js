@@ -1106,14 +1106,24 @@ var Report = React.createClass({
     });
   },
   Rereview:function(){
-    var id = this.state.review.id;
+    var plan = this.state.review;
+	plan.state = true;
+	$.ajax({  
+		type : "post",  
+		url : "./php/updatereview.php",  
+		data : plan,  
+		async : false,  
+		success : function(data){
+			window.location.href="./index.html";
+		}.bind(this)
+	});
     //TODO:该评审的状态打开，发出新的邀请
   },
 
   render: function(){
     var hint = <div className="tile col-lg-10 col-md-10 col-sm-12 col-lg-offset-1 col-md-offset-1 shadow">
-                <p className="text-primary">由于评审信息过少，无法给出预测结果，请考虑重新评审。</p>
-                <button className="btn btn-primary" onClick={this.Rereview}>重新评审</button>
+                <p className="text-primary">由于评审信息过少，无法给出预测结果，建议重新开放评审。</p>
+                <button className="btn btn-primary" onClick={this.Rereview}>重新开放评审</button>
               </div>;
     
     return(

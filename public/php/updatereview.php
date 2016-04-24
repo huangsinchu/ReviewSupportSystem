@@ -41,5 +41,16 @@ if(isset($_SESSION['uid'])){
 	$sub_url = 'review/';
 	$data = json_encode($re);
 	post_content($sub_url,$data);
+	
+	if($re->status==100){
+		$sub_url = 'invatation?rid='.$rid;
+		$invalist = get_content($sub_url);
+		for($invalist as $inva){
+			$inva->read = false;
+			$sub_url = 'invatation/';
+			$data = json_encode($inva);
+			post_content($sub_url,$data);
+		}
+	}
 }
 ?>

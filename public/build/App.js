@@ -155,7 +155,7 @@ var Navbar = React.createClass({displayName: "Navbar",
                 React.createElement("div", {className: "btn-group", role: "group"}, 
                   React.createElement("button", {className: "btn btn-primary", type: "button", onClick: this.edit}, "编辑"), 
                   React.createElement("button", {className: "btn btn-info", type: "button", disabled: disabled, onClick: this.merge}, "合并"), 
-                  React.createElement("button", {className: "btn btn-primary", type: "button", onClick: this.report}, "报表")
+                  React.createElement("button", {className: "btn btn-primary", type: "button", disabled: disabled, onClick: this.report}, "报表")
                 )
                 )
               )
