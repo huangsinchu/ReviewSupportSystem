@@ -18,7 +18,17 @@ if(isset($_SESSION['uid'])&&isset($_POST['task'])&&isset($_POST['page'])&&isset(
 	require 'connect.php';
 	$sub_url = 'review/'.$rid;
 	$review = get_content($sub_url);
-	if(($writer!=$uid)||($review->status!=100)){
+	
+	$sub_url = 'invatation?uid='.$_SESSION['uid'];
+	$list = get_content($sub_url);
+	$found = false;
+	foreach($list as $i){
+		if($i->reviewId==$rid){
+			$found = true;
+			break;
+		}
+	}
+	if(($writer!=$uid)||($review->status!=100)||(!$found)){
 		header('HTTP/1.1 403 Forbidden'); 
 	}else{
 		if($review->type==100){

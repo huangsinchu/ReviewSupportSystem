@@ -68,41 +68,35 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 	$uid = $_SESSION['uid'];
 	require 'connect.php';
 	if($type=='review'){
-		if(!isset($_SESSION['rid'])){
-			header('HTTP/1.1 403 Forbidden'); 
-		}elseif($rid!=$_SESSION['rid']){
-			header('HTTP/1.1 403 Forbidden'); 
-		}else{
-			$sub_url = 'review/'.$rid;
-			$review = get_content($sub_url);
-			$rtype = $review->type;
+		$sub_url = 'review/'.$rid;
+		$review = get_content($sub_url);
+		$rtype = $review->type;
+		
+		$sub_url = 'deficiency?uid='.$uid."&rid=".$rid;
+		$defilist = get_content($sub_url);
+		$arr = array();
+		foreach($defilist as $defi){
+			$d = new defi_review();
+			$d->id = $defi->id;
 			
-			$sub_url = 'deficiency?uid='.$uid."&rid=".$rid;
-			$defilist = get_content($sub_url);
-			$arr = array();
-			foreach($defilist as $defi){
-				$d = new defi_review();
-				$d->id = $defi->id;
-				
-				$positionId = $defi->positionId;
-				if($rtype==100){
-					$sub_url = 'position/doc/'.$positionId;
-					$position = get_content($sub_url);
-					$d->page = $position->page;
-					$d->row = $position->line;
-				}elseif($rtype==200){
-					$sub_url = 'position/code/'.$positionId;
-					$position = get_content($sub_url);
-					$d->page = $position->fileName;
-					$d->row = $position->line;
-				}
-				
-				$d->content = $defi->content;
-				$arr[] = $d;
+			$positionId = $defi->positionId;
+			if($rtype==100){
+				$sub_url = 'position/doc/'.$positionId;
+				$position = get_content($sub_url);
+				$d->page = $position->page;
+				$d->row = $position->line;
+			}elseif($rtype==200){
+				$sub_url = 'position/code/'.$positionId;
+				$position = get_content($sub_url);
+				$d->page = $position->fileName;
+				$d->row = $position->line;
 			}
-			sortdefi($arr);
-			echo json_encode($arr);
+			
+			$d->content = $defi->content;
+			$arr[] = $d;
 		}
+		sortdefi($arr);
+		echo json_encode($arr);
 	}elseif($type=='merge'){
 		$sub_url = 'review/'.$rid;
 		$review = get_content($sub_url);
