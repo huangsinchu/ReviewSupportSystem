@@ -429,7 +429,7 @@ var ContactPage = React.createClass({displayName: "ContactPage",
 		data : {action:"add", mail:mail, groups:groups},  
 		async : false,  
 		success : function(data){
-			
+			sucess = true;
 		}
 	}); 
 	if(sucess){

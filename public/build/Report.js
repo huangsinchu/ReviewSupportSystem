@@ -1055,8 +1055,9 @@ var Report = React.createClass({displayName: "Report",
       cache: false,
 	  async : false,  
       success: function(data) {
-        if(data.guess==0){
+        if(data.guess<0){
           this.setState({failHint:true});
+		  data['guess'] = undefined;
         }
         this.setState({analysis: data});
       }.bind(this),

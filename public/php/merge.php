@@ -101,8 +101,36 @@ if(!isset($_SESSION['uid'])||!isset($_POST['action'])){
 				'status'=>200, 
 				'content'=>$content
 			));
-			
 			$newDefiId = post_content($sub_url,$data);
+			
+			if(isset($_POST['deleted'])){
+				foreach($_POST['deleted'] as $defiId){
+					$sub_url = 'deficiency/'.$defiId;
+					$defi = get_content($sub_url);
+					if(($defi->status!=200)||($defi->userId!=$_SESSION['uid'])){
+						header('HTTP/1.1 403 Forbidden'); 
+						break;
+					}else{
+						$sub_url = 'deficiency/'.$defiId;
+						delete_content($sub_url);
+						
+						$sub_url = 'deficiency/combine/'.$defiId;
+						$list = get_content($sub_url);
+						foreach($list as $combine){
+							$did = $combine->combinedId;
+							$sub_url = 'deficiency/'.$did;
+							$defi = get_content($sub_url);
+							$defi->status = 100;
+							$sub_url = 'deficiency/';
+							$data = json_encode($defi);
+							post_content($sub_url,$data);
+						}
+						
+						$sub_url = 'deficiency/combine/'.$defiId;
+						delete_content($sub_url);
+					}
+				}
+			}
 			
 			foreach($children as $child){
 				$sub_url = 'deficiency/'.$child;

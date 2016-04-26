@@ -1,13 +1,13 @@
 <?php
-$GLOBALS['domain']='http://172.17.182.186:8989/application/';
-$GLOBALS['enablelog']=false;
+$GLOBALS['domain']='http://192.168.1.103:8989/application/';
+$GLOBALS['enablelog']=true;
 
 function get_content($sub_url){
 	$json_txt = file_get_contents($GLOBALS['domain'].$sub_url);
-	if($GLOBALS['enablelog']){
-		$log = date("[y-m-d H:i:s]")."GET    ".$sub_url."\n";
-		error_log($log, 3, "connect.log");
-	}
+	// if($GLOBALS['enablelog']){
+		// $log = date("[y-m-d H:i:s]")."GET    ".$sub_url."\n";
+		// error_log($log, 3, "connect.log");
+	// }
 	return json_decode($json_txt);
 }
 

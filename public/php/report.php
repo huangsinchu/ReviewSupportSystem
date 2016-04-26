@@ -25,7 +25,7 @@ if(!isset($_SESSION['uid'])||!isset($_GET['id'])||!isset($_GET['type'])){
 				'people'=>$analysis->countedReviewer,
 				'reviews'=>$analysis->countedDeficiency,
 				'merged'=>$analysis->finalDeficiency,
-				'guess'=>$analysis->predictedDeficiency
+				'guess'=>$analysis->predictedDeficiency-$analysis->finalDeficiency
 			));
 			
 			echo $json_text;

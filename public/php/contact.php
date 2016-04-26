@@ -4,12 +4,14 @@ if(!isset($_SESSION['uid'])){
 	echo "{}";
 }else{
 	require_once 'connect.php';
+	
 	$sub_url = 'group?uid='.$_SESSION['uid'];
 	$grouplist = get_content($sub_url);
 	$arr = array();
 	foreach($grouplist as $group){
 		$gid = $group->id;
 		$gname = $group->groupName;
+		$arr[$gname] = [];
 		$sub_url = 'contact?groupId='.$gid;
 		$contactlist = get_content($sub_url);
 		foreach($contactlist as $contact){

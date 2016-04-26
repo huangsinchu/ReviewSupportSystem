@@ -134,7 +134,7 @@ var EditPanel = React.createClass({displayName: "EditPanel",
       } else {
 		if(np==cp){
             newProfile.password = np;
-            var status = this.props.updateProfile(op,newProfile);
+            var status = this.props.queryUpdate(op,newProfile);
 			if(status==1){
 				this.refs.op.value = "";
 				this.refs.np.value = "";
@@ -145,6 +145,7 @@ var EditPanel = React.createClass({displayName: "EditPanel",
 				newState.opHolder = "密码修改成功";
 				newState.cpHolder = "";
 				this.setState({inputState:newState});
+				this.props.updateProfile(newProfile);
 			}else{
 				var newState = this.state.inputState;
 			  newState.op = "form-group has-error";
@@ -245,7 +246,7 @@ var InfoPage = React.createClass({displayName: "InfoPage",
            profile:{id: undefined, name: undefined, mail: undefined, group: []}  
       };
   },
-  updateProfile:function(op,newProfile){
+  queryUpdate:function(op,newProfile){
 	var status = 2;
 	var p = newProfile;
 	p.oldpassword = op;
@@ -262,6 +263,10 @@ var InfoPage = React.createClass({displayName: "InfoPage",
 	return status;
   },
 
+  updateProfile:function(newProfile){
+	  this.setState({profile:newProfile});
+  },
+  
   render: function(){
     
     return(
@@ -270,7 +275,7 @@ var InfoPage = React.createClass({displayName: "InfoPage",
       React.createElement("br", null), 
       React.createElement("br", null), 
       React.createElement("br", null), 
-        React.createElement(EditPanel, {profile: this.state.profile, updateProfile: this.updateProfile})
+        React.createElement(EditPanel, {profile: this.state.profile, updateProfile: this.updateProfile, queryUpdate: this.queryUpdate})
       )
     );
   }

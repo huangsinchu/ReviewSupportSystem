@@ -56,7 +56,7 @@ function fastsort($left,$right,&$list){
 
 function sortdefi(&$list){
 	$n = sizeof($list);
-	fastsort(0,$n-1,$list);
+	if($n>0)fastsort(0,$n-1,$list);
 }
 
 session_start();

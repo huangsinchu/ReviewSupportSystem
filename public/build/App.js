@@ -231,7 +231,6 @@ var EditModal = React.createClass({displayName: "EditModal",
     var id = this.props.reviewPlan.id;
 
     var title = this.refs.title.value.trim();
-    var type = this.refs.type.value;
     var url = this.refs.url.value.trim();
     var content = this.refs.content.value.trim();
     var state = $(this.refs.switch).is(":checked");
@@ -239,7 +238,7 @@ var EditModal = React.createClass({displayName: "EditModal",
         return;
     }
     
-    var newplan = {"id":id,"title":title,"type":type,"url":url,"content":content,"state":state};
+    var newplan = {"id":id,"title":title,"url":url,"content":content,"state":state};
     
     this.props.updateReviewPlan(newplan);
 
@@ -273,16 +272,7 @@ var EditModal = React.createClass({displayName: "EditModal",
 	      						)
 	      					), 
 
-	      					React.createElement("div", {className: "form-group"}, 
-	      						React.createElement("label", {className: "col-sm-2 control-label"}, "类型"), 
-	      						React.createElement("div", {className: "col-sm-10"}, 
-	      							React.createElement("select", {className: "form-control  select select-primary", "data-toggle": "select", defaultValue: this.props.reviewPlan.type, ref: "type"}, 
-                				React.createElement("option", {value: "文档评审"}, "文档评审"), 
-                				React.createElement("option", {value: "代码评审"}, "代码评审")
-              				)
-	      						)
-	      					), 
-
+	      					
 	      					React.createElement("div", {className: "form-group"}, 
 	      						React.createElement("label", {for: "url-input", className: "col-sm-2 control-label"}, "地址"), 
 	      						React.createElement("div", {className: "col-sm-10"}, 

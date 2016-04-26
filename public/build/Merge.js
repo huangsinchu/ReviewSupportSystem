@@ -585,6 +585,7 @@ var Merge = React.createClass({displayName: "Merge",
     merged["reviewer"] = this.state.profile.name;
     merged["state"] = "合并";
     merged["content"] = content;
+	merged["deleted"] = outOfDateServer;
     merged["children"] = children;
 	
 	var post_data = merged;
@@ -611,7 +612,7 @@ var Merge = React.createClass({displayName: "Merge",
     var index;
     //删除被合并的合并评审
     for(var i = 0;i < outOfDate.length;i++){
-      updated.splice(outOfDate[i],1);
+      updated.splice(outOfDate[i]-i,1);
     }
 
     //隐藏被合并的普通评审
@@ -621,7 +622,7 @@ var Merge = React.createClass({displayName: "Merge",
       }
     }
 
-    //插入新的合并评审
+    // 插入新的合并评审
     for(var i = 0;i < updated.length;i++){
       if(this.compare(updated[i],merged)){
         index = i;
@@ -631,7 +632,8 @@ var Merge = React.createClass({displayName: "Merge",
     if(index == undefined){
       index = updated.length -1;
     }
-
+	
+	
     //更新被选中的情况
     var updatedChoose = JSON.parse(JSON.stringify(this.state.chooseList));
     updatedChoose[merged.id] = false;

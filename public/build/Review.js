@@ -170,6 +170,31 @@ var Review = React.createClass({displayName: "Review",
   }
 });
 
+/*评审展示模块,no edit*/
+var DisReview = React.createClass({displayName: "Review",
+  editReview:function(){
+    this.props.editReview(this.props.review.id);
+  },
+  render:function(){
+    var doc = React.createElement("div", null, React.createElement("span", null, "第", this.props.review.page, "页"), React.createElement("br", null), React.createElement("span", null, "第", this.props.review.row, "行"));
+    var code = React.createElement("div", null, React.createElement("span", null, this.props.review.page), React.createElement("br", null), React.createElement("span", null, "第", this.props.review.row, "行"));
+    var location = this.props.type=="文档评审"?doc:code;
+    return(
+        React.createElement("div", {className: "col-lg-10 col-md-10 col-sm-12 col-xs-12 col-lg-offset-1 col-md-offset-1 row-bottom"}, 
+          React.createElement("div", {className: "row divline shadow"}, 
+            React.createElement("div", {className: "divhead col-lg-2 col-md-2 col-sm-2 col-xs-12"}, 
+              location
+            ), 
+
+            React.createElement("div", {className: "divbody col-lg-10 col-md-10 col-sm-10 col-xs-12"}, 
+              React.createElement("p", null, this.props.review.content)
+            )
+          )
+        )
+    );
+  }
+});
+
 /*评审编辑模态框*/
 var ReviewEditModal = React.createClass({displayName: "ReviewEditModal",
   componentDidMount:function(){
@@ -373,7 +398,8 @@ var ReviewPanel = React.createClass({displayName: "ReviewPanel",
   render:function(){
     var reviews = [];
     for(var i = 0;i < this.state.reviewList.length;i++){
-      var temp = React.createElement(Review, {type: this.props.type, review: this.state.reviewList[i], editReview: this.editReview});
+      var temp = this.props.state?React.createElement(Review, {type: this.props.type, review: this.state.reviewList[i], editReview: this.editReview}):
+	  React.createElement(DisReview, {type: this.props.type, review: this.state.reviewList[i], editReview: this.editReview});
       reviews.push(temp);
     }
     var writer = this.props.state?React.createElement(ReviewWriter, {type: this.props.type, addReview: this.addReview}):null;
