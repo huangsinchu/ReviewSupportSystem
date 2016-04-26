@@ -3,12 +3,7 @@
 var Navbar = React.createClass({displayName: "Navbar",
   getInitialState: function() {
       return {
-          messageList:[
-            {"id":"111",
-            "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"112",
-            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
-          ],
+          messageList:[],
           hasMessage:false
 
       };
@@ -247,13 +242,7 @@ var InfoPage = React.createClass({displayName: "InfoPage",
 
   getInitialState:function() {
       return {
-           profile:{
-            "id":"11111",
-            "name":"屋顶上的羊驼",
-            "mail":"maomao75979@gmail.com",
-            "passworld":"123456",
-            "group":["所有联系人","代码评审组","文档评审组","公司"]
-          } 
+           profile:{id: undefined, name: undefined, mail: undefined, group: []}  
       };
   },
   updateProfile:function(op,newProfile){

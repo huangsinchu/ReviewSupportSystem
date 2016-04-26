@@ -3,12 +3,7 @@
 var Navbar = React.createClass({displayName: "Navbar",
   getInitialState: function() {
       return {
-          messageList:[
-            {"id":"111",
-            "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"112",
-            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
-          ],
+          messageList:[],
           hasMessage:false
 
       };
@@ -995,34 +990,28 @@ var Report = React.createClass({displayName: "Report",
 
   getInitialState:function() {
       return {
-           profile:{
-            "id":"11111",
-            "name":"屋顶上的羊驼",
-            "mail":"maomao75979@gmail.com",
-            "passworld":"123456",
-            "group":["所有联系人","代码评审组","文档评审组","公司"]
-          },
-          review:{"id":"113",
-            "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "target":"文档评审组",
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
+          profile:{id: undefined, name: undefined, mail: undefined, group: []} ,
+          review:{"id":undefined,
+            "title":undefined,
+           "url":undefined,
+           "type":undefined,
+           "state":undefined,
+           "target":undefined,
+           "content":undefined
           },
           analysis:{
-            "people":"7",
-            "reviews":"67",
-            "merged":"57",
-            "guess":"10"
+            "people":undefined,
+            "reviews":undefined,
+            "merged":undefined,
+            "guess":undefined
           },
           time:{
-            "name":["burning","rotk","maybe","zmsj"],
-            "count":[2.123,8,6,2]
+            "name":[],
+            "count":[]
           },
           defiDistribution:{
-            "name":["burning","rotk","maybe","zmsj"],
-            "count":[1,3,3,3]
+            "name":[],
+            "count":[]
           },
           failHint:false
       };

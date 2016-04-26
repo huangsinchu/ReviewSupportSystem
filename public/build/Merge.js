@@ -3,12 +3,7 @@
 var Navbar = React.createClass({displayName: "Navbar",
   getInitialState: function() {
       return {
-          messageList:[
-            {"id":"111",
-            "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"112",
-            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
-          ],
+          messageList:[],
           hasMessage:false
 
       };
@@ -461,113 +456,10 @@ var Merge = React.createClass({displayName: "Merge",
 
   getInitialState:function() {
       return {
-           profile:{
-            "id":"11111",
-            "name":"屋顶上的羊驼",
-            "mail":"maomao75979@gmail.com",
-            "passworld":"123456",
-            "group":["所有联系人","代码评审组","文档评审组","公司"]
-          },
-          review:{
-            "id":"111",
-           "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "content":"论文内容"
-          },
-          reviewList:[
-          {
-            "id":"1112",
-            "page":"1",
-            "row":"12",
-            "reviewer":"屋顶上的羊驼",
-            "state":"评审",
-            "content":"1111111"
-          },
-          {
-            "id":"1113",
-            "page":"1",
-            "row":"22",
-            "reviewer":"羊驼",
-            "state":"评审",
-            "content":"222222222"
-          },
-          {
-            "id":"1114",
-            "page":"2",
-            "row":"12",
-            "reviewer":"屋顶",
-            "state":"评审",
-            "content":"3333333333"
-          },
-          {
-            "id":"1115",
-            "page":"3",
-            "row":"22",
-            "reviewer":"屋顶上的羊驼",
-            "state":"评审",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。"
-          },
-          {
-            "id":"1116",
-            "page":"4",
-            "row":"12",
-            "reviewer":"屋顶",
-            "state":"被否决",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。"
-          },
-          {
-            "id":"1117",
-            "page":"4",
-            "row":"14",
-            "reviewer":"羊驼",
-            "state":"评审",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。"
-          },{
-            "id":"1118",
-            "page":"6",
-            "row":"12",
-            "reviewer":"屋顶上的羊驼",
-            "state":"评审",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。"
-          },
-          {
-            "id":"1119",
-            "page":"6",
-            "row":"13",
-            "reviewer":"屋顶上的羊驼",
-            "state":"被合并",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。"
-          },
-          {
-            "id":"1120",
-            "page":"6",
-            "row":"14",
-            "reviewer":"屋顶上的羊驼",
-            "state":"合并",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。",
-            "children":["1119","1121","1122"]
-          },
-          {
-            "id":"1121",
-            "page":"6",
-            "row":"14",
-            "reviewer":"屋顶上的羊驼",
-            "state":"被合并",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。"
-          },
-          {
-            "id":"1122",
-            "page":"6",
-            "row":"15",
-            "reviewer":"屋顶上的羊驼",
-            "state":"被合并",
-            "content":"“大约”一词使用不准确，没有描述清楚所有情况。"
-          }
-          ],
-          chooseList:{"1111":false,"1112":false,"1113":false,"1114":false,"1114":false,"1115":false,"1116":false,
-                      "1117":false,"1118":false,"1119":false,"1120":false,"1121":false,"1122":false},
+          profile:{id: undefined, name: undefined, mail: undefined, group: []} ,
+          review:{},
+          reviewList:[],
+          chooseList:{},
           showModal:false,
           pos:[],
           contents:[],
@@ -701,6 +593,7 @@ var Merge = React.createClass({displayName: "Merge",
     $.ajax({
       url: "./php/merge.php",//TODO:将合并后的信息上传到服务器，服务器返回一个id，即合并的id;同时将被合并的合并评审删除
       dataType: 'json',
+	  async : false,
 	  type : "post",  
 	  data: post_data,
       cache: false,

@@ -3,12 +3,7 @@
 var Navbar = React.createClass({displayName: "Navbar",
   getInitialState: function() {
       return {
-          messageList:[
-            {"id":"111",
-            "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"112",
-            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
-          ],
+          messageList:[],
           hasMessage:false
 
       };
@@ -242,9 +237,7 @@ var TaskPage = React.createClass({displayName: "TaskPage",
 
   getInitialState:function() {
       return {
-           profile:{
-            
-          } 
+          profile:{id: undefined, name: undefined, mail: undefined, group: []}
       };
   },
 

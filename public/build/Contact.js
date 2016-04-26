@@ -3,12 +3,7 @@
 var Navbar = React.createClass({displayName: "Navbar",
   getInitialState: function() {
       return {
-          messageList:[
-            {"id":"111",
-            "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"112",
-            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
-          ],
+          messageList:[],
           hasMessage:false
 
       };
@@ -327,20 +322,8 @@ var ContactPage = React.createClass({displayName: "ContactPage",
   
   getInitialState:function() {
       return {
-           profile:{
-            "id":"11111",
-            "name":"屋顶上的羊驼",
-            "mail":"maomao75979@gmail.com",
-            "passworld":"123456",
-            "group":["所有联系人","代码评审组","文档评审组","公司","学校"]
-          },
-          contactors:{
-            "所有联系人":["a@gmail.com","b@gmail.com","c@gmail.com","d@gmail.com","e@gmail.com","f@gmail.com","g@gmail.com","h@gmail.com","i@gmail.com","j@gmail.com","k@gmail.com","l@gmail.com"],
-            "文档评审组":["a@gmail.com","b@gmail.com","c@gmail.com","d@gmail.com","e@gmail.com"],
-            "代码评审组":["d@gmail.com","e@gmail.com","f@gmail.com","g@gmail.com","h@gmail.com"],
-            "公司":["f@gmail.com","g@gmail.com","h@gmail.com","i@gmail.com"],
-            "学校":["i@gmail.com","j@gmail.com","k@gmail.com","l@gmail.com"]
-          }
+          profile:{id: undefined, name: undefined, mail: undefined, group: []} ,
+          contactors:{}
       };
   },
   componentWillMount: function() {

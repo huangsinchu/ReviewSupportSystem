@@ -3,12 +3,7 @@
 var Navbar = React.createClass({displayName: "Navbar",
   getInitialState: function() {
       return {
-          messageList:[
-            {"id":"111",
-            "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"112",
-            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
-          ],
+          messageList:[],
           hasMessage:false
 
       };
@@ -333,32 +328,7 @@ var EditModal = React.createClass({displayName: "EditModal",
 var ReviewList = React.createClass({displayName: "ReviewList",
   getInitialState: function() {
       return {
-          reviewPlanList:[
-          {"id":"111",
-           "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "target":"文档评审组",
-           "content":"论文内容"
-          },
-          {"id":"112",
-          	"title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":false,
-           "target":"文档评审组",
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          },
-          {"id":"113",
-          	"title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "target":"文档评审组",
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          }
-          ],
+          reviewPlanList:[],
           showModal:false,
           needEditPlan:{}
       };
@@ -455,13 +425,7 @@ var App = React.createClass({displayName: "App",
 
   getInitialState:function() {
       return {
-           profile:{
-            "id":"11111",
-            "name":"屋顶上的羊驼",
-            "mail":"maomao75979@gmail.com",
-            "passworld":"123456",
-            "group":["所有联系人","代码评审组","文档评审组","公司"]
-          } 
+           profile:{id: undefined, name: undefined, mail: undefined, group: []} 
       };
   },
 

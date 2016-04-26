@@ -3,12 +3,7 @@
 var Navbar = React.createClass({displayName: "Navbar",
   getInitialState: function() {
       return {
-          messageList:[
-            {"id":"111",
-            "hint":"荣老师邀请你评审陆云昊的文章"},
-            {"id":"112",
-            "hint":"荣老师邀请你评审陆云昊ddd的文章"}
-          ],
+          messageList:[],
           hasMessage:false
 
       };
@@ -302,44 +297,7 @@ var ReviewWriter = React.createClass({displayName: "ReviewWriter",
 var ReviewPanel = React.createClass({displayName: "ReviewPanel",
   getInitialState:function() {
       return {
-        reviewList:[
-          {
-            "id":"1111",
-            "page":"5",
-            "row":"9",
-            "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况"
-          },
-          {
-            "id":"1112",
-            "page":"5",
-            "row":"11",
-            "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况,打开房间阿斯利康大家立刻精神的快乐都是减肥了科技发达时考虑范式大积分卡上就打开了房间里看圣诞节啊风口浪尖阿斯顿了房间里撒打开进风口拉萨的建立开放式的拉开将"
-          },
-          { 
-            "id":"1113",
-            "page":"5",
-            "row":"25",
-            "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况"
-          },
-          {
-            "id":"1114",
-            "page":"6",
-            "row":"9",
-            "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况"
-          },
-          {
-            "id":"1115",
-            "page":"7",
-            "row":"9",
-            "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况"
-          },
-          {
-            "id":"1116",
-            "page":"8",
-            "row":"9",
-            "content":"文档写道“某些情况下b神可以带领队友走向胜利”，其中“某些”使用不准确，没有指出具体情况"
-          }
-        ],
+        reviewList:[],
         showModal:false,
         review:{}
       };
@@ -435,21 +393,8 @@ var ReviewPanel = React.createClass({displayName: "ReviewPanel",
 var ReviewPage = React.createClass({displayName: "ReviewPage",
   getInitialState:function() {
       return {
-           profile:{
-            "id":"11111",
-            "name":"屋顶上的羊驼",
-            "mail":"maomao75979@gmail.com",
-            "passworld":"123456",
-            "group":["所有联系人","代码评审组","文档评审组","公司"]
-          },
-          review:{
-            "id":"112",
-           "title":"陆云昊的毕业论文",
-           "url":"https://www.github.com",
-           "type":"文档评审",
-           "state":true,
-           "content":"论文内容包含对中国dota的局势分析，请仔细评审。"
-          }
+          profile:{id: undefined, name: undefined, mail: undefined, group: []},
+          review:{}
       };
   },
   componentDidMount: function() {
